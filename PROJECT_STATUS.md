@@ -2,7 +2,7 @@
 
 Registro operacional da **fase atual**. O backlog de issues e o texto de aceite ficam em [`ROADMAP.md`](ROADMAP.md). Índice de decisões: [`DECISIONS.md`](DECISIONS.md). Histórico cronológico: [`docs/status-log.md`](docs/status-log.md).
 
-| | |
+| Projeto | Atual |
 | --- | --- |
 | Repositório | [FilipeOliveira94/pedsletter](https://github.com/FilipeOliveira94/pedsletter) |
 | Início | 2026-11-14 |
@@ -63,7 +63,7 @@ Detalhe do aceite: `ROADMAP.md` → Fase 0.
 
 ## Última validação
 
-| | |
+| Validação | Detalhe |
 | --- | --- |
 | Data | 2026-11-15 |
 | Ambiente | Local, WSL2 |

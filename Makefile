@@ -1,7 +1,7 @@
 # PedsLetter — comandos comuns de desenvolvimento
 # Requer: GNU make. Node.js e o gerenciador de pacotes entram em F1-01.
 
-.PHONY: help install dev build lint test
+.PHONY: docs-lint help install dev build lint test
 
 # Alvo ainda sem implementação: avisa e sai com erro, para que nenhum
 # script ou CI trate um marcador como verificação que passou.
@@ -21,6 +21,9 @@ dev: ## Sobe o servidor de desenvolvimento do Astro (marcador; F1-01)
 
 build: ## Gera o site estático (marcador; F1-01)
 	$(call not_yet,build,F1-01)
+
+docs-lint: ## Verifica as tabelas Markdown (nenhum cabeçalho vazio)
+	python3 scripts/check_markdown_tables.py
 
 lint: ## Roda lint e checagem de tipos (marcador; F1-01)
 	$(call not_yet,lint,F1-01)

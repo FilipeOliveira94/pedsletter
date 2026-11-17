@@ -2,7 +2,7 @@
 
 Índice curto das decisões do PedsLetter. **Motivo, alternativas, consequências e evidência ficam nos ADRs** em [`docs/decisions/`](docs/decisions/).
 
-| | |
+| Registro | Referência |
 | --- | --- |
 | Contém | Índice de decisões e estado |
 | Detalhe | [`docs/decisions/`](docs/decisions/) (um ADR por decisão) |

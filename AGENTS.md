@@ -104,6 +104,7 @@ Associar um médico ao site, revisar e indexar pertencem à fase 9 e só começa
 - Diferencie validação de código, validação de conteúdo e publicação real.
 - Se um serviço externo estiver indisponível, relate a limitação.
 - Teste também o caminho de falha: arquivo inválido, link quebrado, PR de autor fora da lista, entrada fora do limite.
+- Markdown: toda tabela tem uma linha de cabeçalho que nomeia as colunas, tirada do contexto (`Issue P1-02 | Detalhe`, `Validação | Detalhe`). Nunca um cabeçalho vazio `| | |`, que o GFM mostra como linha em branco no topo. `make docs-lint` verifica.
 
 ## 10. Controle de escopo
 
