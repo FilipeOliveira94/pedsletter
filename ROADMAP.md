@@ -2,7 +2,7 @@
 
 Plano do PedsLetter por issue. Este arquivo é a fonte de **escopo, dependências, status das issues e critérios de aceite**. O `PROJECT_STATUS.md` é o registro operacional da **fase atual**. O histórico fica em `docs/status-log.md`.
 
-| | |
+| Roadmap | Atual |
 | --- | --- |
 | Origem | Plano final aprovado em 2026-11-15; resumo em [`docs/project-genesis.md`](docs/project-genesis.md) |
 | Última atualização | 2026-11-15 (roadmap inicial) |

@@ -2,7 +2,7 @@
 
 Registros detalhados das escolhas indexadas em [`DECISIONS.md`](../../DECISIONS.md).
 
-| | |
+| ADRs | Local |
 | --- | --- |
 | Índice | [`DECISIONS.md`](../../DECISIONS.md) — decisão, implementação e estado |
 | Modelo | [`_template.md`](_template.md) |

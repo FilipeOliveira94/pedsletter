@@ -6,6 +6,12 @@ Entradas novas no topo.
 
 ---
 
+### 2026-11-17 — Tabelas Markdown com cabeçalho nomeado
+
+6 tabelas de chave e valor tinham a linha de cabeçalho vazia (`| | |`), que o GFM mostra como uma linha em branco no topo. O padrão veio dos documentos de planejamento de outro projeto, usados como modelo, e passou adiante por cópia. Cada tabela tem agora um cabeçalho tirado do contexto (`Projeto | Atual`, `Validação | Detalhe`, `Roadmap | Atual`, `Registro | Referência`, `ADRs | Local`). `scripts/check_markdown_tables.py` falha se algum arquivo Markdown versionado tiver um cabeçalho vazio, fora de blocos de código; roda com `make docs-lint`. A regra está no AGENTS.md §9.
+
+---
+
 ### 2026-11-15 — Estrutura inicial do projeto
 
 O plano final do PedsLetter foi aprovado pelo Filipe em 2026-11-15. A estrutura do repositório foi criada em um commit direto na `main`, `chore: estrutura inicial do projeto`, o último fora de branch de feature.
