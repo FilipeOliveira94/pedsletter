@@ -27,11 +27,13 @@ Para cada tarefa:
 2. Leia `PROJECT_STATUS.md`, `ROADMAP.md` e os ADRs relacionados.
 3. Confira a issue no roadmap: dependências, premissas, riscos e aceite.
 4. Para trabalho não trivial, proponha um plano curto antes de editar arquivos e espere a aprovação.
-5. Crie a branch de feature (§13) e implemente o menor incremento coerente.
+5. Crie a branch de feature (§13) e implemente o menor incremento coerente. Ao extrair lógica repetida (validação, geração, scripts de workflow) ou escolher fronteiras entre módulos, consulte a skill `code-structure`; a arquitetura do §5 prevalece.
 6. Rode os testes, o lint e as validações que se aplicam.
 7. Leia os resultados e corrija as regressões causadas pela mudança.
 8. Atualize a documentação e o `PROJECT_STATUS.md` (só a fase atual; o histórico vai para `docs/status-log.md`).
-9. Resuma arquivos alterados, comandos executados, resultados, limitações e o próximo passo.
+9. Dê push da branch, abra o PR e analise o CI. Só então sinalize ao PO e ao Reviewer que está pronto: arquivos alterados, comandos executados, resultados, limitações e o próximo passo.
+10. PO e Reviewer revisam e aprovam o mesmo head do PR. Qualquer objeção bloqueia; cada correção (novos commits, CI analisado, novo sinal) é uma rodada. Após duas rodadas de divergência, o Filipe decide.
+11. Mudança pequena (docs, texto, ajuste de config, bump patch de dependência, ou bugfix contido de até ~50 linhas em até 3 arquivos, sem tocar arquitetura, modelo de dados/schema, auth/segurança, infra/deploy, API pública ou lógica de pipeline; na dúvida, é grande; o dev classifica na entrega): basta o PO.
 
 Não marque uma tarefa como concluída sem conferir o aceite.
 
@@ -146,8 +148,9 @@ Os prompts de planejar, implementar e fechar uma issue estão em `docs/agent-wor
 - Nome da branch: `<tipo>/<ID-da-issue>-<slug>`, por exemplo `feat/F1-03-site-nao-indexavel`.
 - Um PR resolve uma issue e cita o ID dela e o aceite conferido.
 - Conventional Commits.
-- Agentes nunca dão push na `main` e nunca fazem merge de PR. O merge é do Filipe.
-- Agentes commitam localmente na branch de feature. Push da branch e abertura do PR só quando o Filipe pedir na tarefa.
+- A ordem do Filipe para implementar autoriza o dev a commitar, dar push da branch de feature, abrir o PR e ler o CI. Nunca dê push na `main`.
+- Merge, exclusão de branch e pipelines de CD são do Reviewer, sempre após o sim explícito do Filipe. O Filipe pode fazer ele mesmo ou ordenar que um bot específico faça. Na mudança pequena, o Reviewer faz o merge sem revisar.
 - Exceção de projeto, não de agente: PRs de conteúdo em `src/content/posts/` são publicados pelo workflow de merge automático quando a validação passa (F2-05, ADR-003).
+- PR que mistura conteúdo e código segue o fluxo normal.
 
 AGENTS.md é a fonte única; CLAUDE.md importa este arquivo.

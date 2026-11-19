@@ -56,7 +56,7 @@ Revise o diff atual contra o plano combinado e o aceite. Não acrescente funcion
 - Rode os comandos de validação e relate a saída real.
 - Aponte os critérios de aceite não atendidos ou não verificados.
 - Aplique o §12 "Checklist de fechamento de issue".
-- Faça um Conventional Commit local na branch de feature. Nunca dê push na main e nunca faça merge (AGENTS.md §13). Dê push da branch e abra o PR só se eu pedir.
+- Faça um Conventional Commit na branch de feature, dê push dela, abra o PR e analise o CI. Nunca dê push na main e nunca faça merge sem o sim explícito do Filipe (AGENTS.md §13).
 
 Devolva um relatório curto de conclusão, o SHA do commit, o texto sugerido para o PR (com o ID da issue e o aceite conferido) e a próxima tarefa útil.
 ```
