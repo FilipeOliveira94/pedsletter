@@ -26,13 +26,23 @@ Para cada tarefa:
 1. Inspecione o código e a documentação atual.
 2. Leia `PROJECT_STATUS.md`, `ROADMAP.md` e os ADRs relacionados.
 3. Confira a issue no roadmap: dependências, premissas, riscos e aceite.
-4. Para trabalho não trivial, proponha um plano curto antes de editar arquivos e espere a aprovação.
+4. Planeje conforme o tamanho da tarefa (ver "Tarefa pequena ou grande" abaixo): na pequena, siga direto até o PR; na grande, apresente o plano na thread e espere a aprovação antes de mexer em código.
 5. Crie a branch de feature (§13) e implemente o menor incremento coerente. Ao extrair lógica repetida (validação, geração, scripts de workflow) ou escolher fronteiras entre módulos, consulte a skill `code-structure`; a arquitetura do §5 prevalece.
 6. Rode os testes, o lint e as validações que se aplicam.
 7. Leia os resultados e corrija as regressões causadas pela mudança.
 8. Atualize a documentação e o `PROJECT_STATUS.md` (só a fase atual; o histórico vai para `docs/status-log.md`).
 9. Faça o commit, dê push da branch, abra o PR com resumo e analise o CI. Entregue ao Filipe: arquivos alterados, comandos executados, resultados, limitações e o próximo passo.
 10. O Filipe revisa o PR, faz o merge e apaga a branch. O agente nunca faz merge.
+
+### Tarefa pequena ou grande (regra de 2026-11-20)
+
+| Modo | Quando | O que o Claude faz |
+| --- | --- | --- |
+| Pequena | Docs, texto, ajuste de config, bump patch de dependência, ou bugfix contido de até ~50 linhas em até 3 arquivos, sem tocar arquitetura, modelo de dados/schema, auth/segurança, infra/deploy, API pública ou lógica de pipeline. | Planeja e implementa direto até o PR. |
+| Grande | Todo o resto, ou na dúvida. | Planeja e para: apresenta o plano na thread e espera a aprovação do Filipe antes de mexer em código. |
+
+- O prompt da issue diz qual modo seguir. Se, ao planejar, a tarefa se mostrar maior, o Claude a reclassifica como grande e para.
+- A aprovação chega na mesma thread, direto do Filipe ou repassada pelo PO de Projetos com "Plano aprovado pelo Filipe: implemente.", às vezes com ajustes. Os ajustes entram no plano antes da implementação.
 
 ### Papéis (fluxo vigente desde 2026-11-20)
 
