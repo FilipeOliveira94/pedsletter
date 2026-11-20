@@ -1,6 +1,6 @@
 # Prompts de trabalho para agentes
 
-Três prompts conduzem uma issue: planejar, implementar e fechar. Eles não dependem de ferramenta; as regras ficam no [`AGENTS.md`](../AGENTS.md). Troque os marcadores, rode primeiro o prompt de plano e aprove o plano antes de qualquer mudança em arquivo.
+Três prompts conduzem uma issue: planejar, implementar e fechar. Eles não dependem de ferramenta; as regras ficam no [`AGENTS.md`](../AGENTS.md). Troque os marcadores e rode primeiro o prompt de plano. Em tarefa grande, aprove o plano antes de qualquer mudança em arquivo; em tarefa pequena, o agente segue direto até o PR (AGENTS.md §3, "Tarefa pequena ou grande").
 
 ---
 
@@ -23,7 +23,7 @@ Devolva:
 7. Arquivos que devem ser criados ou modificados.
 8. Nome da branch de feature (AGENTS.md §13) e quais itens do §12 "Checklist de fechamento de issue" e do §4 "Regras de conteúdo" a issue toca.
 
-Mantenha o escopo nesta issue. Não implemente fases futuras nem mude a arquitetura em silêncio. Espere a minha aprovação antes de editar.
+Mantenha o escopo nesta issue. Não implemente fases futuras nem mude a arquitetura em silêncio. Modo: <pequena | grande>. Na grande, espere a minha aprovação antes de editar; na pequena, siga para a implementação. Se a tarefa se mostrar maior, trate-a como grande.
 ```
 
 ## 2. Implementar (depois do plano aprovado)
