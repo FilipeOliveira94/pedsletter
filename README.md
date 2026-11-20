@@ -61,7 +61,7 @@ make help
 2. Crie uma branch de feature a partir da `main`, por exemplo `feat/F1-03-site-nao-indexavel`.
 3. Faça commits no padrão Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `test:`, `ci:`).
 4. Abra o PR citando a issue e o aceite conferido. Ninguém commita direto na `main`.
-5. O merge é do Reviewer (ou do Filipe), sempre após o sim explícito do Filipe. A exceção são os PRs de conteúdo, que o workflow de merge automático publica quando a validação passa (F2-05).
+5. O Filipe revisa o PR, faz o merge e apaga a branch. A exceção são os PRs de conteúdo, que o workflow de merge automático publica quando a validação passa (F2-05).
 
 Regras de conteúdo que valem para arquivo, issue, PR e commit:
 

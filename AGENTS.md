@@ -31,9 +31,19 @@ Para cada tarefa:
 6. Rode os testes, o lint e as validações que se aplicam.
 7. Leia os resultados e corrija as regressões causadas pela mudança.
 8. Atualize a documentação e o `PROJECT_STATUS.md` (só a fase atual; o histórico vai para `docs/status-log.md`).
-9. Dê push da branch, abra o PR e analise o CI. Só então sinalize ao PO e ao Reviewer que está pronto: arquivos alterados, comandos executados, resultados, limitações e o próximo passo.
-10. PO e Reviewer revisam e aprovam o mesmo head do PR. Qualquer objeção bloqueia; cada correção (novos commits, CI analisado, novo sinal) é uma rodada. Após duas rodadas de divergência, o Filipe decide.
-11. Mudança pequena (docs, texto, ajuste de config, bump patch de dependência, ou bugfix contido de até ~50 linhas em até 3 arquivos, sem tocar arquitetura, modelo de dados/schema, auth/segurança, infra/deploy, API pública ou lógica de pipeline; na dúvida, é grande; o dev classifica na entrega): basta o PO.
+9. Faça o commit, dê push da branch, abra o PR com resumo e analise o CI. Entregue ao Filipe: arquivos alterados, comandos executados, resultados, limitações e o próximo passo.
+10. O Filipe revisa o PR, faz o merge e apaga a branch. O agente nunca faz merge.
+
+### Papéis (fluxo vigente desde 2026-11-20)
+
+| Papel | Responsabilidade |
+| --- | --- |
+| Filipe | Pede status, escolhe a issue, revisa o PR, faz o merge e apaga a branch. |
+| Claude no T3 Code (Claude Opus 5.5) | Por issue: plano, implementação numa branch nova a partir da `main` atualizada, checks e testes, commit, push da branch e PR com resumo. Nunca faz merge. Fallback: Grok 4.7 pelo provider Cursor no T3, só quando acabar o limite do Claude Pro. |
+| PO de Projetos (bot) | Só quando o Filipe pede: status, mandar a issue ao T3, resumir o que foi feito após o merge, visão de produto. |
+| Reviewer de Projetos (bot) | Só quando o Filipe pede, para merge mais complicado: abre uma thread no T3 para o Claude revisar o PR e resume o veredito. Nunca faz merge nem apaga branch. |
+
+Não há aprovação dupla nem bot que faça merge ou push na `main`.
 
 Não marque uma tarefa como concluída sem conferir o aceite.
 
@@ -148,8 +158,8 @@ Os prompts de planejar, implementar e fechar uma issue estão em `docs/agent-wor
 - Nome da branch: `<tipo>/<ID-da-issue>-<slug>`, por exemplo `feat/F1-03-site-nao-indexavel`.
 - Um PR resolve uma issue e cita o ID dela e o aceite conferido.
 - Conventional Commits.
-- A ordem do Filipe para implementar autoriza o dev a commitar, dar push da branch de feature, abrir o PR e ler o CI. Nunca dê push na `main`.
-- Merge, exclusão de branch e pipelines de CD são do Reviewer, sempre após o sim explícito do Filipe. O Filipe pode fazer ele mesmo ou ordenar que um bot específico faça. Na mudança pequena, o Reviewer faz o merge sem revisar.
+- A ordem do Filipe para implementar autoriza o agente a commitar, dar push da branch de feature, abrir o PR e ler o CI. Nunca dê push na `main`.
+- Merge, exclusão de branch e pipelines de CD são do Filipe. Nenhum agente ou bot faz merge.
 - Exceção de projeto, não de agente: PRs de conteúdo em `src/content/posts/` são publicados pelo workflow de merge automático quando a validação passa (F2-05, ADR-003).
 - PR que mistura conteúdo e código segue o fluxo normal.
 
