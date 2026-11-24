@@ -37,10 +37,10 @@ For each task:
 
 ### Size and risk (in force since 2026-11-24)
 
-- Every issue carries a Size (S, M, L) and a Risk (Low, Med, High) on the scale in `~/.agents/claude/workflow.md`. The current phase's ratings are in `ROADMAP.md` → "Tamanho e risco"; an issue without one gets it in the plan.
+- Every issue carries a Size (S, M, L) and a Risk (Low, Med, High) on the scale in `~/.agents/claude/workflow.md`. Ratings go in the roadmap's Expected and Seen columns (format in the same file); until an issue has one, Claude rates it in the plan.
 - **S + Low:** Claude plans and implements straight through to the PR.
 - **Anything else:** Claude plans and stops: it runs `po-reviewer` on the plan, presents the plan with its verdict in the thread and waits for Filipe's approval before touching code. Approval arrives in the same thread, sometimes with adjustments, which go into the plan before implementation.
-- **High risk or L size:** Claude starts at Opus high effort on its own. A High-risk plan names the §4 rules or the workflow at stake and the tests written first; an L plan proposes a split first.
+- **High risk or L size:** the thread runs at Opus high effort, set when it starts; Claude never switches its own model or effort. A High-risk plan names the §4 rules or the workflow at stake and the tests written first; an L plan says whether to split the issue.
 - Claude may raise a rating while planning and says why; it never lowers one without Filipe.
 
 ### Roles (flow in force since 2026-11-24)
@@ -162,7 +162,7 @@ Filipe makes the final architecture decisions and approves significant changes.
 
 Before the issue's last commit, check each item and update only what the evidence supports:
 
-- `ROADMAP.md`: issue status, a Changelog line, the update date, and the actual size in "Tamanho e risco".
+- `ROADMAP.md`: issue status, a Changelog line, the update date, and the Seen rating once the roadmap has the rating columns.
 - `PROJECT_STATUS.md`: phase table, next steps and update date.
 - `docs/status-log.md`: a new entry.
 - An ADR or `DECISIONS.md` row becomes `aprovado` only with Filipe's decision or evidence from a verified issue.

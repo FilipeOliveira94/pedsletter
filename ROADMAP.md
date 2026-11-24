@@ -5,7 +5,7 @@ Plano do PedsLetter por issue. Este arquivo é a fonte de **escopo, dependência
 | Roadmap | Atual |
 | --- | --- |
 | Origem | Plano final aprovado em 2026-11-15; resumo em [`docs/project-genesis.md`](docs/project-genesis.md) |
-| Última atualização | 2026-11-24 (tamanho e risco; F0-06) |
+| Última atualização | 2026-11-24 (F0-06) |
 | Relacionados | `PROJECT_STATUS.md`, `DECISIONS.md`, `AGENTS.md` |
 
 **Valores de status:** `não iniciada` · `em andamento` · `entregue` · `verificada` · `bloqueada` · `retirada`
@@ -22,21 +22,6 @@ Plano do PedsLetter por issue. Este arquivo é a fonte de **escopo, dependência
 **Formato do aceite:** os critérios são os do plano final, na forma "dado … então …" quando ela se aplica. Uma issue tem um ou mais critérios; todos são obrigatórios.
 
 ---
-
-## Tamanho e risco
-
-Toda issue tem um Size (S, M, L) e um Risk (Low, Med, High) na escala de `~/.agents/claude/workflow.md` (repositório `FilipeOliveira94/agent-config`). A nota decide se o Claude para para aprovação do plano, quais revisores rodam e o esforço inicial do modelo (`AGENTS.md` §3). Risco alto aqui está em `AGENTS.md` §3, "Agent workflow". A coluna Est. é a estimativa antiga; para planejar, vale esta tabela.
-
-As issues em aberto da fase atual estão abaixo. As de outra fase ganham nota quando a fase abrir, ou no plano da issue. Ao fechar uma issue, anote o tamanho real ao lado da estimativa.
-
-| Issue | Size | Risk | Motivo |
-| --- | --- | --- | --- |
-| F0-01 | S | Low | Contas e README; nenhum plano pago. O README leva o aviso do §4 |
-| F0-02 | S | Med | Teste da rotina; um token do GitHub para o bot pede escopo mínimo e validade |
-| F0-03 | S | Low | ADR; bloqueada pela lista do Filipe |
-| F0-04 | S | Low | ADR; o texto passa pelas regras do §4 |
-| F0-05 | S | Low | ADR |
-| F0-06 | M | Low | Tradução de muitos arquivos; o conteúdo do site e os avisos do §4 ficam em português |
 
 ## Visão das fases
 
@@ -316,5 +301,5 @@ Nada desta fase começa sem decisão explícita do Filipe. A ordem importa: revi
 
 | Data | Mudança |
 | --- | --- |
-| 2026-11-24 | Tamanho e risco (escala do agent-config) substituem pequena/grande; notas das issues abertas da fase 0. Nova F0-06: traduzir a documentação para inglês |
+| 2026-11-24 | Nova F0-06: traduzir a documentação para inglês. Tamanho e risco substituem pequena/grande no fluxo (`AGENTS.md` §3); as notas das issues entram num passo seguinte |
 | 2026-11-15 | Roadmap inicial: fases 0 a 9 e 59 issues, a partir do plano final aprovado. F0-03 nasce `bloqueada` à espera da lista de fontes |
