@@ -1,69 +1,65 @@
-# Prompts de trabalho para agentes
+# Agent work prompts
 
-Três prompts conduzem uma issue: planejar, implementar e fechar. Eles não dependem de ferramenta; as regras ficam no [`AGENTS.md`](../AGENTS.md). Troque os marcadores e rode primeiro o prompt de plano. Em tarefa grande, aprove o plano antes de qualquer mudança em arquivo; em tarefa pequena, o agente segue direto até o PR (AGENTS.md §3, "Tarefa pequena ou grande").
-
----
-
-## 1. Planejar (sem editar arquivos)
-
-```text
-Siga o AGENTS.md.
-
-Quero trabalhar na issue: <ID-DA-ISSUE> — <título>.
-
-Primeiro inspecione o código, a documentação, o roadmap, o aceite e o status atual do projeto. Não edite arquivos ainda.
-
-Devolva:
-1. Estado atual e arquivos relevantes.
-2. Dependências e pré-requisitos.
-3. Um plano de implementação pequeno e ordenado.
-4. Critérios de aceite e como cada um será conferido.
-5. Riscos, premissas e pontos de compatibilidade.
-6. Comandos exatos a rodar.
-7. Arquivos que devem ser criados ou modificados.
-8. Nome da branch de feature (AGENTS.md §13) e quais itens do §12 "Checklist de fechamento de issue" e do §4 "Regras de conteúdo" a issue toca.
-
-Mantenha o escopo nesta issue. Não implemente fases futuras nem mude a arquitetura em silêncio. Modo: <pequena | grande>. Na grande, rode o po-reviewer no plano, mostre o veredito junto com o plano e espere a minha aprovação antes de editar; na pequena, siga para a implementação. Se a tarefa se mostrar maior, trate-a como grande.
-```
-
-## 2. Implementar (depois do plano aprovado)
-
-```text
-Siga o AGENTS.md.
-
-Implemente só o plano que acabamos de combinar.
-- Trabalhe na branch de feature da issue, nunca na main.
-- Mantenha o diff focado. Explique qualquer desvio antes de fazê-lo.
-- Acrescente ou atualize os testes do comportamento alterado.
-- Não implemente tarefas de fases futuras.
-- Não acrescente dependências ou serviços fora do plano aprovado.
-- Não rode comandos destrutivos nem contrate nada pago sem a minha aprovação explícita.
-- Rode as verificações e relate a saída real.
-- Atualize a documentação e o PROJECT_STATUS.md só para o que foi de fato verificado.
-- Não faça commit; o fechamento faz.
-
-Ao final, informe arquivos alterados, verificações rodadas, resultados, aceite atendido e não atendido, limitações e a próxima tarefa recomendada.
-```
-
-## 3. Fechar
-
-```text
-Siga o AGENTS.md.
-
-Revise o diff atual contra o plano combinado e o aceite. Não acrescente funcionalidade.
-- Procure mudanças fora do escopo, segredos, arquivos gerados, testes fracos, desvio de configuração e comportamento não documentado.
-- Confira o diff, a mensagem de commit e o texto do PR contra o §4 "Regras de conteúdo": nenhum nome de profissional, nenhuma recomendação de dose.
-- Rode os comandos de validação e relate a saída real.
-- Aponte os critérios de aceite não atendidos ou não verificados.
-- Rode os gates de revisão do AGENTS.md §3 "Agent workflow": code-reviewer em toda mudança de código ou config; na tarefa grande, depois, o po-reviewer no modo acceptance. Corrija os achados que bloqueiam e ponha o veredito final de cada um no PR.
-- Aplique o §12 "Checklist de fechamento de issue".
-- Faça um Conventional Commit na branch de feature, dê push dela, abra o PR e analise o CI. Nunca dê push na main e nunca faça merge; o merge é do Filipe (AGENTS.md §13).
-
-Devolva um relatório curto de conclusão, o SHA do commit, o texto sugerido para o PR (com o ID da issue e o aceite conferido) e a próxima tarefa útil.
-```
+Three prompts drive an issue: plan, implement and close. The rules live in [`AGENTS.md`](../AGENTS.md). Replace the placeholders and run the plan prompt first. An issue rated above S + Low has its plan approved before any file change; an S + Low issue goes straight to the PR (AGENTS.md §3, "Size and risk").
 
 ---
 
-## Outra ferramenta
+## 1. Plan (no file edits)
 
-Cole os mesmos três prompts na outra ferramenta e aponte para o `AGENTS.md`. Não mantenha arquivos de regras próprios dessa ferramenta no repositório, para que as regras tenham uma fonte só. A política de Git está no AGENTS.md §13 e as regras de conteúdo no §4, então a outra ferramenta também as recebe.
+```text
+Follow AGENTS.md.
+
+I want to work on issue: <ISSUE-ID> — <title>.
+Rating: <S|M|L> / <Low|Med|High> (ROADMAP.md "Tamanho e risco"; estimate it in the plan if missing).
+
+First inspect the code, the docs, the roadmap, the acceptance and the current project status. Do not edit files yet.
+
+Return:
+1. Current state and relevant files.
+2. Dependencies and prerequisites.
+3. A small, ordered implementation plan.
+4. Acceptance criteria and how each will be checked.
+5. Risks, assumptions and compatibility points.
+6. Exact commands to run.
+7. Files to create or change.
+8. The feature branch name (AGENTS.md §13) and which items of §12 "Issue closing checklist" and §4 "Content rules" the issue touches.
+9. The Size and Risk, and whether planning raises either.
+
+Keep the scope to this issue. Do not implement future phases or change the architecture silently. Above S + Low: run po-reviewer on the plan, show its verdict with the plan and wait for my approval before editing. S + Low: go on to implementation. If the issue turns out bigger or riskier, raise the rating and say why.
+```
+
+## 2. Implement (after the plan is approved)
+
+```text
+Follow AGENTS.md.
+
+Implement only the plan we just agreed on.
+- Work on the issue's feature branch, never on main.
+- Keep the diff focused. Explain any deviation before making it.
+- Add or update the tests for the changed behavior.
+- Do not implement tasks from future phases.
+- Do not add dependencies or services outside the approved plan.
+- Do not run destructive commands or sign up for anything paid without my explicit approval.
+- Run the checks and report the actual output.
+- Update the docs and PROJECT_STATUS.md only for what was actually verified.
+- Do not commit; the close step does.
+
+At the end, report changed files, checks run, results, acceptance met and not met, limitations and the recommended next task.
+```
+
+## 3. Close
+
+```text
+Follow AGENTS.md.
+
+Review the current diff against the agreed plan and the acceptance. Do not add features.
+- Look for out-of-scope changes, secrets, generated files, weak tests, configuration drift and undocumented behavior.
+- Check the diff, the commit message and the PR text against §4 "Content rules": no professional's name, no dose recommendation.
+- Run the validation commands and report the actual output.
+- Point out acceptance criteria that are not met or not verified.
+- Run the review gates in AGENTS.md §3 "Agent workflow": code-reviewer on every code or config change; above S + Low, then po-reviewer in acceptance mode. Fix blocking findings and put each final verdict in the PR.
+- Apply §12 "Issue closing checklist".
+- Make a Conventional Commit on the feature branch, push it, open the PR and read the CI. Never push to main and never merge; the merge is Filipe's (AGENTS.md §13).
+
+Return a short completion report, the commit SHA, the suggested PR text (with the issue ID, the rating and the acceptance checked) and the next useful task.
+```
