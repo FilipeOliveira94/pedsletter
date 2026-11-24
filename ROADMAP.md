@@ -17,7 +17,7 @@ Plano do PedsLetter por issue. Este arquivo é a fonte de **escopo, dependência
 - Uma issue por PR, em branch de feature (AGENTS.md §13).
 - Nenhuma issue, PR ou commit cita profissional de saúde. O texto usa só o genérico "médico".
 
-**Estimativa (Est.):** P = pequena · M = média · G = grande.
+**Expected / Seen:** a nota de cada issue como `Size/Risk`, na escala de `~/.agents/claude/workflow.md` (repositório `FilipeOliveira94/agent-config`; risco alto aqui está em `AGENTS.md` §3). Expected é a estimativa antes do trabalho, com `-` em Seen até a issue fechar; aí Seen registra o que o trabalho se mostrou. Substitui a antiga coluna Est. (P/M/G).
 
 **Formato do aceite:** os critérios são os do plano final, na forma "dado … então …" quando ela se aplica. Uma issue tem um ou mais critérios; todos são obrigatórios.
 
@@ -69,14 +69,14 @@ SEO só vira métrica na fase 9.
 
 ### Issues
 
-| ID | Título | Est. | Depende de | Status | Aceite |
-| --- | --- | --- | --- | --- | --- |
-| F0-01 | Contas e repositório | P | — | Não iniciada | Repositório público no GitHub e projeto no Cloudflare Pages ligado a ele.<br>README com a descrição do projeto e o aviso de conteúdo gerado por IA.<br>Nenhum plano pago contratado. |
-| F0-02 | Testar a rotina agendada do Grok | P | — | Não iniciada | Registrado se a rotina roda no plano atual, se agenda para dias da semana e se entrega arquivo ou só texto.<br>Registrado se o Grok consegue chamar a API do GitHub com um token.<br>Se não conseguir, fica decidido que o Filipe faz o envio. |
-| F0-03 | ADR-001: fontes de curadoria | P | Lista informada pelo Filipe | Bloqueada | Lista fechada de periódicos e entidades, com o critério de inclusão.<br>Não bloqueia a fase 1; bloqueia F2-02. |
-| F0-04 | ADR-002: publicação sem revisão e sem indexação | P | — | Não iniciada | Registra a decisão, o motivo, as mitigações e as condições para rever (fase 9).<br>Não cita nenhum profissional. |
-| F0-05 | ADR-003: formato e caminho de publicação | P | F0-02 | Não iniciada | Registra o formato `.md`, o PR com merge automático e o mecanismo de retirada. |
-| F0-06 | Traduzir a documentação do repositório para inglês | M | — | Não iniciada | ROADMAP, PROJECT_STATUS, DECISIONS, ADRs, `docs/` e README em inglês (decisão do Filipe, 2026-11-24; o `AGENTS.md` e os prompts já estão em inglês).<br>O conteúdo do site e os avisos obrigatórios do §4 ficam em português, inclusive no README.<br>IDs de issue e de decisão não mudam. |
+| ID | Título | Expected | Seen | Depende de | Status | Aceite |
+| --- | --- | --- | --- | --- | --- | --- |
+| F0-01 | Contas e repositório | S/Low | - | — | Não iniciada | Repositório público no GitHub e projeto no Cloudflare Pages ligado a ele.<br>README com a descrição do projeto e o aviso de conteúdo gerado por IA.<br>Nenhum plano pago contratado. |
+| F0-02 | Testar a rotina agendada do Grok | S/Med | - | — | Não iniciada | Registrado se a rotina roda no plano atual, se agenda para dias da semana e se entrega arquivo ou só texto.<br>Registrado se o Grok consegue chamar a API do GitHub com um token.<br>Se não conseguir, fica decidido que o Filipe faz o envio. |
+| F0-03 | ADR-001: fontes de curadoria | S/Low | - | Lista informada pelo Filipe | Bloqueada | Lista fechada de periódicos e entidades, com o critério de inclusão.<br>Não bloqueia a fase 1; bloqueia F2-02. |
+| F0-04 | ADR-002: publicação sem revisão e sem indexação | S/Low | - | — | Não iniciada | Registra a decisão, o motivo, as mitigações e as condições para rever (fase 9).<br>Não cita nenhum profissional. |
+| F0-05 | ADR-003: formato e caminho de publicação | S/Low | - | F0-02 | Não iniciada | Registra o formato `.md`, o PR com merge automático e o mecanismo de retirada. |
+| F0-06 | Traduzir a documentação do repositório para inglês | M/Low | - | — | Não iniciada | ROADMAP, PROJECT_STATUS, DECISIONS, ADRs, `docs/` e README em inglês (decisão do Filipe, 2026-11-24; o `AGENTS.md` e os prompts já estão em inglês).<br>O conteúdo do site e os avisos obrigatórios do §4 ficam em português, inclusive no README.<br>IDs de issue e de decisão não mudam. |
 
 O commit inicial adiantou o texto do README e dos três ADRs. As issues continuam abertas e fecham por PR, com o aceite conferido.
 
@@ -97,17 +97,17 @@ O commit inicial adiantou o texto do README e dos três ADRs. As issues continua
 
 ### Issues
 
-| ID | Título | Est. | Depende de | Status | Aceite |
-| --- | --- | --- | --- | --- | --- |
-| F1-01 | Projeto Astro, TypeScript estrito e CI | P | F0-01 | Não iniciada | Dado um commit com erro de tipo, quando o CI roda, então o build falha. |
-| F1-02 | Deploy com preview | P | F1-01 | Não iniciada | Cada branch do próprio repositório gera uma URL de preview. |
-| F1-03 | Site não indexável | P | F1-02 | Não iniciada | Dado `indexavel` desligado, então toda página responde com `noindex` na meta tag e no cabeçalho `X-Robots-Tag`.<br>Nenhum sitemap é gerado.<br>O `robots.txt` não tem `Disallow`.<br>Um teste percorre todas as páginas do build e falha se alguma não tiver `noindex`. |
-| F1-04 | Layout, home e página de edição | M | F1-01 | Não iniciada | A home lista as edições mais recentes.<br>A edição mostra o corpo e a lista de artigos com link, fonte, tipo e acesso. |
-| F1-05 | Aviso de conteúdo gerado por IA | P | F1-04 | Não iniciada | Dado qualquer edição, então o aviso de IA aparece antes do texto.<br>O aviso aparece também na home.<br>Toda página mostra o aviso de público profissional. |
-| F1-06 | Verificação de ausência de autoria | P | F1-04 | Não iniciada | Script no CI sobre o HTML gerado e sobre os arquivos do repositório.<br>Dado um termo da lista de bloqueio ("CRM", "RQE", "Dr.", "Dra.", "revisado por", "médico responsável", "médica responsável"), então o CI falha e aponta arquivo e linha.<br>Nomes próprios a bloquear entram por segredo do CI, nunca em arquivo.<br>A verificação roda também sobre o texto dos PRs de conteúdo. |
-| F1-07 | Páginas "Sobre", "Aviso" e "Privacidade" | P | F1-04 | Não iniciada | "Sobre" descreve um projeto de curadoria automatizada e linka o repositório, sem citar profissional de saúde.<br>"Aviso" declara conteúdo informativo, sem validação clínica, sem consulta, diagnóstico ou prescrição.<br>"Privacidade" declara que o site não coleta dado pessoal. |
-| F1-08 | RSS | P | F1-04 | Não iniciada | RSS válido, só com edições em `status: publicado`. |
-| F1-09 | Analytics sem cookies | P | F1-02 | Não iniciada | Nenhum cookie é criado ao navegar. |
+| ID | Título | Expected | Seen | Depende de | Status | Aceite |
+| --- | --- | --- | --- | --- | --- | --- |
+| F1-01 | Projeto Astro, TypeScript estrito e CI | S/Med | - | F0-01 | Não iniciada | Dado um commit com erro de tipo, quando o CI roda, então o build falha. |
+| F1-02 | Deploy com preview | S/High | - | F1-01 | Não iniciada | Cada branch do próprio repositório gera uma URL de preview. |
+| F1-03 | Site não indexável | S/High | - | F1-02 | Não iniciada | Dado `indexavel` desligado, então toda página responde com `noindex` na meta tag e no cabeçalho `X-Robots-Tag`.<br>Nenhum sitemap é gerado.<br>O `robots.txt` não tem `Disallow`.<br>Um teste percorre todas as páginas do build e falha se alguma não tiver `noindex`. |
+| F1-04 | Layout, home e página de edição | M/Low | - | F1-01 | Não iniciada | A home lista as edições mais recentes.<br>A edição mostra o corpo e a lista de artigos com link, fonte, tipo e acesso. |
+| F1-05 | Aviso de conteúdo gerado por IA | S/High | - | F1-04 | Não iniciada | Dado qualquer edição, então o aviso de IA aparece antes do texto.<br>O aviso aparece também na home.<br>Toda página mostra o aviso de público profissional. |
+| F1-06 | Verificação de ausência de autoria | S/High | - | F1-04 | Não iniciada | Script no CI sobre o HTML gerado e sobre os arquivos do repositório.<br>Dado um termo da lista de bloqueio ("CRM", "RQE", "Dr.", "Dra.", "revisado por", "médico responsável", "médica responsável"), então o CI falha e aponta arquivo e linha.<br>Nomes próprios a bloquear entram por segredo do CI, nunca em arquivo.<br>A verificação roda também sobre o texto dos PRs de conteúdo. |
+| F1-07 | Páginas "Sobre", "Aviso" e "Privacidade" | S/High | - | F1-04 | Não iniciada | "Sobre" descreve um projeto de curadoria automatizada e linka o repositório, sem citar profissional de saúde.<br>"Aviso" declara conteúdo informativo, sem validação clínica, sem consulta, diagnóstico ou prescrição.<br>"Privacidade" declara que o site não coleta dado pessoal. |
+| F1-08 | RSS | S/Low | - | F1-04 | Não iniciada | RSS válido, só com edições em `status: publicado`. |
+| F1-09 | Analytics sem cookies | S/Med | - | F1-02 | Não iniciada | Nenhum cookie é criado ao navegar. |
 
 **Nota para F1-06:** esta linha do roadmap cita os termos da lista de bloqueio porque são o aceite da issue. A implementação precisa tratar os arquivos que definem a própria lista.
 
@@ -128,17 +128,17 @@ O commit inicial adiantou o texto do README e dos três ADRs. As issues continua
 
 ### Issues
 
-| ID | Título | Est. | Depende de | Status | Aceite |
-| --- | --- | --- | --- | --- | --- |
-| F2-01 | Schema do post | P | F1-04 | Não iniciada | Dado um arquivo sem `artigos` ou com artigo sem `url`, então a validação falha com mensagem que aponta o campo.<br>Dado `status: retirado` sem `motivoRetirada`, então a validação falha. |
-| F2-02 | Modelo do arquivo e texto da rotina | P | F0-02, F0-03, F2-01 | Não iniciada | Três execuções seguidas da rotina passam em F2-01 sem correção manual.<br>O texto da rotina contém as regras da rotina (abaixo) e a lista do ADR-001. |
-| F2-03 | Validação de links | P | F2-01 | Não iniciada | Dado um artigo com URL que não responde ou DOI que não resolve, então a validação falha e nomeia o artigo. |
-| F2-04 | Bloqueio de artigo repetido ou retirado | P | F2-01 | Não iniciada | Dada uma URL já usada em edição publicada, então a validação avisa, sem falhar.<br>Dada uma URL de edição retirada, então a validação falha. |
-| F2-05 | Merge automático | M | F2-03, F2-04 | Não iniciada | Dado um PR de autor permitido, vindo de branch do próprio repositório, que só adiciona arquivos em `src/content/posts/` e passa na validação, então o workflow faz o merge sem ação humana.<br>Dado um PR de fork ou de autor fora da lista, então o workflow não faz o merge e não usa nenhum segredo.<br>Dado um PR que toca qualquer outro caminho, então o workflow não faz o merge.<br>Dada uma validação que falha, então o PR fica aberto e o Filipe é notificado. |
-| F2-06 | Envio pelo bot (condicional) | P | F0-02, F2-05 | Não iniciada | Só se F0-02 mostrar que o Grok chama a API do GitHub.<br>Token com acesso só a este repositório e só a conteúdo, com validade definida.<br>O bot abre o PR com o arquivo no caminho certo. |
-| F2-07 | Retirada de edição | P | F2-01 | Não iniciada | Dado `status: retirado`, então a edição some da home, das tags e do RSS.<br>A URL da edição mostra "edição retirada", a data e o motivo, sem o conteúdo.<br>Dado o arquivo apagado, então a URL responde 404. |
-| F2-08 | Guia de operação | P | F2-05, F2-07 | Não iniciada | Descreve envio manual, retirada, correção, reversão de deploy e revogação do token.<br>O Filipe retira uma edição de teste seguindo só o guia. |
-| F2-09 | Ensaio completo | P | F2-02, F2-05 | Não iniciada | Um arquivo real do Grok é publicado pelo fluxo, sem edição manual.<br>Um arquivo propositalmente inválido fica parado no PR, com o site inalterado.<br>Um PR aberto por uma conta fora da lista não é publicado. |
+| ID | Título | Expected | Seen | Depende de | Status | Aceite |
+| --- | --- | --- | --- | --- | --- | --- |
+| F2-01 | Schema do post | S/Med | - | F1-04 | Não iniciada | Dado um arquivo sem `artigos` ou com artigo sem `url`, então a validação falha com mensagem que aponta o campo.<br>Dado `status: retirado` sem `motivoRetirada`, então a validação falha. |
+| F2-02 | Modelo do arquivo e texto da rotina | S/High | - | F0-02, F0-03, F2-01 | Não iniciada | Três execuções seguidas da rotina passam em F2-01 sem correção manual.<br>O texto da rotina contém as regras da rotina (abaixo) e a lista do ADR-001. |
+| F2-03 | Validação de links | S/Med | - | F2-01 | Não iniciada | Dado um artigo com URL que não responde ou DOI que não resolve, então a validação falha e nomeia o artigo. |
+| F2-04 | Bloqueio de artigo repetido ou retirado | S/Med | - | F2-01 | Não iniciada | Dada uma URL já usada em edição publicada, então a validação avisa, sem falhar.<br>Dada uma URL de edição retirada, então a validação falha. |
+| F2-05 | Merge automático | M/High | - | F2-03, F2-04 | Não iniciada | Dado um PR de autor permitido, vindo de branch do próprio repositório, que só adiciona arquivos em `src/content/posts/` e passa na validação, então o workflow faz o merge sem ação humana.<br>Dado um PR de fork ou de autor fora da lista, então o workflow não faz o merge e não usa nenhum segredo.<br>Dado um PR que toca qualquer outro caminho, então o workflow não faz o merge.<br>Dada uma validação que falha, então o PR fica aberto e o Filipe é notificado. |
+| F2-06 | Envio pelo bot (condicional) | S/High | - | F0-02, F2-05 | Não iniciada | Só se F0-02 mostrar que o Grok chama a API do GitHub.<br>Token com acesso só a este repositório e só a conteúdo, com validade definida.<br>O bot abre o PR com o arquivo no caminho certo. |
+| F2-07 | Retirada de edição | S/High | - | F2-01 | Não iniciada | Dado `status: retirado`, então a edição some da home, das tags e do RSS.<br>A URL da edição mostra "edição retirada", a data e o motivo, sem o conteúdo.<br>Dado o arquivo apagado, então a URL responde 404. |
+| F2-08 | Guia de operação | S/Low | - | F2-05, F2-07 | Não iniciada | Descreve envio manual, retirada, correção, reversão de deploy e revogação do token.<br>O Filipe retira uma edição de teste seguindo só o guia. |
+| F2-09 | Ensaio completo | S/High | - | F2-02, F2-05 | Não iniciada | Um arquivo real do Grok é publicado pelo fluxo, sem edição manual.<br>Um arquivo propositalmente inválido fica parado no PR, com o site inalterado.<br>Um PR aberto por uma conta fora da lista não é publicado. |
 
 ### Regras para a rotina do Grok (entram no texto de F2-02)
 
@@ -166,12 +166,12 @@ O commit inicial adiantou o texto do README e dos três ADRs. As issues continua
 
 ### Issues
 
-| ID | Título | Est. | Depende de | Status | Aceite |
-| --- | --- | --- | --- | --- | --- |
-| F3-01 | Rotina agendada em produção | P | F2-09 | Não iniciada | A rotina roda segunda, quarta e sexta de manhã. |
-| F3-02 | Duas semanas de operação | P | F3-01 | Não iniciada | Ao menos 5 de 6 edições publicadas.<br>Erros encontrados nas edições anotados, com ajuste no texto da rotina. |
-| F3-03 | Validação do uso | P | F3-02 | Não iniciada | O usuário principal responde se os resumos atendem e o que mudar.<br>Decisão registrada: seguir, ajustar ou parar. |
-| F3-04 | Lighthouse CI | P | F1-04 | Não iniciada | Merge bloqueado com nota abaixo de 95, exceto na categoria SEO, que o `noindex` reduz. |
+| ID | Título | Expected | Seen | Depende de | Status | Aceite |
+| --- | --- | --- | --- | --- | --- | --- |
+| F3-01 | Rotina agendada em produção | S/High | - | F2-09 | Não iniciada | A rotina roda segunda, quarta e sexta de manhã. |
+| F3-02 | Duas semanas de operação | S/Med | - | F3-01 | Não iniciada | Ao menos 5 de 6 edições publicadas.<br>Erros encontrados nas edições anotados, com ajuste no texto da rotina. |
+| F3-03 | Validação do uso | S/Low | - | F3-02 | Não iniciada | O usuário principal responde se os resumos atendem e o que mudar.<br>Decisão registrada: seguir, ajustar ou parar. |
+| F3-04 | Lighthouse CI | S/Med | - | F1-04 | Não iniciada | Merge bloqueado com nota abaixo de 95, exceto na categoria SEO, que o `noindex` reduz. |
 
 ---
 
@@ -186,10 +186,10 @@ O commit inicial adiantou o texto do README e dos três ADRs. As issues continua
 
 ### Issues
 
-| ID | Título | Est. | Depende de | Status | Aceite |
-| --- | --- | --- | --- | --- | --- |
-| F4-01 | Comprar `pedsletter.com.br` | P | F3-03 com decisão de seguir | Não iniciada | Domínio registrado, com a zona DNS sob controle do Filipe. |
-| F4-02 | Configurar o domínio | P | F4-01 | Não iniciada | Registros DNS criados, com o apex e o CNAME de `www` apontando para o projeto no Cloudflare Pages.<br>`https://pedsletter.com.br` serve o site com certificado válido e HSTS.<br>Dado um acesso por `http://`, por `www.` ou por `*.pages.dev`, então a resposta é 301 para `https://pedsletter.com.br`.<br>Canonical e RSS usam o domínio final.<br>O site continua com `noindex` depois da troca. |
+| ID | Título | Expected | Seen | Depende de | Status | Aceite |
+| --- | --- | --- | --- | --- | --- | --- |
+| F4-01 | Comprar `pedsletter.com.br` | S/Med | - | F3-03 com decisão de seguir | Não iniciada | Domínio registrado, com a zona DNS sob controle do Filipe. |
+| F4-02 | Configurar o domínio | S/High | - | F4-01 | Não iniciada | Registros DNS criados, com o apex e o CNAME de `www` apontando para o projeto no Cloudflare Pages.<br>`https://pedsletter.com.br` serve o site com certificado válido e HSTS.<br>Dado um acesso por `http://`, por `www.` ou por `*.pages.dev`, então a resposta é 301 para `https://pedsletter.com.br`.<br>Canonical e RSS usam o domínio final.<br>O site continua com `noindex` depois da troca. |
 
 ---
 
@@ -207,14 +207,14 @@ O commit inicial adiantou o texto do README e dos três ADRs. As issues continua
 
 ### Issues
 
-| ID | Título | Est. | Depende de | Status | Aceite |
-| --- | --- | --- | --- | --- | --- |
-| F5-01 | Contrato de definição de calculadora | M | F1-01 | Não iniciada | Uma calculadora nova exige só definição, casos e página.<br>Os tipos impedem campo numérico sem unidade. |
-| F5-02 | Componente `<Calculator>` | M | F5-01 | Não iniciada | Dado "12,5" e "12.5" no mesmo campo, então o resultado é idêntico.<br>Dado um valor fora do limite rígido, então há erro no campo e nenhum resultado.<br>Dado um valor implausível, então o resultado só sai após confirmação.<br>Passa no axe e funciona só com teclado. |
-| F5-03 | Executor de casos de referência | P | F5-01 | Não iniciada | Todo item de `cases.json` vira um teste e traz a referência de onde saiu.<br>Calculadora sem casos falha no CI.<br>Dado `status: suspensa`, então o formulário fica desativado, com aviso. |
-| F5-04 | Template de página de calculadora | M | F5-02 | Não iniciada | Seções de como usar, fórmula, exemplo, limitações e referências, legíveis sem JavaScript.<br>Selo "Não validada clinicamente" e aviso de ferramenta de apoio junto ao resultado. |
-| F5-05 | Teste de privacidade | P | F5-02 | Não iniciada | Dado um cálculo completo, então nenhuma requisição de rede é feita e nada fica na URL ou em armazenamento local. |
-| F5-06 | Hidratação de manutenção | P | F5-03, F5-04 | Não iniciada | Casos de 3, 10, 15, 20 e 35 kg conferem com o cálculo pela fórmula publicada.<br>Mostra mL/dia e mL/h, com a conta visível. |
+| ID | Título | Expected | Seen | Depende de | Status | Aceite |
+| --- | --- | --- | --- | --- | --- | --- |
+| F5-01 | Contrato de definição de calculadora | M/High | - | F1-01 | Não iniciada | Uma calculadora nova exige só definição, casos e página.<br>Os tipos impedem campo numérico sem unidade. |
+| F5-02 | Componente `<Calculator>` | M/High | - | F5-01 | Não iniciada | Dado "12,5" e "12.5" no mesmo campo, então o resultado é idêntico.<br>Dado um valor fora do limite rígido, então há erro no campo e nenhum resultado.<br>Dado um valor implausível, então o resultado só sai após confirmação.<br>Passa no axe e funciona só com teclado. |
+| F5-03 | Executor de casos de referência | S/High | - | F5-01 | Não iniciada | Todo item de `cases.json` vira um teste e traz a referência de onde saiu.<br>Calculadora sem casos falha no CI.<br>Dado `status: suspensa`, então o formulário fica desativado, com aviso. |
+| F5-04 | Template de página de calculadora | M/Med | - | F5-02 | Não iniciada | Seções de como usar, fórmula, exemplo, limitações e referências, legíveis sem JavaScript.<br>Selo "Não validada clinicamente" e aviso de ferramenta de apoio junto ao resultado. |
+| F5-05 | Teste de privacidade | S/Med | - | F5-02 | Não iniciada | Dado um cálculo completo, então nenhuma requisição de rede é feita e nada fica na URL ou em armazenamento local. |
+| F5-06 | Hidratação de manutenção | S/High | - | F5-03, F5-04 | Não iniciada | Casos de 3, 10, 15, 20 e 35 kg conferem com o cálculo pela fórmula publicada.<br>Mostra mL/dia e mL/h, com a conta visível. |
 
 ---
 
@@ -229,14 +229,14 @@ O commit inicial adiantou o texto do README e dos três ADRs. As issues continua
 
 ### Issues
 
-| ID | Título | Est. | Depende de | Status | Aceite |
-| --- | --- | --- | --- | --- | --- |
-| F6-01 | Superfície corporal e IMC | P | F5-06 | Não iniciada | Ao menos 5 casos de referência com fonte. |
-| F6-02 | Dose por peso genérica | P | F5-06 | Não iniciada | Mostra mg e mL por dose e mg por dia.<br>Dado o campo de concentração vazio, então não há resultado em mL.<br>A página não cita fármaco nem dose recomendada. |
-| F6-03 | Tabelas LMS da OMS 0–5 anos | M | F1-01 | Não iniciada | Script reproduzível, com checksum dos arquivos oficiais.<br>Termos de uso dos dados conferidos antes de publicá-los em repositório público. |
-| F6-04 | Z-score e percentil 0–5 anos | M | F6-03, F5-02 | Não iniciada | Concordância com `anthro` em mil casos, com tolerância de 0,01.<br>Dado idade acima de 5 anos, então a calculadora informa que está fora da faixa. |
-| F6-05 | Gráfico de crescimento | M | F6-04 | Não iniciada | Curvas de P3 a P97 em SVG gerado no build, com o ponto plotado e alternativa em texto. |
-| F6-06 | Uso real | P | F6-01, F6-02, F6-05 | Não iniciada | O usuário principal usa as quatro calculadoras por uma semana e relata problemas. |
+| ID | Título | Expected | Seen | Depende de | Status | Aceite |
+| --- | --- | --- | --- | --- | --- | --- |
+| F6-01 | Superfície corporal e IMC | S/High | - | F5-06 | Não iniciada | Ao menos 5 casos de referência com fonte. |
+| F6-02 | Dose por peso genérica | S/High | - | F5-06 | Não iniciada | Mostra mg e mL por dose e mg por dia.<br>Dado o campo de concentração vazio, então não há resultado em mL.<br>A página não cita fármaco nem dose recomendada. |
+| F6-03 | Tabelas LMS da OMS 0–5 anos | M/High | - | F1-01 | Não iniciada | Script reproduzível, com checksum dos arquivos oficiais.<br>Termos de uso dos dados conferidos antes de publicá-los em repositório público. |
+| F6-04 | Z-score e percentil 0–5 anos | M/High | - | F6-03, F5-02 | Não iniciada | Concordância com `anthro` em mil casos, com tolerância de 0,01.<br>Dado idade acima de 5 anos, então a calculadora informa que está fora da faixa. |
+| F6-05 | Gráfico de crescimento | M/High | - | F6-04 | Não iniciada | Curvas de P3 a P97 em SVG gerado no build, com o ponto plotado e alternativa em texto. |
+| F6-06 | Uso real | S/Low | - | F6-01, F6-02, F6-05 | Não iniciada | O usuário principal usa as quatro calculadoras por uma semana e relata problemas. |
 
 ---
 
@@ -246,14 +246,14 @@ O commit inicial adiantou o texto do README e dos três ADRs. As issues continua
 
 ### Issues
 
-| ID | Título | Est. | Depende de | Status | Aceite |
-| --- | --- | --- | --- | --- | --- |
-| F7-01 | Curva OMS 5–19 anos | M | F6-04 | Não iniciada | Concordância com o pacote da OMS; peso/idade só até 10 anos. |
-| F7-02 | Idade corrigida do prematuro | P | F6-06 | Não iniciada | Casos de referência com fonte. |
-| F7-03 | Perda de peso do recém-nascido | P | F6-06 | Não iniciada | Casos com fonte; limiar e fonte exibidos. |
-| F7-04 | Estatura-alvo familiar | P | F6-06 | Não iniciada | Casos com fonte. |
-| F7-05 | TFG estimada (Schwartz) | P | F6-06 | Não iniciada | Casos com fonte; unidade da creatinina explícita. |
-| F7-06 | Página de upload no site (condicional) | M | F3-02 | Não iniciada | Envio sem GitHub que resulta no mesmo PR; só se o envio atual incomodar. |
+| ID | Título | Expected | Seen | Depende de | Status | Aceite |
+| --- | --- | --- | --- | --- | --- | --- |
+| F7-01 | Curva OMS 5–19 anos | M/High | - | F6-04 | Não iniciada | Concordância com o pacote da OMS; peso/idade só até 10 anos. |
+| F7-02 | Idade corrigida do prematuro | S/High | - | F6-06 | Não iniciada | Casos de referência com fonte. |
+| F7-03 | Perda de peso do recém-nascido | S/High | - | F6-06 | Não iniciada | Casos com fonte; limiar e fonte exibidos. |
+| F7-04 | Estatura-alvo familiar | S/High | - | F6-06 | Não iniciada | Casos com fonte. |
+| F7-05 | TFG estimada (Schwartz) | S/High | - | F6-06 | Não iniciada | Casos com fonte; unidade da creatinina explícita. |
+| F7-06 | Página de upload no site (condicional) | M/High | - | F3-02 | Não iniciada | Envio sem GitHub que resulta no mesmo PR; só se o envio atual incomodar. |
 
 ---
 
@@ -263,14 +263,14 @@ O commit inicial adiantou o texto do README e dos três ADRs. As issues continua
 
 ### Issues
 
-| ID | Título | Est. | Depende de | Status | Aceite |
-| --- | --- | --- | --- | --- | --- |
-| F8-01 | Reidratação oral | M | F6-06 | Não iniciada | Casos com fonte vigente do Ministério da Saúde. |
-| F8-02 | Pressão arterial | G | F7-01 | Não iniciada | Concordância com as tabelas da AAP 2017. |
-| F8-03 | Curvas de prematuros | G | F6-04 | Não iniciada | Primeiro passo: validar a escolha entre Intergrowth-21st e Fenton; depois, concordância com as tabelas publicadas. |
-| F8-04 | Bilirrubina | G | F6-06 | Não iniciada | Concordância com os limiares da AAP 2022. |
-| F8-05 | Curva CDC 2000 | M | F6-04 | Não iniciada | Concordância com os arquivos LMS do CDC. |
-| F8-06 | PWA offline | M | F6-06 | Não iniciada | Dado o site já visitado, quando fico sem rede, então as calculadoras calculam. |
+| ID | Título | Expected | Seen | Depende de | Status | Aceite |
+| --- | --- | --- | --- | --- | --- | --- |
+| F8-01 | Reidratação oral | M/High | - | F6-06 | Não iniciada | Casos com fonte vigente do Ministério da Saúde. |
+| F8-02 | Pressão arterial | L/High | - | F7-01 | Não iniciada | Concordância com as tabelas da AAP 2017. |
+| F8-03 | Curvas de prematuros | L/High | - | F6-04 | Não iniciada | Primeiro passo: validar a escolha entre Intergrowth-21st e Fenton; depois, concordância com as tabelas publicadas. |
+| F8-04 | Bilirrubina | L/High | - | F6-06 | Não iniciada | Concordância com os limiares da AAP 2022. |
+| F8-05 | Curva CDC 2000 | M/High | - | F6-04 | Não iniciada | Concordância com os arquivos LMS do CDC. |
+| F8-06 | PWA offline | M/Med | - | F6-06 | Não iniciada | Dado o site já visitado, quando fico sem rede, então as calculadoras calculam. |
 
 ---
 
@@ -284,14 +284,14 @@ Nada desta fase começa sem decisão explícita do Filipe. A ordem importa: revi
 
 ### Issues
 
-| ID | Título | Est. | Depende de | Status | Aceite |
-| --- | --- | --- | --- | --- | --- |
-| F9-01 | Etapa de revisão clínica | M | Decisão do Filipe | Não iniciada | O post ganha `status: rascunho` e `aprovadoEm`; só aprovado é publicado.<br>O merge automático passa a exigir a aprovação.<br>As calculadoras ganham registro de revisão e perdem o selo "Não validada clinicamente" uma a uma. |
-| F9-02 | Associar um médico ao site | M | F9-01 | Não iniciada | Identificação conforme o apêndice, na home e em todas as páginas.<br>Verificação automática dos termos proibidos do apêndice.<br>Nomes oficiais das pós-graduações confirmados antes de qualquer menção a elas.<br>F1-06 é substituída pela verificação nova. |
-| F9-03 | Revisão retroativa ou arquivo | M | F9-01 | Não iniciada | Cada edição publicada antes da revisão é aprovada, retirada ou marcada como "anterior à revisão". |
-| F9-04 | Indexação | P | F9-02, F9-03, F4-02 | Não iniciada | `indexavel` ligado, sitemap gerado e aceito no Search Console.<br>Auditoria de conformidade com o apêndice aprovada. |
-| F9-05 | Antitérmicos com tabela de fármacos | M | F9-01 e checagem regulatória | Não iniciada | Valor por fonte, SBP como padrão e bloco de divergência.<br>Teste garante que nenhuma dose passa do teto por tomada ou por dia. |
-| F9-06 | Antibióticos por peso | M | F9-05 | Não iniciada | Mesmo portão de F9-05. |
+| ID | Título | Expected | Seen | Depende de | Status | Aceite |
+| --- | --- | --- | --- | --- | --- | --- |
+| F9-01 | Etapa de revisão clínica | M/High | - | Decisão do Filipe | Não iniciada | O post ganha `status: rascunho` e `aprovadoEm`; só aprovado é publicado.<br>O merge automático passa a exigir a aprovação.<br>As calculadoras ganham registro de revisão e perdem o selo "Não validada clinicamente" uma a uma. |
+| F9-02 | Associar um médico ao site | M/High | - | F9-01 | Não iniciada | Identificação conforme o apêndice, na home e em todas as páginas.<br>Verificação automática dos termos proibidos do apêndice.<br>Nomes oficiais das pós-graduações confirmados antes de qualquer menção a elas.<br>F1-06 é substituída pela verificação nova. |
+| F9-03 | Revisão retroativa ou arquivo | M/High | - | F9-01 | Não iniciada | Cada edição publicada antes da revisão é aprovada, retirada ou marcada como "anterior à revisão". |
+| F9-04 | Indexação | S/High | - | F9-02, F9-03, F4-02 | Não iniciada | `indexavel` ligado, sitemap gerado e aceito no Search Console.<br>Auditoria de conformidade com o apêndice aprovada. |
+| F9-05 | Antitérmicos com tabela de fármacos | M/High | - | F9-01 e checagem regulatória | Não iniciada | Valor por fonte, SBP como padrão e bloco de divergência.<br>Teste garante que nenhuma dose passa do teto por tomada ou por dia. |
+| F9-06 | Antibióticos por peso | M/High | - | F9-05 | Não iniciada | Mesmo portão de F9-05. |
 
 **Checagem regulatória de F9-05:** antes de começar, conferir a RDC 657/2022 e a RDC 96/2008 da ANVISA.
 
@@ -301,5 +301,5 @@ Nada desta fase começa sem decisão explícita do Filipe. A ordem importa: revi
 
 | Data | Mudança |
 | --- | --- |
-| 2026-11-24 | Nova F0-06: traduzir a documentação para inglês. Tamanho e risco substituem pequena/grande no fluxo (`AGENTS.md` §3); as notas das issues entram num passo seguinte |
+| 2026-11-24 | Nova F0-06: traduzir a documentação para inglês. Tamanho e risco substituem pequena/grande no fluxo (`AGENTS.md` §3); toda issue ganhou nota Expected |
 | 2026-11-15 | Roadmap inicial: fases 0 a 9 e 59 issues, a partir do plano final aprovado. F0-03 nasce `bloqueada` à espera da lista de fontes |
