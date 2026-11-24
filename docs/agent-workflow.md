@@ -10,7 +10,7 @@ Three prompts drive an issue: plan, implement and close. The rules live in [`AGE
 Follow AGENTS.md.
 
 I want to work on issue: <ISSUE-ID> — <title>.
-Rating: <S|M|L> / <Low|Med|High> (the roadmap's Expected rating; estimate it in the plan if missing).
+Rating: <S|M|L> / <Low|Med|High> (the expected half of the roadmap's Risk and Size columns; estimate it in the plan if missing).
 
 First inspect the code, the docs, the roadmap, the acceptance and the current project status. Do not edit files yet.
 
