@@ -23,7 +23,7 @@ Devolva:
 7. Arquivos que devem ser criados ou modificados.
 8. Nome da branch de feature (AGENTS.md §13) e quais itens do §12 "Checklist de fechamento de issue" e do §4 "Regras de conteúdo" a issue toca.
 
-Mantenha o escopo nesta issue. Não implemente fases futuras nem mude a arquitetura em silêncio. Modo: <pequena | grande>. Na grande, espere a minha aprovação antes de editar; na pequena, siga para a implementação. Se a tarefa se mostrar maior, trate-a como grande.
+Mantenha o escopo nesta issue. Não implemente fases futuras nem mude a arquitetura em silêncio. Modo: <pequena | grande>. Na grande, rode o po-reviewer no plano, mostre o veredito junto com o plano e espere a minha aprovação antes de editar; na pequena, siga para a implementação. Se a tarefa se mostrar maior, trate-a como grande.
 ```
 
 ## 2. Implementar (depois do plano aprovado)
@@ -55,6 +55,7 @@ Revise o diff atual contra o plano combinado e o aceite. Não acrescente funcion
 - Confira o diff, a mensagem de commit e o texto do PR contra o §4 "Regras de conteúdo": nenhum nome de profissional, nenhuma recomendação de dose.
 - Rode os comandos de validação e relate a saída real.
 - Aponte os critérios de aceite não atendidos ou não verificados.
+- Rode os gates de revisão do AGENTS.md §3 "Agent workflow": code-reviewer em toda mudança de código ou config; na tarefa grande, depois, o po-reviewer no modo acceptance. Corrija os achados que bloqueiam e ponha o veredito final de cada um no PR.
 - Aplique o §12 "Checklist de fechamento de issue".
 - Faça um Conventional Commit na branch de feature, dê push dela, abra o PR e analise o CI. Nunca dê push na main e nunca faça merge; o merge é do Filipe (AGENTS.md §13).
 

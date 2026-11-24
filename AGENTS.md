@@ -30,30 +30,39 @@ Para cada tarefa:
 5. Crie a branch de feature (§13) e implemente o menor incremento coerente. Ao extrair lógica repetida (validação, geração, scripts de workflow) ou escolher fronteiras entre módulos, consulte a skill `code-structure`; a arquitetura do §5 prevalece.
 6. Rode os testes, o lint e as validações que se aplicam.
 7. Leia os resultados e corrija as regressões causadas pela mudança.
-8. Atualize a documentação e o `PROJECT_STATUS.md` (só a fase atual; o histórico vai para `docs/status-log.md`).
-9. Faça o commit, dê push da branch, abra o PR com resumo e analise o CI. Entregue ao Filipe: arquivos alterados, comandos executados, resultados, limitações e o próximo passo.
-10. O Filipe revisa o PR, faz o merge e apaga a branch. O agente nunca faz merge.
+8. Rode os gates de revisão de "Agent workflow" abaixo e corrija os achados que bloqueiam.
+9. Atualize a documentação e o `PROJECT_STATUS.md` (só a fase atual; o histórico vai para `docs/status-log.md`).
+10. Faça o commit, dê push da branch, abra o PR com resumo e analise o CI. Entregue ao Filipe: arquivos alterados, comandos executados, resultados, vereditos dos revisores, limitações e o próximo passo.
+11. O Filipe revisa o PR, faz o merge e apaga a branch. O agente nunca faz merge.
 
 ### Tarefa pequena ou grande (regra de 2026-11-20)
 
 | Modo | Quando | O que o Claude faz |
 | --- | --- | --- |
 | Pequena | Docs, texto, ajuste de config, bump patch de dependência, ou bugfix contido de até ~50 linhas em até 3 arquivos, sem tocar arquitetura, modelo de dados/schema, auth/segurança, infra/deploy, API pública ou lógica de pipeline. | Planeja e implementa direto até o PR. |
-| Grande | Todo o resto, ou na dúvida. | Planeja e para: apresenta o plano na thread e espera a aprovação do Filipe antes de mexer em código. |
+| Grande | Todo o resto, ou na dúvida. | Planeja e para: roda o `po-reviewer` no plano, apresenta o plano com o veredito na thread e espera a aprovação do Filipe antes de mexer em código. |
 
 - O prompt da issue diz qual modo seguir. Se, ao planejar, a tarefa se mostrar maior, o Claude a reclassifica como grande e para.
-- A aprovação chega na mesma thread, direto do Filipe ou repassada pelo PO de Projetos com "Plano aprovado pelo Filipe: implemente.", às vezes com ajustes. Os ajustes entram no plano antes da implementação.
+- A aprovação chega na mesma thread, às vezes com ajustes. Os ajustes entram no plano antes da implementação.
 
-### Papéis (fluxo vigente desde 2026-11-20)
+### Papéis (fluxo vigente desde 2026-11-24)
 
 | Papel | Responsabilidade |
 | --- | --- |
-| Filipe | Pede status, escolhe a issue, revisa o PR, faz o merge e apaga a branch. |
-| Claude no T3 Code (Claude Opus 5.5) | Por issue: plano, implementação numa branch nova a partir da `main` atualizada, checks e testes, commit, push da branch e PR com resumo. Nunca faz merge. Fallback: Grok 4.7 pelo provider Cursor no T3, só quando acabar o limite do Claude Pro. |
-| PO de Projetos (bot) | Só quando o Filipe pede: status, mandar a issue ao T3, resumir o que foi feito após o merge, visão de produto. |
-| Reviewer de Projetos (bot) | Só quando o Filipe pede, para merge mais complicado: abre uma thread no T3 para o Claude revisar o PR e resume o veredito. Nunca faz merge nem apaga branch. |
+| Filipe | Escolhe a issue, aprova o plano da tarefa grande, revisa o PR, faz o merge e apaga a branch. |
+| Claude no T3 Code (Claude Opus 5.5) | Por issue: plano, implementação numa branch nova a partir da `main` atualizada, checks, testes e gates de revisão, commit, push da branch e PR com resumo. Nunca faz merge. Fallback: Grok 4.7 pelo provider Cursor no T3, só quando acabar o limite do Claude Pro; os subagentes não rodam lá, então o PR lista os gates pulados. |
+| Subagentes de revisão (Sonnet 5.5) | `po-reviewer` confere o plano e a branch pronta da tarefa grande contra o aceite; `code-reviewer` confere a branch atrás de bugs, falhas de segurança e regressões. Só relatam: nunca editam, fazem merge ou push. |
 
-Não há aprovação dupla nem bot que faça merge ou push na `main`.
+Nenhum agente faz merge ou push na `main`.
+
+### Agent workflow
+
+Gates e política de modelos: `~/.agents/claude/workflow.md` (repositório `FilipeOliveira94/agent-config`).
+
+- **Profile:** reviewed
+- **Extra reviewers:** nenhum
+- **Skip review:** PRs de conteúdo em `src/content/posts/` publicados pelo workflow de merge automático (F2-05, ADR-003). PR que mistura conteúdo e código passa pelos gates.
+- **Model exceptions:** nenhuma
 
 Não marque uma tarefa como concluída sem conferir o aceite.
 
