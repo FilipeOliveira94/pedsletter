@@ -28,7 +28,7 @@ Return:
 Keep the scope to this issue. Do not implement future phases or change the architecture silently. Above Sm + Lo: run po-reviewer on the plan, show its verdict with the plan and wait for my approval before editing. Sm + Lo: go on to implementation. If the issue turns out bigger or riskier, raise the rating and say why.
 ```
 
-## 2. Implement (after the plan is approved)
+## 2. Implement (straight away for Sm + Lo; after the plan is approved otherwise)
 
 ```text
 Follow AGENTS.md.
