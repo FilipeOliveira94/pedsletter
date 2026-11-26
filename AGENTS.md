@@ -27,7 +27,7 @@ For each task:
 2. Read `PROJECT_STATUS.md`, `ROADMAP.md` and the related ADRs.
 3. Check the issue in the roadmap: dependencies, assumptions, risks, acceptance, and its Size and Risk.
 4. Plan according to the rating ("Size and risk" below): Sm + Lo goes straight to the PR; anything else presents the plan in the thread and waits for approval before touching code.
-5. Create the feature branch (§13) and implement the smallest coherent increment. When extracting repeated logic (validation, generation, workflow scripts) or choosing module boundaries, consult the `code-structure` skill; the architecture in §5 prevails.
+5. Create the feature branch (§13) and implement the smallest coherent increment. When extracting repeated logic (validation, generation, workflow scripts) or choosing module boundaries, consult the `module-boundaries` skill; the architecture in §5 prevails.
 6. Run the tests, lint and validations that apply.
 7. Read the results and fix regressions caused by the change.
 8. Run the review gates in "Agent workflow" below and fix blocking findings.
