@@ -1,8 +1,8 @@
 # ADR-0004: Edition generation by the Claude API
 
-| Field | Value |
+| ADR-0004 | Detail |
 | --- | --- |
-| State | `aprovado` |
+| State | `approved` |
 | Opened | 2026-11-25 |
 | Decided | 2026-11-25 (Filipe, in the F0-07 planning thread) |
 | Owner | Filipe (product owner) |

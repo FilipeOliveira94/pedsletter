@@ -1,15 +1,15 @@
 # Architecture Decision Records (ADRs)
 
-Registros detalhados das escolhas indexadas em [`DECISIONS.md`](../../DECISIONS.md).
+Detailed records of the choices indexed in [`DECISIONS.md`](../../DECISIONS.md).
 
-| ADRs | Local |
+| ADRs | Location |
 | --- | --- |
-| Índice | [`DECISIONS.md`](../../DECISIONS.md) — decisão, implementação e estado |
-| Modelo | [`_template.md`](_template.md) |
-| Nomes | `NNNN-slug-curto.md` (com zeros à esquerda); ADR-001 no índice ↔ arquivo `0001-…` |
+| Index | [`DECISIONS.md`](../../DECISIONS.md) — decision, implementation and state |
+| Template | [`_template.md`](_template.md) |
+| Names | `NNNN-short-slug.md` (zero-padded, English slug); ADR-001 in the index ↔ file `0001-…` |
 
-Cada ADR cobre contexto, decisão, alternativas, consequências, evidência e gatilhos de revisão. Não repita o texto do ADR no `DECISIONS.md`. Atualize o ADR e a linha do índice juntos quando o estado ou a implementação mudar.
+Each ADR covers context, decision, alternatives, consequences, evidence and review triggers. Do not repeat the ADR text in `DECISIONS.md`. Update the ADR and its index row together when the state or the implementation changes.
 
-Nenhum ADR cita profissional de saúde. O texto usa só o genérico "médico".
+No ADR names a health professional. The text uses only the generic "médico".
 
-O plano final previa `docs/adr/`. O repositório usa `docs/decisions/`, o mesmo esquema do projeto de referência.
+The final plan called for `docs/adr/`. The repository uses `docs/decisions/`, the same scheme as the reference project.

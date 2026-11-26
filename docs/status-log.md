@@ -1,33 +1,45 @@
-# Histórico de status (arquivo)
+# Status log (archive)
 
-Histórico cronológico das atualizações de status. O registro operacional é o [`PROJECT_STATUS.md`](../PROJECT_STATUS.md) (só a fase atual; **reescrito** a cada fase). Entradas de fases fechadas e narrativas longas vêm para cá. Documentos de arquitetura e ADRs citam este histórico, ou trazem os fatos no próprio texto, e não o `PROJECT_STATUS.md`.
+Chronological history of status updates. The operational record is [`PROJECT_STATUS.md`](../PROJECT_STATUS.md) (current phase only; **rewritten** every phase). Entries for closed phases and long narratives come here. Architecture docs and ADRs cite this log, or carry the facts in their own text, not `PROJECT_STATUS.md`.
 
-Entradas novas no topo.
-
----
-
-### 2026-11-25 — F0-07: pipeline pela API do Claude
-
-O Filipe decidiu passar a geração das edições da rotina do Grok para a API do Claude, com Sonnet 5.5 para começar, até US$ 30 por mês, e com notícias, diretrizes e alertas no MVP. A decisão está no [ADR-004](decisions/0004-generation-by-claude-api.md), `aprovado`.
-
-O roadmap foi reescrito: F0-02 e F2-06, que dependiam do Grok, foram retiradas; entraram F0-08 (ensaio de custo e qualidade), F2-10 a F2-15 (GitHub App, coleta, gerador, fundamentação, orçamento, alerta de falha), F3-05 (conjunto de avaliação) e F7-07 (material de consulta). F3-04 foi para a fase 1, e as curvas de crescimento vêm antes das demais calculadoras da fase 6. O ADR-001 recebeu a lista inicial em duas faixas e passou a `proposto`; o ADR-003 troca o Grok Bot pelo GitHub App, porque um PR aberto com o `GITHUB_TOKEN` do Actions não dispara a validação do PR. O `AGENTS.md` troca a regra de custo zero pela de até US$ 30 por mês na API e amplia o Hi risk.
-
-A estimativa de custo (cerca de US$ 10 por mês com Sonnet em 13 execuções) não foi medida; F0-08 mede. Só documentação; `make docs-lint` passou.
+Newest entries first.
 
 ---
 
-### 2026-11-17 — Tabelas Markdown com cabeçalho nomeado
+### 2026-11-26 — F0-06: docs translated to English
 
-6 tabelas de chave e valor tinham a linha de cabeçalho vazia (`| | |`), que o GFM mostra como uma linha em branco no topo. O padrão veio dos documentos de planejamento de outro projeto, usados como modelo, e passou adiante por cópia. Cada tabela tem agora um cabeçalho tirado do contexto (`Projeto | Atual`, `Validação | Detalhe`, `Roadmap | Atual`, `Registro | Referência`, `ADRs | Local`). `scripts/check_markdown_tables.py` falha se algum arquivo Markdown versionado tiver um cabeçalho vazio, fora de blocos de código; roda com `make docs-lint`. A regra está no AGENTS.md §9.
+The repository docs are now in English: `README.md`, `ROADMAP.md`, `PROJECT_STATUS.md`, `DECISIONS.md`, `docs/architecture/`, `docs/decisions/` (ADRs 0001 to 0003, the index README and the template), `docs/project-genesis.md` and this log. The `Makefile` help text and messages and the comments and messages of `scripts/check_markdown_tables.py` were translated too (Filipe's decision). Code logic did not change.
+
+What stays in Portuguese: the §4 mandatory notices with their exact wording (README included), quoted site and UI text, and the frontmatter field names and values. Issue and ADR IDs did not change, and no decision, rule or acceptance criterion changed.
+
+Filipe approved renaming the Portuguese file names: `docs/architecture/visao-geral.md` → `overview.md`, `0001-fontes-de-curadoria.md` → `0001-curation-sources.md`, `0002-publicacao-sem-revisao-e-sem-indexacao.md` → `0002-publishing-without-review-or-indexing.md`, `0003-formato-e-caminho-de-publicacao.md` → `0003-publishing-format-and-path.md`. Every link was updated. ADR states are now `pending`, `proposed`, `approved`, `superseded` and `rejected`; roadmap and status values are in English too. `AGENTS.md` lost the line that kept older docs in Portuguese until F0-06. The ADR header tables got named headers (`ADR-0001 | Detail`) instead of the generic `Campo | Valor`.
+
+Checks: `make docs-lint` and `make help` pass; a relative-link check over every versioned Markdown file finds no broken link; the two §4 notices are byte-identical to the `AGENTS.md` wording wherever they appear.
 
 ---
 
-### 2026-11-15 — Estrutura inicial do projeto
+### 2026-11-25 — F0-07: Claude API pipeline
 
-O plano final do PedsLetter foi aprovado pelo Filipe em 2026-11-15. A estrutura do repositório foi criada em um commit direto na `main`, `chore: estrutura inicial do projeto`, o último fora de branch de feature.
+Filipe decided to move edition generation from the Grok routine to the Claude API, starting with Sonnet 5.5, up to US$30 a month, and with news, guidelines and alerts in the MVP. The decision is in [ADR-004](decisions/0004-generation-by-claude-api.md), `approved`.
 
-Criados: `README.md` (reescrito, com o aviso de IA e a nota de `noindex`), `AGENTS.md`, `CLAUDE.md` (importa `AGENTS.md`), `ROADMAP.md` (fases 0 a 9, 59 issues), `DECISIONS.md`, `PROJECT_STATUS.md`, `LICENSE` (MIT), `Makefile`, `.gitignore`, `docs/agent-workflow.md`, `docs/project-genesis.md`, `docs/architecture/visao-geral.md` e `docs/decisions/` com o modelo e três ADRs: ADR-001 `pendente` (aguarda a lista de fontes), ADR-002 `aprovado` (decisão do plano final) e ADR-003 `proposto` (depende de F0-02).
+The roadmap was rewritten: F0-02 and F2-06, which depended on Grok, were withdrawn; F0-08 (cost and quality trial), F2-10 to F2-15 (GitHub App, collector, generator, grounding, budget, failure alert), F3-05 (evaluation set) and F7-07 (reference material) were added. F3-04 moved to phase 1, and the growth charts come before the other phase 6 calculators. ADR-001 got the initial two-tier list and became `proposed`; ADR-003 swaps the Grok Bot for the GitHub App, because a PR opened with the Actions `GITHUB_TOKEN` does not trigger PR validation. `AGENTS.md` replaces the zero-cost rule with one of up to US$30 a month for the API and widens Hi risk.
 
-Os ADRs completos ficam em `docs/decisions/`, e não em `docs/adr/` como o plano previa, para seguir o esquema do projeto de referência. O apêndice do plano sobre identificação profissional não entrou no repositório.
+The cost estimate (about US$10 a month with Sonnet over 13 runs) was not measured; F0-08 measures it. Docs only; `make docs-lint` passed.
 
-Só documentação e esqueleto; nenhum código do site. `make help` lista os seis alvos. `install`, `dev`, `build`, `lint` e `test` são marcadores e saem com erro até F1-01. Nenhuma issue foi fechada: as da fase 0 fecham por PR.
+---
+
+### 2026-11-17 — Markdown tables with named headers
+
+6 key-value tables had an empty header row (`| | |`), which GFM shows as a blank row on top. The pattern came from another project's planning docs, used as a template, and spread by copying. Each table now has a header taken from context (`Projeto | Atual`, `Validação | Detalhe`, `Roadmap | Atual`, `Registro | Referência`, `ADRs | Local`; English since F0-06). `scripts/check_markdown_tables.py` fails if any versioned Markdown file has an empty header outside code blocks; it runs with `make docs-lint`. The rule is in AGENTS.md §9.
+
+---
+
+### 2026-11-15 — Initial project structure
+
+Filipe approved PedsLetter's final plan on 2026-11-15. The repository structure was created in a direct commit to `main`, `chore: estrutura inicial do projeto`, the last one outside a feature branch.
+
+Created: `README.md` (rewritten, with the AI notice and the `noindex` note), `AGENTS.md`, `CLAUDE.md` (imports `AGENTS.md`), `ROADMAP.md` (phases 0 to 9, 59 issues), `DECISIONS.md`, `PROJECT_STATUS.md`, `LICENSE` (MIT), `Makefile`, `.gitignore`, `docs/agent-workflow.md`, `docs/project-genesis.md`, `docs/architecture/visao-geral.md` (now `overview.md`) and `docs/decisions/` with the template and three ADRs: ADR-001 `pendente` (waiting for the source list), ADR-002 `aprovado` (final-plan decision) and ADR-003 `proposto` (depends on F0-02).
+
+The full ADRs live in `docs/decisions/`, not in `docs/adr/` as the plan said, to follow the reference project's scheme. The plan's appendix on professional identification did not enter the repository.
+
+Docs and skeleton only; no site code. `make help` lists the six targets. `install`, `dev`, `build`, `lint` and `test` are placeholders and exit with an error until F1-01. No issue was closed: phase 0 issues close by PR.

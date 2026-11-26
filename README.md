@@ -1,89 +1,91 @@
 # PedsLetter
 
-Resumos gerados por IA de literatura, diretrizes, alertas e notícias de pediatria, e de medicina geral com impacto em pediatria, publicados três vezes por semana. Uma seção de consulta para pediatras (calculadoras, curvas de crescimento e outro material) vem nas fases seguintes. Projeto de uso pessoal, sem cadastro, sem e-mail e sem publicidade; o único custo de operação é a API do Claude, até US$ 30 por mês.
+AI-generated summaries of pediatric literature, guidelines, alerts and news, and of general medicine that affects pediatrics, published three times a week. A reference section for pediatricians (calculators, growth charts and other material) comes in later phases. A personal-use project with no sign-up, no e-mail and no ads; the only running cost is the Claude API, up to US$30 a month.
 
 > **Aviso.** Curadoria e resumos gerados por IA, sem revisão por profissional de saúde. Confira sempre a fonte original.
 >
 > Conteúdo destinado a médicos e demais profissionais de saúde. É informativo: não é consulta, diagnóstico nem prescrição.
 
-O site não é indexável: toda página leva `noindex` e não há sitemap. O `noindex` cobre o site, não este repositório, que é público. Os arquivos dos resumos ficam acháveis pelo GitHub e por buscadores, e o aviso acima vale também para eles.
+The notice above stays in Portuguese on purpose: it is the exact wording the site shows. In short, the summaries are AI-generated without review by a health professional, they are meant for physicians and other health professionals, and they are information, not a consultation, diagnosis or prescription. Always check the original source.
+
+The site is not indexable: every page carries `noindex` and there is no sitemap. The `noindex` covers the site, not this repository, which is public. The summary files can be found through GitHub and search engines, and the notice above applies to them too.
 
 ---
 
 ## 📍 Status
 
-| Campo | Agora |
+| Status | Now |
 | --- | --- |
-| Fase atual | Fase 0 — Pré-requisitos. Em andamento |
-| Objetivo | Contas, ensaio de custo e qualidade da API do Claude e ADRs (F0-01 a F0-08) |
-| No repositório | Documentação e esqueleto. Nenhum código do site ainda (começa em F1-01) |
-| Registro | [`PROJECT_STATUS.md`](PROJECT_STATUS.md) · escopo em [`ROADMAP.md`](ROADMAP.md) |
+| Current phase | Phase 0 — Prerequisites. In progress |
+| Goal | Accounts, a cost and quality trial of the Claude API, and ADRs (F0-01 to F0-08) |
+| In the repository | Docs and skeleton. No site code yet (it starts in F1-01) |
+| Record | [`PROJECT_STATUS.md`](PROJECT_STATUS.md) · scope in [`ROADMAP.md`](ROADMAP.md) |
 
 ---
 
-## ⚙️ O que o projeto entrega
+## ⚙️ What the project delivers
 
-| Entrega | Estado | Fases |
+| Deliverable | State | Phases |
 | --- | --- | --- |
-| Site estático não indexável, com aviso de IA | Planejado | 1 |
-| Pipeline de conteúdo: coleta nas fontes → geração pela API do Claude → PR → validação → merge automático → publicação | Planejado | 2 |
-| MVP em uso, com a geração agendada e notícias, diretrizes e alertas | Planejado | 3 |
-| Domínio `pedsletter.com.br` | Planejado | 4 |
-| Calculadoras sem fármaco, curvas de crescimento e material de consulta | Planejado | 5 a 8 |
-| Revisão clínica, associação a um médico, indexação e calculadoras com fármaco | Futuro, só com decisão explícita | 9 |
+| Static, non-indexable site with the AI notice | Planned | 1 |
+| Content pipeline: collection from the sources → generation by the Claude API → PR → validation → automatic merge → publishing | Planned | 2 |
+| MVP in use, with scheduled generation and news, guidelines and alerts | Planned | 3 |
+| `pedsletter.com.br` domain | Planned | 4 |
+| Drug-free calculators, growth charts and reference material | Planned | 5 to 8 |
+| Clinical review, association with a physician, indexing and drug calculators | Future, only with an explicit decision | 9 |
 
-O MVP são as fases 0 a 3.
+The MVP is phases 0 to 3.
 
-## 🧱 Stack prevista
+## 🧱 Planned stack
 
-| Camada | Escolha | Custo |
+| Layer | Choice | Cost |
 | --- | --- | --- |
-| Site | Astro + Markdown, TypeScript estrito | Gratuito |
-| Hospedagem | Cloudflare Pages (`*.pages.dev` até a fase 4) | Gratuito |
-| Repositório e CI | GitHub, repositório público, GitHub Actions | Gratuito |
-| Analytics | Cloudflare Web Analytics, sem cookies | Gratuito |
-| Geração | Script no GitHub Actions que chama a API do Claude (Sonnet 5.5), segunda, quarta e sexta de manhã ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)) | Até US$ 30 por mês; F0-08 mede |
-| Domínio | `pedsletter.com.br` | Pago; fase 4 |
+| Site | Astro + Markdown, strict TypeScript | Free |
+| Hosting | Cloudflare Pages (`*.pages.dev` until phase 4) | Free |
+| Repository and CI | GitHub, public repository, GitHub Actions | Free |
+| Analytics | Cloudflare Web Analytics, no cookies | Free |
+| Generation | A GitHub Actions script that calls the Claude API (Sonnet 5.5), Monday, Wednesday and Friday mornings ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)) | Up to US$30 a month; F0-08 measures it |
+| Domain | `pedsletter.com.br` | Paid; phase 4 |
 
-Detalhe em [`docs/architecture/visao-geral.md`](docs/architecture/visao-geral.md).
+Details in [`docs/architecture/overview.md`](docs/architecture/overview.md).
 
-## 🛠️ Comandos
+## 🛠️ Commands
 
 ```bash
 make help
 ```
 
-`install`, `dev`, `build`, `lint` e `test` existem como marcadores e passam a funcionar em F1-01.
+`install`, `dev`, `build`, `lint` and `test` exist as placeholders and start working in F1-01.
 
-## 🤝 Como contribuir
+## 🤝 How to contribute
 
-1. Escolha uma issue do [`ROADMAP.md`](ROADMAP.md). Um PR resolve uma issue.
-2. Crie uma branch de feature a partir da `main`, por exemplo `feat/F1-03-site-nao-indexavel`.
-3. Faça commits no padrão Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `test:`, `ci:`).
-4. Abra o PR citando a issue e o aceite conferido. Ninguém commita direto na `main`.
-5. O Filipe revisa o PR, faz o merge e apaga a branch. A exceção são os PRs de conteúdo, que o workflow de merge automático publica quando a validação passa (F2-05).
+1. Pick an issue from [`ROADMAP.md`](ROADMAP.md). One PR resolves one issue.
+2. Create a feature branch from `main`, for example `feat/F1-03-site-nao-indexavel`.
+3. Use Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `test:`, `ci:`).
+4. Open the PR citing the issue and the acceptance checked. Nobody commits straight to `main`.
+5. Filipe reviews the PR, merges it and deletes the branch. The exception is content PRs, which the auto-merge workflow publishes when validation passes (F2-05).
 
-Regras de conteúdo que valem para arquivo, issue, PR e commit:
+Content rules that apply to files, issues, PRs and commits:
 
-- O texto usa só o genérico "médico". Nenhum nome, registro ou formação de profissional de saúde.
-- Nenhuma recomendação de dose enquanto não houver revisão. Dose só aparece atribuída ao artigo citado.
-- O aviso de curadoria por IA fica em toda edição, na home e neste README.
+- The text uses only the generic "médico". No health professional's name, registration or training.
+- No dose recommendation until there is review. A dose only appears attributed to the cited article.
+- The AI curation notice is on every edition, on the home page and in this README.
 
-As regras completas estão em [`AGENTS.md`](AGENTS.md).
+The full rules are in [`AGENTS.md`](AGENTS.md).
 
-## 📚 Documentos
+## 📚 Documents
 
-| Documento | Conteúdo |
+| Document | Contents |
 | --- | --- |
-| [`AGENTS.md`](AGENTS.md) | Regras de trabalho para agentes e contribuidores ([`CLAUDE.md`](CLAUDE.md) importa este arquivo) |
-| [`ROADMAP.md`](ROADMAP.md) | Fases 0 a 9, issues, aceite e dependências |
-| [`PROJECT_STATUS.md`](PROJECT_STATUS.md) | Registro operacional da fase atual |
-| [`DECISIONS.md`](DECISIONS.md) | Índice de decisões; ADRs completos em [`docs/decisions/`](docs/decisions/) |
-| [`docs/architecture/visao-geral.md`](docs/architecture/visao-geral.md) | Arquitetura: site, publicação e pipeline de conteúdo |
-| [`docs/project-genesis.md`](docs/project-genesis.md) | Resumo do plano final que originou o projeto |
-| [`docs/agent-workflow.md`](docs/agent-workflow.md) | Prompts de planejar, implementar e fechar uma issue |
-| [`docs/status-log.md`](docs/status-log.md) | Histórico cronológico |
+| [`AGENTS.md`](AGENTS.md) | Working rules for agents and contributors ([`CLAUDE.md`](CLAUDE.md) imports this file) |
+| [`ROADMAP.md`](ROADMAP.md) | Phases 0 to 9, issues, acceptance and dependencies |
+| [`PROJECT_STATUS.md`](PROJECT_STATUS.md) | Operational record of the current phase |
+| [`DECISIONS.md`](DECISIONS.md) | Decision index; full ADRs in [`docs/decisions/`](docs/decisions/) |
+| [`docs/architecture/overview.md`](docs/architecture/overview.md) | Architecture: site, publishing and content pipeline |
+| [`docs/project-genesis.md`](docs/project-genesis.md) | Summary of the final plan the project came from |
+| [`docs/agent-workflow.md`](docs/agent-workflow.md) | Prompts to plan, implement and close an issue |
+| [`docs/status-log.md`](docs/status-log.md) | Chronological history |
 
-## 📄 Licença
+## 📄 License
 
-[MIT](LICENSE). A licença cobre o código. Os artigos resumidos pertencem aos seus autores e periódicos; cada resumo é escrito em palavras próprias e leva o link para a fonte.
+[MIT](LICENSE). The license covers the code. The summarized articles belong to their authors and journals; each summary is written in our own words and links to the source.

@@ -1,98 +1,97 @@
-# Status do projeto
+# Project status
 
-Registro operacional da **fase atual**. O backlog de issues e o texto de aceite ficam em [`ROADMAP.md`](ROADMAP.md). Índice de decisões: [`DECISIONS.md`](DECISIONS.md). Histórico cronológico: [`docs/status-log.md`](docs/status-log.md).
+Operational record of the **current phase**. The issue backlog and the acceptance text live in [`ROADMAP.md`](ROADMAP.md). Decision index: [`DECISIONS.md`](DECISIONS.md). Chronological history: [`docs/status-log.md`](docs/status-log.md).
 
-| Projeto | Atual |
+| Project | Current |
 | --- | --- |
-| Repositório | [FilipeOliveira94/pedsletter](https://github.com/FilipeOliveira94/pedsletter) |
-| Início | 2026-11-14 |
-| Plano final aprovado | 2026-11-15 |
-| Última atualização | 2026-11-25 (F0-07: pipeline pela API do Claude) |
-| Fase atual | Fase 0 — Pré-requisitos |
-| Status da fase | Em andamento |
+| Repository | [FilipeOliveira94/pedsletter](https://github.com/FilipeOliveira94/pedsletter) |
+| Started | 2026-11-14 |
+| Final plan approved | 2026-11-15 |
+| Last update | 2026-11-26 (F0-06: docs translated to English) |
+| Current phase | Phase 0 — Prerequisites |
+| Phase status | In progress |
 
-**Valores de status:** não iniciada · em andamento · entregue · verificada · bloqueada · retirada
+**Status values:** not started · in progress · delivered · verified · blocked · withdrawn
 
-**Verificada** quer dizer que o aceite foi conferido e a evidência está registrada (em `docs/status-log.md`, no ADR ou no documento de arquitetura). Arquitetura planejada não conta como pronta.
+**Verified** means the acceptance was checked and the evidence is recorded (in `docs/status-log.md`, in the ADR or in the architecture doc). Planned architecture does not count as done.
 
-**O que entra aqui:** objetivo atual, progresso das issues da fase, aceite da fase, última validação, decisões que condicionam o trabalho, riscos ativos, bloqueios e próximos passos.
+**What goes here:** the current goal, progress on the phase's issues, the phase acceptance, the last validation, decisions that shape the work, active risks, blockers and next steps.
 
-**O que não entra:** inventário acumulado de issues (`ROADMAP.md`), tabela completa de ADRs (`DECISIONS.md`), histórico longo (`docs/status-log.md`).
-
----
-
-## Objetivo atual
-
-**Fase 0** — contas criadas, ensaio de custo e qualidade da API do Claude registrado e ADR-001 a ADR-004 escritos.
-
-Em 2026-11-25 a geração das edições passou da rotina do Grok para um script que chama a API do Claude a partir do GitHub Actions ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)): Sonnet 5.5, até US$ 30 por mês, com notícias, diretrizes e alertas no MVP. O roadmap foi reescrito em F0-07. Não há código do site.
-
-## Próximos passos
-
-1. **F0-06** — Traduzir a documentação para inglês. Próxima issue, por decisão do Filipe.
-2. **F0-03** — Revisão do Filipe sobre a lista inicial do ADR-001; o ADR passa a `aprovado`.
-3. **F0-01** — Contas e repositório. Falta o projeto no Cloudflare Pages ligado ao repositório.
-4. **F0-08** — Ensaio de custo e qualidade da API. Gera custo: o Filipe autoriza antes de rodar.
-5. **F0-04** e **F0-05** — Conferir o aceite do ADR-002 e do ADR-003 reescrito.
+**What does not:** the cumulative issue inventory (`ROADMAP.md`), the full ADR table (`DECISIONS.md`), long history (`docs/status-log.md`).
 
 ---
 
-## Progresso da fase 0
+## Current goal
 
-| ID | Título | Status | Evidência |
+**Phase 0** — accounts created, a cost and quality trial of the Claude API recorded, and ADR-001 to ADR-004 written.
+
+On 2026-11-25 edition generation moved from the Grok routine to a script that calls the Claude API from GitHub Actions ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)): Sonnet 5.5, up to US$30 a month, with news, guidelines and alerts in the MVP. The roadmap was rewritten in F0-07. On 2026-11-26 the repository docs were translated to English (F0-06). There is no site code.
+
+## Next steps
+
+1. **F0-03** — Filipe reviews the initial list in ADR-001; the ADR becomes `approved`.
+2. **F0-01** — Accounts and repository. The Cloudflare Pages project linked to the repository is still missing.
+3. **F0-08** — Cost and quality trial of the API. It costs money: Filipe authorizes it before it runs.
+4. **F0-04** and **F0-05** — Check the acceptance of ADR-002 and of the rewritten ADR-003.
+
+---
+
+## Phase 0 progress
+
+| ID | Title | Status | Evidence |
 | --- | --- | --- | --- |
-| F0-01 | Contas e repositório | Não iniciada | Adiantado no commit inicial: README com a descrição e o aviso de IA |
-| F0-02 | Testar a rotina agendada do Grok | Retirada | Substituída por F0-08 ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)) |
-| F0-03 | ADR-001: fontes de curadoria | Em andamento | Lista inicial em duas faixas em [`0001`](docs/decisions/0001-fontes-de-curadoria.md), `proposto`; aguarda a revisão do Filipe |
-| F0-04 | ADR-002: publicação sem revisão e sem indexação | Não iniciada | Adiantado no commit inicial: [`0002`](docs/decisions/0002-publicacao-sem-revisao-e-sem-indexacao.md) |
-| F0-05 | ADR-003: formato e caminho de publicação | Não iniciada | [`0003`](docs/decisions/0003-formato-e-caminho-de-publicacao.md) reescrito em F0-07 para o GitHub App, `proposto` |
-| F0-06 | Traduzir a documentação para inglês | Não iniciada | — |
-| F0-07 | Reescrever o roadmap para o pipeline pela API do Claude | Entregue | PR de F0-07; [ADR-004](docs/decisions/0004-generation-by-claude-api.md) `aprovado` |
-| F0-08 | Ensaio de custo e qualidade da API | Não iniciada | — |
+| F0-01 | Accounts and repository | Not started | Done early in the initial commit: README with the description and the AI notice |
+| F0-02 | Test the Grok scheduled routine | Withdrawn | Replaced by F0-08 ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)) |
+| F0-03 | ADR-001: curation sources | In progress | Initial two-tier list in [`0001`](docs/decisions/0001-curation-sources.md), `proposed`; awaiting Filipe's review |
+| F0-04 | ADR-002: publishing without review or indexing | Not started | Done early in the initial commit: [`0002`](docs/decisions/0002-publishing-without-review-or-indexing.md) |
+| F0-05 | ADR-003: publishing format and path | Not started | [`0003`](docs/decisions/0003-publishing-format-and-path.md) rewritten in F0-07 for the GitHub App, `proposed` |
+| F0-06 | Translate the docs to English | Delivered | F0-06 PR; `make docs-lint` passes |
+| F0-07 | Rewrite the roadmap for the Claude API pipeline | Delivered | F0-07 PR; [ADR-004](docs/decisions/0004-generation-by-claude-api.md) `approved` |
+| F0-08 | Cost and quality trial of the API | Not started | — |
 
-Detalhe do aceite: `ROADMAP.md` → Fase 0.
+Acceptance detail: `ROADMAP.md` → Phase 0.
 
-### Aceite da fase 0
+### Phase 0 acceptance
 
-- [ ] Contas criadas: repositório público, projeto no Cloudflare Pages ligado a ele e conta na API do Claude com limite mensal de gasto.
-- [ ] Ensaio da API registrado, com custo e qualidade medidos (F0-08).
-- [ ] ADR-001 a ADR-004 escritos.
+- [ ] Accounts created: public repository, a Cloudflare Pages project linked to it and a Claude API account with a monthly spend limit.
+- [ ] API trial recorded, with cost and quality measured (F0-08).
+- [ ] ADR-001 to ADR-004 written.
 
 ---
 
-## Última validação
+## Last validation
 
-| Validação | Detalhe |
+| Validation | Detail |
 | --- | --- |
-| Data | 2026-11-25 |
-| Ambiente | Local, WSL2 |
-| Verificações | `make docs-lint` |
-| Resultado | Ver o PR de F0-07 |
+| Date | 2026-11-26 |
+| Environment | Local, WSL2 |
+| Checks | `make docs-lint`, `make help`, relative-link check |
+| Result | See the F0-06 PR |
 
 ---
 
-## Decisões ativas
+## Active decisions
 
-| ID | Tema | Estado | Efeito na fase |
+| ID | Topic | State | Effect on the phase |
 | --- | --- | --- | --- |
-| ADR-001 | Fontes de curadoria | `proposto` | Lista inicial aceita para começar; desbloqueia F0-08 e a fase 2 |
-| ADR-002 | Publicação sem revisão e sem indexação | `aprovado` | Define as regras de conteúdo do AGENTS.md §4 |
-| ADR-003 | Formato e caminho de publicação | `proposto` | PR pelo GitHub App; aprovação depende de F2-09 |
-| ADR-004 | Geração pela API do Claude | `aprovado` | Sonnet 5.5, GitHub Actions, até US$ 30 por mês; define F0-08 e a fase 2 |
+| ADR-001 | Curation sources | `proposed` | Initial list accepted to start; unblocks F0-08 and phase 2 |
+| ADR-002 | Publishing without review or indexing | `approved` | Defines the content rules in AGENTS.md §4 |
+| ADR-003 | Publishing format and path | `proposed` | PR through the GitHub App; approval depends on F2-09 |
+| ADR-004 | Generation by the Claude API | `approved` | Sonnet 5.5, GitHub Actions, up to US$30 a month; defines F0-08 and phase 2 |
 
-## Riscos ativos
+## Active risks
 
-- O custo por execução é estimativa (cerca de US$ 10 por mês com Sonnet), não medida. F0-08 mede antes de qualquer código do pipeline.
-- Os domínios e feeds do ADR-001 não foram conferidos. F2-11 confere.
-- Texto buscado pode trazer instrução injetada num site publicado sem revisão. Mitigação: saída estruturada, nenhuma ferramenta de escrita para o modelo e validação de fundamentação (F2-12, F2-13).
-- Os limites dos planos gratuitos citados no plano são de memória. Conferir em F0-01.
-- Um nome de profissional pode entrar por descuido em arquivo, issue ou commit antes de F1-06 existir. Até lá, a regra do AGENTS.md §4 é a única barreira.
+- The cost per run is an estimate (about US$10 a month with Sonnet), not a measurement. F0-08 measures it before any pipeline code.
+- The ADR-001 domains and feeds have not been checked. F2-11 checks them.
+- Fetched text may carry an injected instruction into a site published without review. Mitigation: structured output, no write tool for the model, and grounding validation (F2-12, F2-13).
+- The free-plan limits cited in the plan are from memory. Check them in F0-01.
+- A professional's name may slip into a file, issue or commit before F1-06 exists. Until then, the AGENTS.md §4 rule is the only barrier.
 
-## Bloqueios
+## Blockers
 
-Nenhum. F0-03 deixou de bloquear com a lista inicial do ADR-001.
+None. F0-03 stopped blocking once ADR-001 had its initial list.
 
-## Perguntas em aberto
+## Open questions
 
-1. **Fontes de curadoria:** o Filipe revisa a lista inicial do ADR-001.
-2. **Doses nos resumos:** a geração não escreve recomendação de dose enquanto não houver revisão. A regra vale até o Filipe dizer o contrário.
+1. **Curation sources:** Filipe reviews the initial list in ADR-001.
+2. **Doses in the summaries:** generation writes no dose recommendation until there is review. The rule holds until Filipe says otherwise.
