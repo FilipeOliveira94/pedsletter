@@ -7,7 +7,7 @@ Operational record of the **current phase**. The issue backlog and the acceptanc
 | Repository | [FilipeOliveira94/pedsletter](https://github.com/FilipeOliveira94/pedsletter) |
 | Started | 2026-11-14 |
 | Final plan approved | 2026-11-15 |
-| Last update | 2026-11-26 (F0-04: ADR-002 acceptance checked) |
+| Last update | 2026-11-26 (F0-03: ADR-001 approved) |
 | Current phase | Phase 0 — Prerequisites |
 | Phase status | In progress |
 
@@ -29,10 +29,9 @@ On 2026-11-25 edition generation moved from the Grok routine to a script that ca
 
 ## Next steps
 
-1. **F0-03** — Filipe reviews the initial list in ADR-001; the ADR becomes `approved`.
+1. **F0-08** — Cost and quality trial of the API. Spend authorized by Filipe on 2026-11-26; the plan still needs his approval.
 2. **F0-01** — Accounts and repository. The Cloudflare Pages project linked to the repository is still missing.
-3. **F0-08** — Cost and quality trial of the API. It costs money: Filipe authorizes it before it runs.
-4. **F0-05** — Check the acceptance of the rewritten ADR-003.
+3. **F0-05** — Check the acceptance of the rewritten ADR-003.
 
 ---
 
@@ -42,7 +41,7 @@ On 2026-11-25 edition generation moved from the Grok routine to a script that ca
 | --- | --- | --- | --- |
 | F0-01 | Accounts and repository | Not started | Done early in the initial commit: README with the description and the AI notice |
 | F0-02 | Test the Grok scheduled routine | Withdrawn | Replaced by F0-08 ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)) |
-| F0-03 | ADR-001: curation sources | In progress | Initial two-tier list in [`0001`](docs/decisions/0001-curation-sources.md), `proposed`; awaiting Filipe's review |
+| F0-03 | ADR-001: curation sources | Delivered | F0-03 PR; [`0001`](docs/decisions/0001-curation-sources.md) `approved`; full review in F3-06 |
 | F0-04 | ADR-002: publishing without review or indexing | Delivered | F0-04 PR; acceptance checked in [`0002`](docs/decisions/0002-publishing-without-review-or-indexing.md) → Evidence |
 | F0-05 | ADR-003: publishing format and path | Not started | [`0003`](docs/decisions/0003-publishing-format-and-path.md) rewritten in F0-07 for the GitHub App, `proposed` |
 | F0-06 | Translate the docs to English | Delivered | F0-06 PR; `make docs-lint` passes |
@@ -74,7 +73,7 @@ Acceptance detail: `ROADMAP.md` → Phase 0.
 
 | ID | Topic | State | Effect on the phase |
 | --- | --- | --- | --- |
-| ADR-001 | Curation sources | `proposed` | Initial list accepted to start; unblocks F0-08 and phase 2 |
+| ADR-001 | Curation sources | `approved` | Unblocks F0-08 and phase 2; reviewed again in F3-06 |
 | ADR-002 | Publishing without review or indexing | `approved` | Defines the content rules in AGENTS.md §4 |
 | ADR-003 | Publishing format and path | `proposed` | PR through the GitHub App; approval depends on F2-09 |
 | ADR-004 | Generation by the Claude API | `approved` | Sonnet 5.5, GitHub Actions, up to US$30 a month; defines F0-08 and phase 2 |
@@ -89,9 +88,8 @@ Acceptance detail: `ROADMAP.md` → Phase 0.
 
 ## Blockers
 
-None. F0-03 stopped blocking once ADR-001 had its initial list.
+None.
 
 ## Open questions
 
-1. **Curation sources:** Filipe reviews the initial list in ADR-001.
-2. **Doses in the summaries:** generation writes no dose recommendation until there is review. The rule holds until Filipe says otherwise.
+1. **Doses in the summaries:** generation writes no dose recommendation until there is review. The rule holds until Filipe says otherwise.

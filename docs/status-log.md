@@ -6,6 +6,12 @@ Newest entries first.
 
 ---
 
+### 2026-11-26 — F0-03: ADR-001 approved
+
+Filipe approved the ADR-001 source list as it stands, to be reviewed again before the MVP closes. ADR-001 is now `approved`, and the review is a new issue, F3-06 (Lo, Sm), in phase 3 after the two weeks of operation (F3-02) and before the usage decision (F3-03). The domains and feeds are still unchecked; F2-11 checks them. Docs only; `make docs-lint` passes.
+
+---
+
 ### 2026-11-26 — F0-04: ADR-002 acceptance checked
 
 ADR-002 records the decision, the rationale, the mitigations and the phase 9 review conditions, and names no professional. A search for names and for "CRM", "Dr." and "Dra." in the ADR finds nothing, and the two §4 notices match the `AGENTS.md` wording byte for byte. The ADR predated ADR-004, so the F2-13 grounding check was added to its mitigations and its consequences now say what that check does not catch. The decision and the `approved` state did not change. Docs only; `make docs-lint` passes.

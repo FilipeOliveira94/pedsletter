@@ -5,7 +5,7 @@ PedsLetter's plan by issue. This file is the source of **scope, dependencies, is
 | Roadmap | Current |
 | --- | --- |
 | Origin | Final plan approved on 2026-11-15; summary in [`docs/project-genesis.md`](docs/project-genesis.md) |
-| Last update | 2026-11-26 (F0-04: ADR-002 acceptance checked) |
+| Last update | 2026-11-26 (F0-03: ADR-001 approved; F3-06 added) |
 | Related | `PROJECT_STATUS.md`, `DECISIONS.md`, `AGENTS.md` |
 
 **Status values:** `not started` · `in progress` · `delivered` · `verified` · `blocked` · `withdrawn`
@@ -75,7 +75,7 @@ SEO becomes a metric only in phase 9.
 | --- | --- | --- | --- | --- | --- | --- |
 | F0-01 | Accounts and repository | Lo/- | Sm/- | — | Not started | Public GitHub repository and a Cloudflare Pages project linked to it.<br>README with the project description and the AI-generated content notice.<br>No paid plan purchased. |
 | F0-02 | Test the Grok scheduled routine | -/- | -/- | — | Withdrawn | Withdrawn on 2026-11-25: generation moved to the Claude API (ADR-004). The equivalent trial is F0-08. |
-| F0-03 | ADR-001: curation sources | Lo/- | Sm/- | Filipe's review | In progress | Closed two-tier list (journals by feed; organizations and news by domain-restricted search), with the inclusion criteria.<br>Initial list proposed in F0-07; closes when Filipe reviews it and ADR-001 becomes `approved`.<br>Does not block phase 1. |
+| F0-03 | ADR-001: curation sources | Lo/Lo | Sm/Sm | Filipe's review | Delivered | Closed two-tier list (journals by feed; organizations and news by domain-restricted search), with the inclusion criteria.<br>Initial list proposed in F0-07; closes when Filipe reviews it and ADR-001 becomes `approved`.<br>Does not block phase 1.<br>Approved by Filipe on 2026-11-26 as the list for now; the full review moved to F3-06. |
 | F0-04 | ADR-002: publishing without review or indexing | Lo/Lo | Sm/Sm | — | Delivered | Records the decision, the rationale, the mitigations and the conditions for review (phase 9).<br>Names no professional. |
 | F0-05 | ADR-003: publishing format and path | Lo/- | Sm/- | F0-07 | Not started | Records the `.md` format, the PR opened by the GitHub App with automatic merge, and the withdrawal mechanism. |
 | F0-06 | Translate the repository docs to English | Lo/Lo | Md/Md | F0-07 | Delivered | ROADMAP, PROJECT_STATUS, DECISIONS, ADRs, `docs/` and README in English (Filipe's decision, 2026-11-24; `AGENTS.md` and the prompts are already in English).<br>Site content and the §4 mandatory notices stay in Portuguese, in the README too.<br>Issue and decision IDs do not change.<br>Next issue after F0-07. |
@@ -132,7 +132,7 @@ The initial commit got ahead on the README text and the first three ADRs. The is
 - [ ] A run over budget stops without opening a PR.
 - [ ] An edition can be withdrawn by following only the operations guide.
 
-**F0-03 as a dependency:** the initial ADR-001 list, still `proposed`, is enough to start F0-08, F2-02, F2-11 and F2-12; Filipe's review may swap sources without blocking those issues.
+**F0-03 as a dependency:** ADR-001 is `approved` (2026-11-26), which unblocks F0-08, F2-02, F2-11 and F2-12. Filipe reviews the list again in F3-06; a swap there does not block phase 2.
 
 **Suggested order:** F2-01 → F2-11 → F2-12 → F2-13 and F2-14 → F2-03 and F2-04 → F2-10 → F2-05 → F2-02 → F2-07, F2-08 and F2-15 → F2-09.
 
@@ -190,6 +190,7 @@ The initial commit got ahead on the README text and the first three ADRs. The is
 | F3-01 | Production scheduling | Hi/- | Sm/- | F2-09 | Not started | The generation workflow runs Monday, Wednesday and Friday mornings, Brasília time. |
 | F3-02 | Two weeks of operation | Med/- | Sm/- | F3-01 | Not started | At least 5 of 6 editions published.<br>Errors found in the editions noted, with a prompt adjustment.<br>Actual spend summed per run and projected for the month. |
 | F3-03 | Usage validation | Lo/- | Sm/- | F3-02 | Not started | The main user answers whether the summaries help and what to change.<br>Decision recorded: continue, adjust or stop, and whether the model changes. |
+| F3-06 | Review the curation sources | Lo/- | Sm/- | F3-02 | Not started | Filipe reviews the ADR-001 list with the sources seen in two weeks of operation: which tiers yielded items, which sources stayed empty or weak.<br>Sources kept, added or removed in one PR that edits ADR-001 and the sources configuration file (F2-11).<br>One of the last issues before the MVP closes, before F3-03. |
 | F3-05 | Evaluation set | Med/- | Sm/- | F3-02 | Not started | 5 to 10 reference runs, with the candidates recorded and what is expected of each edition.<br>One command runs the set and shows the result and the cost; Filipe authorizes it before it runs.<br>A prompt or model change only goes in with the set's result in the PR. |
 
 F3-04 (Lighthouse CI) moved to phase 1 on 2026-11-25 and keeps its ID.
@@ -325,6 +326,7 @@ Nothing in this phase starts without Filipe's explicit decision. The order matte
 
 | Date | Change |
 | --- | --- |
+| 2026-11-26 | F0-03: ADR-001 `approved` by Filipe as the list for now; new F3-06 reviews the sources before the MVP closes. F0-03 delivered (Lo/Lo, Sm/Sm) |
 | 2026-11-26 | F0-04: ADR-002 acceptance checked; the F2-13 grounding check added to its mitigations and consequences. F0-04 delivered (Lo/Lo, Sm/Sm) |
 | 2026-11-26 | F0-06: the roadmap and the other repository docs translated to English; status values in English; ADR files 0001 to 0003 and the architecture doc renamed to English names. No scope, acceptance or ID changed. F0-06 delivered (Lo/Lo, Md/Md) |
 | 2026-11-25 | F0-07: generation moves from the Grok routine to the Claude API (ADR-004, Sonnet 5.5, up to US$30 a month). F0-02 and F2-06 withdrawn. New: F0-07, F0-08, F2-10 to F2-15, F3-05 and F7-07. Phases 0, 2 and 3 rewritten; news, guidelines and alerts enter the MVP. F3-04 moved to phase 1; growth charts before the other phase 6 calculators. F0-03 unblocked with the initial ADR-001 list. F0-06 is the next issue |

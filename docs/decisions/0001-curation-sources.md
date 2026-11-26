@@ -2,12 +2,12 @@
 
 | ADR-0001 | Detail |
 | --- | --- |
-| State | `proposed` |
+| State | `approved` |
 | Opened | 2026-11-15 |
-| Decided | — |
+| Decided | 2026-11-26 (Filipe, F0-03) |
 | Owner | Filipe (product owner) |
 | Index ID | ADR-001 |
-| Related issues | F0-03, F2-02, F2-11, F2-12 |
+| Related issues | F0-03, F2-02, F2-11, F2-12, F3-06 |
 | Replaces | — |
 | Replaced by | — |
 
@@ -19,7 +19,7 @@ The list does not decide who writes the summary; it decides where the pipeline m
 
 ## Decision
 
-Initial list proposed on 2026-11-25 and accepted by Filipe to start, with his review later. The state becomes `approved` once he reviews it.
+Initial list proposed on 2026-11-25. On 2026-11-26 Filipe approved it as the list for now; he reviews it again before the MVP closes (F3-06).
 
 **Tier 1 — journals (collected by feed and PubMed, no open search)**
 
@@ -73,10 +73,10 @@ Initial list proposed on 2026-11-25 and accepted by Filipe to start, with his re
 
 ## Evidence
 
-Initial list proposed in the F0-07 plan and accepted by Filipe on 2026-11-25 to start, with a later review. The domains and feed access have not been checked yet; F2-11 checks them.
+Initial list proposed in the F0-07 plan and accepted by Filipe on 2026-11-25 to start. Approved by Filipe on 2026-11-26 (F0-03), with the full review moved to F3-06, one of the last issues before the MVP closes. The domains and feed access have not been checked yet; F2-11 checks them.
 
 ## Review when
 
-- Filipe reviews the list (the state becomes `approved`).
+- F3-06: Filipe reviews the list with the sources seen in two weeks of operation (F3-02).
 - A source stops publishing, changes domain or starts requiring access the pipeline does not have.
 - F3-02 shows an empty tier or a source that only yields weak items.
