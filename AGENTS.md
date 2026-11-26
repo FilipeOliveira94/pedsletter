@@ -26,7 +26,7 @@ For each task:
 1. Inspect the code and the current docs.
 2. Read `PROJECT_STATUS.md`, `ROADMAP.md` and the related ADRs.
 3. Check the issue in the roadmap: dependencies, assumptions, risks, acceptance, and its Size and Risk.
-4. Plan according to the rating ("Size and risk" below): S + Low goes straight to the PR; anything else presents the plan in the thread and waits for approval before touching code.
+4. Plan according to the rating ("Size and risk" below): Sm + Lo goes straight to the PR; anything else presents the plan in the thread and waits for approval before touching code.
 5. Create the feature branch (§13) and implement the smallest coherent increment. When extracting repeated logic (validation, generation, workflow scripts) or choosing module boundaries, consult the `code-structure` skill; the architecture in §5 prevails.
 6. Run the tests, lint and validations that apply.
 7. Read the results and fix regressions caused by the change.
@@ -37,10 +37,10 @@ For each task:
 
 ### Size and risk (in force since 2026-11-24)
 
-- Every issue carries a Size (S, M, L) and a Risk (Low, Med, High) on the scale in `~/.agents/claude/workflow.md`. Ratings go in the roadmap's "Expected/Seen Risk" and "Expected/Seen Size" columns (format in the same file); until an issue has one, Claude rates it in the plan.
-- **S + Low:** Claude plans and implements straight through to the PR.
+- Every issue carries a Size (Sm, Md, Lg) and a Risk (Lo, Med, Hi) on the scale in `~/.agents/claude/workflow.md`. Ratings go in the roadmap's "Expected/Seen Risk" and "Expected/Seen Size" columns (format in the same file); until an issue has one, Claude rates it in the plan.
+- **Sm + Lo:** Claude plans and implements straight through to the PR.
 - **Anything else:** Claude plans and stops: it runs `po-reviewer` on the plan, presents the plan with its verdict in the thread and waits for Filipe's approval before touching code. Approval arrives in the same thread, sometimes with adjustments, which go into the plan before implementation.
-- **High risk or L size:** the thread runs at Opus high effort, set when it starts; Claude never switches its model or effort by itself; a switch happens only when Filipe decides it. A High-risk plan names the §4 rules or the workflow at stake and the tests written first; an L plan says whether to split the issue.
+- **Hi risk or Lg size:** the thread runs at Opus high effort, set when it starts; Claude never switches its model or effort by itself; a switch happens only when Filipe decides it. A Hi-risk plan names the §4 rules or the workflow at stake and the tests written first; an Lg plan says whether to split the issue.
 - Claude may raise a rating while planning and says why; it never lowers one without Filipe.
 
 ### Roles (flow in force since 2026-11-24)
@@ -49,7 +49,7 @@ For each task:
 | --- | --- |
 | Filipe | Picks the issue, approves plans, reviews the PR, merges it and deletes the branch. Confirms any switch to Fable. |
 | Claude in T3 Code (Claude Opus 5.5) | Per issue: rating, plan, implementation on a new branch from an up-to-date `main`, checks, tests and review gates, commit, push of the branch and PR with a summary. Never merges. |
-| Review subagents (Sonnet 5.5) | `po-reviewer` checks the plan and the finished branch of every issue rated above S + Low against the acceptance; `code-reviewer` checks the branch for bugs, security flaws and regressions. They only report: they never edit, merge or push. |
+| Review subagents (Sonnet 5.5) | `po-reviewer` checks the plan and the finished branch of every issue rated above Sm + Lo against the acceptance; `code-reviewer` checks the branch for bugs, security flaws and regressions. They only report: they never edit, merge or push. |
 
 No agent merges or pushes to `main`.
 
@@ -59,7 +59,7 @@ Language, size and risk, review gates and model policy: `~/.agents/claude/workfl
 
 - **Profile:** reviewed
 - **Language:** English for everything; site content (posts, pages, UI) in pt-BR (§2).
-- **High risk here:** the §4 content rules (names, authorship, dose, notices, indexing); the auto-merge workflow and the bot token; calculator math; anything that publishes.
+- **Hi risk here:** the §4 content rules (names, authorship, dose, notices, indexing); the auto-merge workflow and the bot token; calculator math; anything that publishes.
 - **Extra reviewers:** none
 - **Skip review:** content PRs in `src/content/posts/` published by the auto-merge workflow (F2-05, ADR-003). A PR that mixes content and code goes through the gates.
 - **Model exceptions:** none

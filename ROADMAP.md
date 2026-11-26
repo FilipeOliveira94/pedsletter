@@ -17,7 +17,7 @@ Plano do PedsLetter por issue. Este arquivo é a fonte de **escopo, dependência
 - Uma issue por PR, em branch de feature (AGENTS.md §13).
 - Nenhuma issue, PR ou commit cita profissional de saúde. O texto usa só o genérico "médico".
 
-**Expected/Seen Risk e Size:** cada célula é `esperado/visto`. Risk é `Lo`, `Med` ou `Hi`; Size é `Sm`, `Md` ou `Lg` (escala em `~/.agents/claude/workflow.md`, repositório `FilipeOliveira94/agent-config`; risco alto aqui está em `AGENTS.md` §3). Uma issue aberta tem só a metade esperada (`Med/-`, `Md/-`); a metade vista é preenchida quando ela fecha. Substitui a antiga coluna Est. (P/M/G).
+**Expected/Seen Risk e Size:** cada célula é `esperado/visto`. Risk é `Lo`, `Med` ou `Hi`; Size é `Sm`, `Md` ou `Lg` (escala em `~/.agents/claude/workflow.md`, repositório `FilipeOliveira94/agent-config`; `Hi risk here` está em `AGENTS.md` §3). Uma issue aberta tem só a metade esperada (`Med/-`, `Md/-`); a metade vista é preenchida quando ela fecha. Substitui a antiga coluna Est. (P/M/G).
 
 **Formato do aceite:** os critérios são os do plano final, na forma "dado … então …" quando ela se aplica. Uma issue tem um ou mais critérios; todos são obrigatórios.
 

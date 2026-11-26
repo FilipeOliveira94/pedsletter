@@ -1,6 +1,6 @@
 # Agent work prompts
 
-Three prompts drive an issue: plan, implement and close. The rules live in [`AGENTS.md`](../AGENTS.md). Replace the placeholders and run the plan prompt first. An issue rated above S + Low has its plan approved before any file change; an S + Low issue goes straight to the PR (AGENTS.md §3, "Size and risk").
+Three prompts drive an issue: plan, implement and close. The rules live in [`AGENTS.md`](../AGENTS.md). Replace the placeholders and run the plan prompt first. An issue rated above Sm + Lo has its plan approved before any file change; an Sm + Lo issue goes straight to the PR (AGENTS.md §3, "Size and risk").
 
 ---
 
@@ -10,7 +10,7 @@ Three prompts drive an issue: plan, implement and close. The rules live in [`AGE
 Follow AGENTS.md.
 
 I want to work on issue: <ISSUE-ID> — <title>.
-Rating: <S|M|L> / <Low|Med|High> (the expected half of the roadmap's Risk and Size columns; estimate it in the plan if missing).
+Rating: <Sm|Md|Lg> / <Lo|Med|Hi> (the expected half of the roadmap's Risk and Size columns; estimate it in the plan if missing).
 
 First inspect the code, the docs, the roadmap, the acceptance and the current project status. Do not edit files yet.
 
@@ -25,7 +25,7 @@ Return:
 8. The feature branch name (AGENTS.md §13) and which items of §12 "Issue closing checklist" and §4 "Content rules" the issue touches.
 9. The Size and Risk, and whether planning raises either.
 
-Keep the scope to this issue. Do not implement future phases or change the architecture silently. Above S + Low: run po-reviewer on the plan, show its verdict with the plan and wait for my approval before editing. S + Low: go on to implementation. If the issue turns out bigger or riskier, raise the rating and say why.
+Keep the scope to this issue. Do not implement future phases or change the architecture silently. Above Sm + Lo: run po-reviewer on the plan, show its verdict with the plan and wait for my approval before editing. Sm + Lo: go on to implementation. If the issue turns out bigger or riskier, raise the rating and say why.
 ```
 
 ## 2. Implement (after the plan is approved)
@@ -57,7 +57,7 @@ Review the current diff against the agreed plan and the acceptance. Do not add f
 - Check the diff, the commit message and the PR text against §4 "Content rules": no professional's name, no dose recommendation.
 - Run the validation commands and report the actual output.
 - Point out acceptance criteria that are not met or not verified.
-- Run the review gates in AGENTS.md §3 "Agent workflow": code-reviewer on every code or config change; above S + Low, then po-reviewer in acceptance mode. Fix blocking findings and put each final verdict in the PR.
+- Run the review gates in AGENTS.md §3 "Agent workflow": code-reviewer on every code or config change; above Sm + Lo, then po-reviewer in acceptance mode. Fix blocking findings and put each final verdict in the PR.
 - Apply §12 "Issue closing checklist".
 - Make a Conventional Commit on the feature branch, push it, open the PR and read the CI. Never push to main and never merge; the merge is Filipe's (AGENTS.md §13).
 
