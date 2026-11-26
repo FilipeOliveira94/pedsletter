@@ -39,3 +39,8 @@ Thumbs.db
 
 # Local agent configuration
 .claude/settings.local.json
+
+# F0-08 trial: local venv and generated output (unreviewed AI text, never committed)
+spikes/F0-08/.venv/
+spikes/F0-08/out/
+__pycache__/

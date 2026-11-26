@@ -1,0 +1,28 @@
+{
+  "_comment": "Copy of the ADR-001 list for the F0-08 trial only. ADR-001 is the source of truth. Tier 1 is read through PubMed (journal title abbreviation, [ta]); general journals get a pediatric filter.",
+  "tier1": [
+    {"name": "Pediatrics", "ta": "Pediatrics", "general": false},
+    {"name": "JAMA Pediatrics", "ta": "JAMA Pediatr", "general": false},
+    {"name": "The Lancet Child & Adolescent Health", "ta": "Lancet Child Adolesc Health", "general": false},
+    {"name": "Archives of Disease in Childhood", "ta": "Arch Dis Child", "general": false},
+    {"name": "The Journal of Pediatrics", "ta": "J Pediatr", "general": false},
+    {"name": "Jornal de Pediatria", "ta": "J Pediatr (Rio J)", "general": false},
+    {"name": "Revista Paulista de Pediatria", "ta": "Rev Paul Pediatr", "general": false},
+    {"name": "NEJM", "ta": "N Engl J Med", "general": true},
+    {"name": "JAMA", "ta": "JAMA", "general": true},
+    {"name": "The Lancet", "ta": "Lancet", "general": true},
+    {"name": "BMJ", "ta": "BMJ", "general": true},
+    {"name": "Cochrane Database of Systematic Reviews", "ta": "Cochrane Database Syst Rev", "general": true}
+  ],
+  "tier2_domains": [
+    "sbp.com.br",
+    "gov.br/saude",
+    "gov.br/anvisa",
+    "aap.org",
+    "publications.aap.org",
+    "who.int",
+    "paho.org",
+    "cdc.gov",
+    "fda.gov"
+  ]
+}

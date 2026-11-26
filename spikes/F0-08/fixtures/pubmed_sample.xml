@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<!-- SYNTHETIC fixture for unit tests. Not a real PubMed record and not model output. -->
+<PubmedArticleSet>
+  <PubmedArticle>
+    <MedlineCitation>
+      <PMID>90000001</PMID>
+      <Article>
+        <Journal><ISOAbbreviation>J Pediatr</ISOAbbreviation></Journal>
+        <ArticleTitle>Synthetic trial of an intervention in infants</ArticleTitle>
+        <Abstract>
+          <AbstractText Label="OBJECTIVE">Synthetic objective.</AbstractText>
+          <AbstractText Label="RESULTS">Rate fell from 12.5% to 8% in 1,204 infants.</AbstractText>
+        </Abstract>
+        <ELocationID EIdType="doi">10.0000/synthetic.0001</ELocationID>
+      </Article>
+      <MedlineJournalInfo><MedlineTA>J Pediatr</MedlineTA></MedlineJournalInfo>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="entrez"><Year>2026</Year><Month>11</Month><Day>20</Day></PubMedPubDate>
+      </History>
+      <ArticleIdList><ArticleId IdType="pubmed">90000001</ArticleId><ArticleId IdType="doi">10.0000/synthetic.0001</ArticleId></ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation>
+      <PMID>90000002</PMID>
+      <Article>
+        <Journal><ISOAbbreviation>Pediatrics</ISOAbbreviation></Journal>
+        <ArticleTitle>Synthetic cohort without DOI</ArticleTitle>
+        <Abstract><AbstractText>Synthetic abstract without a DOI.</AbstractText></Abstract>
+      </Article>
+      <MedlineJournalInfo><MedlineTA>Pediatrics</MedlineTA></MedlineJournalInfo>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="entrez"><Year>2026</Year><Month>11</Month><Day>21</Day></PubMedPubDate>
+      </History>
+      <ArticleIdList><ArticleId IdType="pubmed">90000002</ArticleId></ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation>
+      <PMID>90000003</PMID>
+      <Article>
+        <Journal><ISOAbbreviation>JAMA</ISOAbbreviation></Journal>
+        <ArticleTitle>Synthetic record without abstract</ArticleTitle>
+      </Article>
+      <MedlineJournalInfo><MedlineTA>JAMA</MedlineTA></MedlineJournalInfo>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="entrez"><Year>2026</Year><Month>11</Month><Day>22</Day></PubMedPubDate>
+      </History>
+      <ArticleIdList><ArticleId IdType="pubmed">90000003</ArticleId></ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+</PubmedArticleSet>

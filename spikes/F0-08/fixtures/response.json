@@ -1,0 +1,27 @@
+{
+  "_comment": "SYNTHETIC fixture for unit tests and --dry-run. Hand-written, not model output. No dose, no real article.",
+  "titulo": "Edição de teste (fixture sintética)",
+  "resumo": "Texto sintético usado apenas para testar a renderização.",
+  "artigos": [
+    {
+      "tipo": "artigo",
+      "titulo": "Estudo sintético em lactentes",
+      "fonte": "J Pediatr",
+      "url": "https://doi.org/10.0000/synthetic.0001",
+      "data": "2026-11-20",
+      "resumo": "Resumo sintético: a taxa caiu de 12,5% para 8% em 1.204 lactentes.",
+      "porqueImporta": "Texto sintético sobre a relevância para a pediatria.",
+      "candidato": "90000001"
+    },
+    {
+      "tipo": "alerta",
+      "titulo": "Alerta sintético",
+      "fonte": "CDC",
+      "url": "https://www.cdc.gov/synthetic-alert",
+      "data": "2026-11-24",
+      "resumo": "Resumo sintético de um alerta.",
+      "porqueImporta": "Texto sintético.",
+      "candidato": ""
+    }
+  ]
+}
