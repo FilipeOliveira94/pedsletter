@@ -6,6 +6,16 @@ Entradas novas no topo.
 
 ---
 
+### 2026-11-25 — F0-07: pipeline pela API do Claude
+
+O Filipe decidiu passar a geração das edições da rotina do Grok para a API do Claude, com Sonnet 5.5 para começar, até US$ 30 por mês, e com notícias, diretrizes e alertas no MVP. A decisão está no [ADR-004](decisions/0004-generation-by-claude-api.md), `aprovado`.
+
+O roadmap foi reescrito: F0-02 e F2-06, que dependiam do Grok, foram retiradas; entraram F0-08 (ensaio de custo e qualidade), F2-10 a F2-15 (GitHub App, coleta, gerador, fundamentação, orçamento, alerta de falha), F3-05 (conjunto de avaliação) e F7-07 (material de consulta). F3-04 foi para a fase 1, e as curvas de crescimento vêm antes das demais calculadoras da fase 6. O ADR-001 recebeu a lista inicial em duas faixas e passou a `proposto`; o ADR-003 troca o Grok Bot pelo GitHub App, porque um PR aberto com o `GITHUB_TOKEN` do Actions não dispara a validação do PR. O `AGENTS.md` troca a regra de custo zero pela de até US$ 30 por mês na API e amplia o Hi risk.
+
+A estimativa de custo (cerca de US$ 10 por mês com Sonnet em 13 execuções) não foi medida; F0-08 mede. Só documentação; `make docs-lint` passou.
+
+---
+
 ### 2026-11-17 — Tabelas Markdown com cabeçalho nomeado
 
 6 tabelas de chave e valor tinham a linha de cabeçalho vazia (`| | |`), que o GFM mostra como uma linha em branco no topo. O padrão veio dos documentos de planejamento de outro projeto, usados como modelo, e passou adiante por cópia. Cada tabela tem agora um cabeçalho tirado do contexto (`Projeto | Atual`, `Validação | Detalhe`, `Roadmap | Atual`, `Registro | Referência`, `ADRs | Local`). `scripts/check_markdown_tables.py` falha se algum arquivo Markdown versionado tiver um cabeçalho vazio, fora de blocos de código; roda com `make docs-lint`. A regra está no AGENTS.md §9.
