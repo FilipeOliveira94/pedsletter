@@ -6,6 +6,12 @@ Newest entries first.
 
 ---
 
+### 2026-11-26 — F0-04: ADR-002 acceptance checked
+
+ADR-002 records the decision, the rationale, the mitigations and the phase 9 review conditions, and names no professional. A search for names and for "CRM", "Dr." and "Dra." in the ADR finds nothing, and the two §4 notices match the `AGENTS.md` wording byte for byte. The ADR predated ADR-004, so the F2-13 grounding check was added to its mitigations and its consequences now say what that check does not catch. The decision and the `approved` state did not change. Docs only; `make docs-lint` passes.
+
+---
+
 ### 2026-11-26 — F0-06: docs translated to English
 
 The repository docs are now in English: `README.md`, `ROADMAP.md`, `PROJECT_STATUS.md`, `DECISIONS.md`, `docs/architecture/`, `docs/decisions/` (ADRs 0001 to 0003, the index README and the template), `docs/project-genesis.md` and this log. The `Makefile` help text and messages and the comments and messages of `scripts/check_markdown_tables.py` were translated too (Filipe's decision). Code logic did not change.
