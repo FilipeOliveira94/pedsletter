@@ -5,7 +5,7 @@ PedsLetter's plan by issue. This file is the source of **scope, dependencies, is
 | Roadmap | Current |
 | --- | --- |
 | Origin | Final plan approved on 2026-11-15; summary in [`docs/project-genesis.md`](docs/project-genesis.md) |
-| Last update | 2026-11-26 (F0-06: docs translated to English) |
+| Last update | 2026-11-26 (F0-04: ADR-002 acceptance checked) |
 | Related | `PROJECT_STATUS.md`, `DECISIONS.md`, `AGENTS.md` |
 
 **Status values:** `not started` · `in progress` · `delivered` · `verified` · `blocked` · `withdrawn`
@@ -76,7 +76,7 @@ SEO becomes a metric only in phase 9.
 | F0-01 | Accounts and repository | Lo/- | Sm/- | — | Not started | Public GitHub repository and a Cloudflare Pages project linked to it.<br>README with the project description and the AI-generated content notice.<br>No paid plan purchased. |
 | F0-02 | Test the Grok scheduled routine | -/- | -/- | — | Withdrawn | Withdrawn on 2026-11-25: generation moved to the Claude API (ADR-004). The equivalent trial is F0-08. |
 | F0-03 | ADR-001: curation sources | Lo/- | Sm/- | Filipe's review | In progress | Closed two-tier list (journals by feed; organizations and news by domain-restricted search), with the inclusion criteria.<br>Initial list proposed in F0-07; closes when Filipe reviews it and ADR-001 becomes `approved`.<br>Does not block phase 1. |
-| F0-04 | ADR-002: publishing without review or indexing | Lo/- | Sm/- | — | Not started | Records the decision, the rationale, the mitigations and the conditions for review (phase 9).<br>Names no professional. |
+| F0-04 | ADR-002: publishing without review or indexing | Lo/Lo | Sm/Sm | — | Delivered | Records the decision, the rationale, the mitigations and the conditions for review (phase 9).<br>Names no professional. |
 | F0-05 | ADR-003: publishing format and path | Lo/- | Sm/- | F0-07 | Not started | Records the `.md` format, the PR opened by the GitHub App with automatic merge, and the withdrawal mechanism. |
 | F0-06 | Translate the repository docs to English | Lo/Lo | Md/Md | F0-07 | Delivered | ROADMAP, PROJECT_STATUS, DECISIONS, ADRs, `docs/` and README in English (Filipe's decision, 2026-11-24; `AGENTS.md` and the prompts are already in English).<br>Site content and the §4 mandatory notices stay in Portuguese, in the README too.<br>Issue and decision IDs do not change.<br>Next issue after F0-07. |
 | F0-07 | Rewrite the roadmap for the Claude API pipeline | Lo/Lo | Md/Md | — | Delivered | ADR-004 records generation by the Claude API (Sonnet 5.5, GitHub Actions, up to US$30 a month), `approved` by Filipe's decision.<br>Phases 0, 2 and 3 rewritten; F0-02 and F2-06 withdrawn; new issues for the pipeline and for reference material.<br>ADR-001 with the initial list; ADR-003 with the GitHub App path; `AGENTS.md` with the new cost rule.<br>README updated for the new pipeline (exception to the §12 rule, authorized by Filipe). |
@@ -325,6 +325,7 @@ Nothing in this phase starts without Filipe's explicit decision. The order matte
 
 | Date | Change |
 | --- | --- |
+| 2026-11-26 | F0-04: ADR-002 acceptance checked; the F2-13 grounding check added to its mitigations and consequences. F0-04 delivered (Lo/Lo, Sm/Sm) |
 | 2026-11-26 | F0-06: the roadmap and the other repository docs translated to English; status values in English; ADR files 0001 to 0003 and the architecture doc renamed to English names. No scope, acceptance or ID changed. F0-06 delivered (Lo/Lo, Md/Md) |
 | 2026-11-25 | F0-07: generation moves from the Grok routine to the Claude API (ADR-004, Sonnet 5.5, up to US$30 a month). F0-02 and F2-06 withdrawn. New: F0-07, F0-08, F2-10 to F2-15, F3-05 and F7-07. Phases 0, 2 and 3 rewritten; news, guidelines and alerts enter the MVP. F3-04 moved to phase 1; growth charts before the other phase 6 calculators. F0-03 unblocked with the initial ADR-001 list. F0-06 is the next issue |
 | 2026-11-24 | New F0-06: translate the docs to English. Size and risk replace small/large in the workflow (`AGENTS.md` §3); every issue got the Expected/Seen Risk and Size columns |
