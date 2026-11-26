@@ -96,4 +96,3 @@ Nenhum. F0-03 deixou de bloquear com a lista inicial do ADR-001.
 
 1. **Fontes de curadoria:** o Filipe revisa a lista inicial do ADR-001.
 2. **Doses nos resumos:** a geração não escreve recomendação de dose enquanto não houver revisão. A regra vale até o Filipe dizer o contrário.
-3. **README:** ainda descreve a rotina do Grok. Pela regra do AGENTS.md §12 ele só muda no fechamento de fase; F0-06 o traduz e pode corrigir.
