@@ -26,9 +26,10 @@
 
 | ID | Tema | Decisão | Implementado | Estado | ADR |
 | --- | --- | --- | --- | --- | --- |
-| ADR-001 | Fontes de curadoria | Lista fechada de periódicos e entidades, com critério de inclusão. A lista ainda não foi informada | — | `pendente` | [ADR-0001](docs/decisions/0001-fontes-de-curadoria.md) |
+| ADR-001 | Fontes de curadoria | Lista fechada em duas faixas: periódicos por feed e PubMed; entidades e notícias por busca restrita a domínios. Lista inicial aceita para começar, à espera da revisão do Filipe | — | `proposto` | [ADR-0001](docs/decisions/0001-fontes-de-curadoria.md) |
 | ADR-002 | Publicação sem revisão e sem indexação | O que passa na validação automática é publicado; `noindex` em tudo, sem sitemap; aviso de IA; retirada simples. Revisão, associação a um médico e indexação ficam para a fase 9 | — | `aprovado` | [ADR-0002](docs/decisions/0002-publicacao-sem-revisao-e-sem-indexacao.md) |
-| ADR-003 | Formato e caminho de publicação | Markdown com frontmatter YAML, um arquivo por edição; PR com merge automático para autores permitidos; retirada por `status: retirado`. Depende de F0-02 | — | `proposto` | [ADR-0003](docs/decisions/0003-formato-e-caminho-de-publicacao.md) |
+| ADR-003 | Formato e caminho de publicação | Markdown com frontmatter YAML, um arquivo por edição; PR aberto pelo GitHub App do projeto, com merge automático para autores permitidos; retirada por `status: retirado`. Aprovação depende de F2-09 | — | `proposto` | [ADR-0003](docs/decisions/0003-formato-e-caminho-de-publicacao.md) |
+| ADR-004 | Geração pela API do Claude | Script no GitHub Actions chama Sonnet 5.5 sobre candidatos coletados das fontes do ADR-001; saída estruturada, fundamentação conferida, até US$ 30 por mês. Substitui a rotina do Grok | — | `aprovado` | [ADR-0004](docs/decisions/0004-generation-by-claude-api.md) |
 
 `—` significa ainda não implementado ou ainda não verificado no repositório.
 
@@ -44,4 +45,5 @@
 
 | Data | Mudança |
 | --- | --- |
+| 2026-11-25 | ADR-004 `aprovado` (decisão do Filipe): geração pela API do Claude no lugar do Grok. ADR-001 passa a `proposto`, com a lista inicial em duas faixas. ADR-003 troca o envio do Grok Bot pelo GitHub App |
 | 2026-11-15 | Registro inicial: ADR-001 `pendente`, ADR-002 `aprovado` (decisão do plano final), ADR-003 `proposto` |

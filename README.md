@@ -1,6 +1,6 @@
 # PedsLetter
 
-Resumos de literatura pediátrica gerados por IA, publicados três vezes por semana, com calculadoras clínicas previstas para as fases seguintes. Projeto de uso pessoal, sem custo de operação, sem cadastro, sem e-mail e sem publicidade.
+Resumos gerados por IA de literatura, diretrizes, alertas e notícias de pediatria, e de medicina geral com impacto em pediatria, publicados três vezes por semana. Uma seção de consulta para pediatras (calculadoras, curvas de crescimento e outro material) vem nas fases seguintes. Projeto de uso pessoal, sem cadastro, sem e-mail e sem publicidade; o único custo de operação é a API do Claude, até US$ 30 por mês.
 
 > **Aviso.** Curadoria e resumos gerados por IA, sem revisão por profissional de saúde. Confira sempre a fonte original.
 >
@@ -14,8 +14,8 @@ O site não é indexável: toda página leva `noindex` e não há sitemap. O `no
 
 | Campo | Agora |
 | --- | --- |
-| Fase atual | Fase 0 — Pré-requisitos. Não iniciada |
-| Objetivo | Contas, teste da rotina agendada do Grok e ADRs (F0-01 a F0-05) |
+| Fase atual | Fase 0 — Pré-requisitos. Em andamento |
+| Objetivo | Contas, ensaio de custo e qualidade da API do Claude e ADRs (F0-01 a F0-08) |
 | No repositório | Documentação e esqueleto. Nenhum código do site ainda (começa em F1-01) |
 | Registro | [`PROJECT_STATUS.md`](PROJECT_STATUS.md) · escopo em [`ROADMAP.md`](ROADMAP.md) |
 
@@ -26,10 +26,10 @@ O site não é indexável: toda página leva `noindex` e não há sitemap. O `no
 | Entrega | Estado | Fases |
 | --- | --- | --- |
 | Site estático não indexável, com aviso de IA | Planejado | 1 |
-| Pipeline de conteúdo: arquivo `.md` → PR → validação → merge automático → publicação | Planejado | 2 |
-| MVP em uso, com a rotina agendada | Planejado | 3 |
+| Pipeline de conteúdo: coleta nas fontes → geração pela API do Claude → PR → validação → merge automático → publicação | Planejado | 2 |
+| MVP em uso, com a geração agendada e notícias, diretrizes e alertas | Planejado | 3 |
 | Domínio `pedsletter.com.br` | Planejado | 4 |
-| Calculadoras sem fármaco | Planejado | 5 a 8 |
+| Calculadoras sem fármaco, curvas de crescimento e material de consulta | Planejado | 5 a 8 |
 | Revisão clínica, associação a um médico, indexação e calculadoras com fármaco | Futuro, só com decisão explícita | 9 |
 
 O MVP são as fases 0 a 3.
@@ -42,8 +42,8 @@ O MVP são as fases 0 a 3.
 | Hospedagem | Cloudflare Pages (`*.pages.dev` até a fase 4) | Gratuito |
 | Repositório e CI | GitHub, repositório público, GitHub Actions | Gratuito |
 | Analytics | Cloudflare Web Analytics, sem cookies | Gratuito |
-| Curadoria | Rotina agendada no Grok, segunda, quarta e sexta de manhã | Plano já em uso; F0-02 confirma |
-| Domínio | `pedsletter.com.br` | Único custo; fase 4 |
+| Geração | Script no GitHub Actions que chama a API do Claude (Sonnet 5.5), segunda, quarta e sexta de manhã ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)) | Até US$ 30 por mês; F0-08 mede |
+| Domínio | `pedsletter.com.br` | Pago; fase 4 |
 
 Detalhe em [`docs/architecture/visao-geral.md`](docs/architecture/visao-geral.md).
 

@@ -2,7 +2,7 @@
 
 Arquitetura **planejada** do PedsLetter, a partir do plano final aprovado em 2026-11-15. Nada aqui está implementado: o repositório tem só documentação e esqueleto. Cada parte passa a valer quando a issue correspondente for verificada, e este documento é atualizado com o que existir de fato.
 
-Decisões: [ADR-0002](../decisions/0002-publicacao-sem-revisao-e-sem-indexacao.md) (sem revisão, sem indexação) e [ADR-0003](../decisions/0003-formato-e-caminho-de-publicacao.md) (formato e caminho de publicação).
+Decisões: [ADR-0001](../decisions/0001-fontes-de-curadoria.md) (fontes), [ADR-0002](../decisions/0002-publicacao-sem-revisao-e-sem-indexacao.md) (sem revisão, sem indexação), [ADR-0003](../decisions/0003-formato-e-caminho-de-publicacao.md) (formato e caminho de publicação) e [ADR-0004](../decisions/0004-generation-by-claude-api.md) (geração pela API do Claude).
 
 ## Componentes
 
@@ -11,7 +11,9 @@ Decisões: [ADR-0002](../decisions/0002-publicacao-sem-revisao-e-sem-indexacao.m
 | Site | Astro + Markdown, TypeScript estrito | Gera HTML estático; um arquivo `.md` na pasta já é uma edição | F1-01, F1-04 |
 | Hospedagem | Cloudflare Pages | Publica a `main`; gera preview por branch | F1-02 |
 | Repositório e CI | GitHub público, GitHub Actions | Build, testes, validação de conteúdo e merge automático | F1-01, F2-05 |
-| Curadoria | Rotina agendada no Grok | Gera o arquivo da edição, segunda, quarta e sexta de manhã | F0-02, F3-01 |
+| Coleta | Script no GitHub Actions | Busca candidatos nas fontes do ADR-001 e descarta os já vistos | F2-11 |
+| Geração | API do Claude (Sonnet 5.5), chamada por script no GitHub Actions | Tria os candidatos e escreve os resumos em saída estruturada, segunda, quarta e sexta de manhã; até US$ 30 por mês | F2-12, F2-14, F3-01 |
+| Bot | GitHub App instalado só neste repositório | Abre o PR da edição com token gerado a cada execução | F2-10 |
 | Analytics | Cloudflare Web Analytics | Contagem de acessos, sem cookies | F1-09 |
 | Domínio | `pedsletter.com.br` | Endereço final; até a fase 4 o site fica em `*.pages.dev` | F4-01, F4-02 |
 
@@ -26,8 +28,8 @@ src/components/       aviso de IA, lista de artigos, <Calculator>
 src/pages/            home, edição, tags, sobre, aviso, privacidade, RSS
 src/calc/<id>/        definição da calculadora e cases.json (fase 5 em diante)
 src/data/who/         tabelas LMS geradas por script (fase 6)
-scripts/              validação de formato, links e duplicatas
-modelos/              modelo do arquivo e texto da rotina do Grok
+scripts/              validação de formato, links, duplicatas e fundamentação
+pipeline/             coleta, gerador, prompt e configuração das fontes (fase 2)
 docs/decisions/       decisões registradas
 .github/workflows/    CI e merge automático
 ```
@@ -38,7 +40,10 @@ Os diretórios são criados na fase que os usa. O plano previa `docs/adr/`; o re
 
 ```mermaid
 flowchart LR
-    A[Rotina no Grok<br>seg, qua e sex] -->|arquivo .md| B[Envio<br>bot pela API ou Filipe pelo upload]
+    S[Fontes do ADR-001] --> K[Coleta e deduplicação]
+    K --> A[API do Claude<br>seg, qua e sex]
+    A -->|saída estruturada| V[Script escreve o .md<br>e confere fundamentação e gasto]
+    V -->|arquivo .md| B[Envio<br>bot pelo GitHub App ou Filipe pelo upload]
     B -->|PR em src/content/posts/| C{Validação no CI<br>formato, links,<br>duplicatas, autor}
     C -->|passa| D[Merge automático]
     C -->|falha| E[PR fica aberto<br>GitHub avisa o Filipe]
@@ -48,14 +53,15 @@ flowchart LR
 
 | Etapa | Quem | Saída |
 | --- | --- | --- |
-| 1. Curadoria | Rotina no Grok | Arquivo `.md` |
-| 2. Envio | Grok Bot pela API do GitHub, ou Filipe pelo "Upload files" | PR com o arquivo em `src/content/posts/` |
-| 3. Validação | CI | Formato, links, duplicatas e autor do PR conferidos |
-| 4. Merge | Workflow, quando a validação passa | Arquivo na `main` |
-| 5. Publicação | Cloudflare Pages | Edição no ar |
-| 6. Falha | GitHub avisa o Filipe por e-mail | PR aberto, nada publicado |
+| 1. Coleta | Script, sem o modelo | Candidatos com URL, DOI, data e texto acessível |
+| 2. Geração | API do Claude, chamada pelo script | Saída estruturada, convertida em arquivo `.md` e conferida (números e links fundamentados na fonte, teto de gasto) |
+| 3. Envio | Bot pelo GitHub App, ou Filipe pelo "Upload files" | PR com o arquivo em `src/content/posts/` |
+| 4. Validação | CI | Formato, links, duplicatas e autor do PR conferidos |
+| 5. Merge | Workflow, quando a validação passa | Arquivo na `main` |
+| 6. Publicação | Cloudflare Pages | Edição no ar |
+| 7. Falha | GitHub avisa o Filipe; falha do workflow de geração abre issue (F2-15) | PR aberto ou nenhum PR, nada publicado |
 
-Se o Grok não conseguir chamar a API do GitHub (F0-02), o Filipe faz a etapa 2 à mão e o resto não muda.
+O modelo não tem ferramenta que escreva no repositório; o texto buscado é tratado como dado. Se a geração falhar, o Filipe pode subir um arquivo à mão na etapa 3 e o resto não muda.
 
 ### Formato da edição
 
@@ -75,6 +81,7 @@ artigos:
     url: "https://doi.org/..."
     publicadoEm: 2026-11-10
     tipo: "ensaio clínico randomizado"
+    categoria: artigo          # artigo | diretriz | alerta | noticia
     acesso: "texto completo"   # ou "apenas resumo"
 ---
 
@@ -98,17 +105,18 @@ Formato, links e duplicatas rodam no PR. Na `main` só entra arquivo válido, en
 | Links | Cada URL responde e cada DOI resolve | F2-03 |
 | Duplicatas | URL já publicada gera aviso; URL de edição retirada faz a validação falhar | F2-04 |
 | Autoria | Termos da lista de bloqueio fazem o CI falhar, também no texto do PR | F1-06 |
+| Fundamentação | Todo URL veio da coleta ou da busca da execução, de fonte do ADR-001; todo número do resumo aparece no texto da fonte | F2-13 |
 
 ### Merge automático
 
 O repositório é público, então qualquer pessoa abre PR. O workflow só faz o merge quando todas as condições valem (F2-05):
 
-- o autor está na lista permitida (Filipe ou o bot);
+- o autor está na lista permitida (Filipe ou o GitHub App do projeto);
 - o PR vem de branch do próprio repositório, não de fork;
 - o PR só adiciona arquivos em `src/content/posts/`;
 - a validação passou.
 
-Em PR de fork ou de autor fora da lista, o workflow não usa nenhum segredo. O token do bot dá acesso só a este repositório, só a conteúdo, e tem validade.
+Em PR de fork ou de autor fora da lista, o workflow não usa nenhum segredo. O token do App é gerado a cada execução, vale uma hora e dá acesso só a conteúdo e a pull requests deste repositório.
 
 ### Retirada
 
@@ -159,4 +167,4 @@ Calculadoras com fármaco só entram na fase 9. O catálogo completo está em [`
 | Privacidade | Nenhum dado pessoal coletado: sem cadastro, formulário, comentário ou e-mail; analytics sem cookies |
 | Acessibilidade | WCAG 2.2 AA: contraste de 4,5:1, uso por teclado, alvos de toque de 44 px. Nas calculadoras: rótulos, erros por `aria-describedby`, resultado em `aria-live` e `inputmode="decimal"` |
 | Performance | Zero JavaScript fora das calculadoras; 30 kB gzip por ilha; fontes do sistema; Lighthouse CI bloqueando merge abaixo de 95, exceto na categoria SEO |
-| Custo | Zero até a compra do domínio |
+| Custo | Só a API do Claude, até US$ 30 por mês, até a compra do domínio (ADR-004) |
