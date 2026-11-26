@@ -17,7 +17,6 @@ The project keeps:
 - English for replies to Filipe (he may write in Portuguese), code, identifiers, comments, docs, issues, PRs and commit messages.
 - Site content (posts, pages, UI text) is Brazilian Portuguese. The mandatory notices in §4 keep their exact Portuguese wording, in the README too.
 - Identifier exception: the names defined in the plan stay as they are, such as the frontmatter fields (`titulo`, `data`, `resumo`, `artigos`, `motivoRetirada`) and the `indexavel` key.
-- Docs written in Portuguese before 2026-11-24 stay in Portuguese until F0-06 translates them. Until then, edit each file in its current language.
 
 ## 3. Required workflow
 
@@ -167,7 +166,7 @@ Before the issue's last commit, check each item and update only what the evidenc
 - `ROADMAP.md`: issue status, a Changelog line, the update date, and the seen half of its Risk and Size.
 - `PROJECT_STATUS.md`: phase table, next steps and update date.
 - `docs/status-log.md`: a new entry.
-- An ADR or `DECISIONS.md` row becomes `aprovado` only with Filipe's decision or evidence from a verified issue.
+- An ADR or `DECISIONS.md` row becomes `approved` only with Filipe's decision or evidence from a verified issue.
 - `README.md` changes only when a phase closes.
 - No term forbidden by §4 in the diff, the commit message or the PR text.
 

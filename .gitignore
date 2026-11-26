@@ -1,7 +1,7 @@
-# Dependências
+# Dependencies
 node_modules/
 
-# Build e cache do Astro
+# Astro build and cache
 dist/
 .astro/
 
@@ -9,7 +9,7 @@ dist/
 .wrangler/
 .dev.vars
 
-# Ambiente e segredos
+# Environment and secrets
 .env
 .env.*
 !.env.example
@@ -21,7 +21,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Testes e relatórios
+# Tests and reports
 coverage/
 playwright-report/
 test-results/
@@ -30,12 +30,12 @@ test-results/
 # TypeScript
 *.tsbuildinfo
 
-# Editores e sistema
+# Editors and OS
 .vscode/*
 !.vscode/extensions.json
 .idea/
 .DS_Store
 Thumbs.db
 
-# Configuração local de agentes
+# Local agent configuration
 .claude/settings.local.json

@@ -1,49 +1,50 @@
-# Registro de decisões
+# Decision log
 
-Índice curto das decisões do PedsLetter. **Motivo, alternativas, consequências e evidência ficam nos ADRs** em [`docs/decisions/`](docs/decisions/).
+Short index of PedsLetter's decisions. **Rationale, alternatives, consequences and evidence live in the ADRs** in [`docs/decisions/`](docs/decisions/).
 
-| Registro | Referência |
+| Log | Reference |
 | --- | --- |
-| Contém | Índice de decisões e estado |
-| Detalhe | [`docs/decisions/`](docs/decisions/) (um ADR por decisão) |
-| Relacionados | `PROJECT_STATUS.md`, `ROADMAP.md`, `docs/project-genesis.md`, `AGENTS.md` |
+| Contains | Decision index and state |
+| Detail | [`docs/decisions/`](docs/decisions/) (one ADR per decision) |
+| Related | `PROJECT_STATUS.md`, `ROADMAP.md`, `docs/project-genesis.md`, `AGENTS.md` |
 
-**Como usar:** leia a tabela para ver a direção e o que já existe; abra o ADR para o porquê. **Decisão** é o que foi escolhido ou proposto; **Implementado** é o que está verificado no repositório, com evidência no ADR ou no documento de arquitetura e em `docs/status-log.md`.
+**How to use it:** read the table for the direction and what already exists; open the ADR for the why. **Decision** is what was chosen or proposed; **Implemented** is what is verified in the repository, with evidence in the ADR or the architecture doc and in `docs/status-log.md`.
 
-## Ciclo de vida
+## Lifecycle
 
-| Estado | Significado |
+| State | Meaning |
 | --- | --- |
-| `pendente` | Decisão aberta, à espera de informação; o ADR registra o que falta |
-| `proposto` | Opção preferida para planejar; não vincula até ser aprovada |
-| `aprovado` | Aceito por decisão do Filipe ou com evidência de issue verificada |
-| `substituído` | Trocado por um ADR posterior |
-| `rejeitado` | Recusado; mantido para auditoria |
+| `pending` | Open decision, waiting for information; the ADR records what is missing |
+| `proposed` | Preferred option for planning; not binding until approved |
+| `approved` | Accepted by Filipe's decision or with evidence from a verified issue |
+| `superseded` | Replaced by a later ADR |
+| `rejected` | Turned down; kept for the record |
 
-**Regras:** nenhum ADR cita profissional de saúde; quando o estado ou a implementação muda, atualize este índice e o ADR juntos.
+**Rules:** no ADR names a health professional; when the state or the implementation changes, update this index and the ADR together.
 
-## Índice
+## Index
 
-| ID | Tema | Decisão | Implementado | Estado | ADR |
+| ID | Topic | Decision | Implemented | State | ADR |
 | --- | --- | --- | --- | --- | --- |
-| ADR-001 | Fontes de curadoria | Lista fechada em duas faixas: periódicos por feed e PubMed; entidades e notícias por busca restrita a domínios. Lista inicial aceita para começar, à espera da revisão do Filipe | — | `proposto` | [ADR-0001](docs/decisions/0001-fontes-de-curadoria.md) |
-| ADR-002 | Publicação sem revisão e sem indexação | O que passa na validação automática é publicado; `noindex` em tudo, sem sitemap; aviso de IA; retirada simples. Revisão, associação a um médico e indexação ficam para a fase 9 | — | `aprovado` | [ADR-0002](docs/decisions/0002-publicacao-sem-revisao-e-sem-indexacao.md) |
-| ADR-003 | Formato e caminho de publicação | Markdown com frontmatter YAML, um arquivo por edição; PR aberto pelo GitHub App do projeto, com merge automático para autores permitidos; retirada por `status: retirado`. Aprovação depende de F2-09 | — | `proposto` | [ADR-0003](docs/decisions/0003-formato-e-caminho-de-publicacao.md) |
-| ADR-004 | Geração pela API do Claude | Script no GitHub Actions chama Sonnet 5.5 sobre candidatos coletados das fontes do ADR-001; saída estruturada, fundamentação conferida, até US$ 30 por mês. Substitui a rotina do Grok | — | `aprovado` | [ADR-0004](docs/decisions/0004-generation-by-claude-api.md) |
+| ADR-001 | Curation sources | Closed list in two tiers: journals by feed and PubMed; organizations and news by domain-restricted search. Initial list accepted to start, awaiting Filipe's review | — | `proposed` | [ADR-0001](docs/decisions/0001-curation-sources.md) |
+| ADR-002 | Publishing without review or indexing | What passes automatic validation is published; `noindex` everywhere, no sitemap; AI notice; simple withdrawal. Review, association with a physician and indexing wait for phase 9 | — | `approved` | [ADR-0002](docs/decisions/0002-publishing-without-review-or-indexing.md) |
+| ADR-003 | Publishing format and path | Markdown with YAML frontmatter, one file per edition; PR opened by the project's GitHub App, auto-merged for allowed authors; withdrawal by `status: retirado`. Approval depends on F2-09 | — | `proposed` | [ADR-0003](docs/decisions/0003-publishing-format-and-path.md) |
+| ADR-004 | Generation by the Claude API | A GitHub Actions script calls Sonnet 5.5 on candidates collected from the ADR-001 sources; structured output, grounding checked, up to US$30 a month. Replaces the Grok routine | — | `approved` | [ADR-0004](docs/decisions/0004-generation-by-claude-api.md) |
 
-`—` significa ainda não implementado ou ainda não verificado no repositório.
+`—` means not implemented yet or not verified in the repository yet.
 
-## Como registrar uma decisão nova
+## How to record a new decision
 
-1. Copie [`docs/decisions/_template.md`](docs/decisions/_template.md) para `docs/decisions/NNNN-slug-curto.md`.
-2. Preencha contexto, decisão, alternativas, consequências, evidência e gatilhos de revisão.
-3. Acrescente uma linha ao índice acima.
-4. Em `PROJECT_STATUS.md` → **Decisões ativas**, liste só as que condicionam a fase atual ou foram aprovadas nela. Não copie o índice inteiro.
-5. Quando a escolha estiver construída e verificada, preencha **Implementado** com o que existe de fato.
+1. Copy [`docs/decisions/_template.md`](docs/decisions/_template.md) to `docs/decisions/NNNN-short-slug.md`.
+2. Fill in context, decision, alternatives, consequences, evidence and review triggers.
+3. Add a row to the index above.
+4. In `PROJECT_STATUS.md` → **Active decisions**, list only those that shape the current phase or were approved in it. Do not copy the whole index.
+5. Once the choice is built and verified, fill **Implemented** with what actually exists.
 
 ## Changelog
 
-| Data | Mudança |
+| Date | Change |
 | --- | --- |
-| 2026-11-25 | ADR-004 `aprovado` (decisão do Filipe): geração pela API do Claude no lugar do Grok. ADR-001 passa a `proposto`, com a lista inicial em duas faixas. ADR-003 troca o envio do Grok Bot pelo GitHub App |
-| 2026-11-15 | Registro inicial: ADR-001 `pendente`, ADR-002 `aprovado` (decisão do plano final), ADR-003 `proposto` |
+| 2026-11-26 | F0-06: index, ADRs and states translated to English (`pendente` → `pending`, `proposto` → `proposed`, `aprovado` → `approved`, `substituído` → `superseded`, `rejeitado` → `rejected`); ADR files 0001 to 0003 renamed to English slugs. No decision changed |
+| 2026-11-25 | ADR-004 `approved` (Filipe's decision): generation by the Claude API instead of Grok. ADR-001 becomes `proposed`, with the initial two-tier list. ADR-003 swaps the Grok Bot submission for the GitHub App |
+| 2026-11-15 | Initial log: ADR-001 `pending`, ADR-002 `approved` (final-plan decision), ADR-003 `proposed` |

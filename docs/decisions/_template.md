@@ -1,43 +1,43 @@
-# ADR-NNNN: Título
+# ADR-NNNN: Title
 
-| Campo | Valor |
+| ADR-NNNN | Detail |
 | --- | --- |
-| Estado | pendente \| proposto \| aprovado \| substituído \| rejeitado |
-| Aberto em | AAAA-MM-DD |
-| Decidido em | AAAA-MM-DD ou — |
-| Responsável | Papel (sem nome de profissional de saúde) |
-| ID no índice | ADR-NNN |
-| Issues relacionadas | F0-xx, … |
-| Substitui | — \| link para o ADR anterior |
-| Substituído por | — \| link para o ADR posterior |
+| State | pending \| proposed \| approved \| superseded \| rejected |
+| Opened | YYYY-MM-DD |
+| Decided | YYYY-MM-DD or — |
+| Owner | Role (no health professional's name) |
+| Index ID | ADR-NNN |
+| Related issues | F0-xx, … |
+| Replaces | — \| link to the earlier ADR |
+| Replaced by | — \| link to the later ADR |
 
-## Contexto e problema
+## Context and problem
 
-Que restrição ou pergunta força a escolha? Quem é afetado?
+What constraint or question forces the choice? Who is affected?
 
-## Decisão
+## Decision
 
-O que será feito, em um parágrafo claro.
+What will be done, in one clear paragraph.
 
-## Alternativas consideradas
+## Alternatives considered
 
-| Opção | Prós | Contras | Por que não (se rejeitada) |
+| Option | Pros | Cons | Why not (if rejected) |
 | --- | --- | --- | --- |
 | A | … | … | … |
 | B | … | … | … |
 
-## Consequências
+## Consequences
 
-Efeitos positivos, negativos e o trabalho que a escolha cria.
+Positive and negative effects, and the work the choice creates.
 
-## Evidência
+## Evidence
 
-Comandos, resultados e links duráveis (`docs/status-log.md` ou documentos de arquitetura). Não use o `PROJECT_STATUS.md` como única citação: ele é reescrito a cada fase. Escreva "nenhuma ainda" enquanto o ADR estiver proposto.
+Commands, results and durable links (`docs/status-log.md` or architecture docs). Do not cite `PROJECT_STATUS.md` alone: it is rewritten every phase. Write "none yet" while the ADR is proposed.
 
-## Rever quando
+## Review when
 
-Gatilhos que reabrem a decisão.
+Triggers that reopen the decision.
 
-## Notas
+## Notes
 
-Opcional: limitações conhecidas ou trabalho pendente.
+Optional: known limitations or pending work.

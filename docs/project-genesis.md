@@ -1,134 +1,136 @@
-# Gênese do projeto
+# Project genesis
 
-Resumo do plano final do PedsLetter, aprovado pelo Filipe em 2026-11-15. O plano completo fica fora do repositório. Este documento é histórico e não é fonte de regras: as regras estão no [`AGENTS.md`](../AGENTS.md), o escopo no [`ROADMAP.md`](../ROADMAP.md) e o trabalho atual no [`PROJECT_STATUS.md`](../PROJECT_STATUS.md).
+Summary of PedsLetter's final plan, approved by Filipe on 2026-11-15. The full plan lives outside the repository. This document is history, not a source of rules: the rules are in [`AGENTS.md`](../AGENTS.md), the scope in [`ROADMAP.md`](../ROADMAP.md) and the current work in [`PROJECT_STATUS.md`](../PROJECT_STATUS.md).
 
-O apêndice do plano, com as regras para associar um médico ao site, não foi trazido. Ele é contexto de F9-02 e entra no repositório nessa issue.
+The plan's appendix, with the rules for associating a physician with the site, was not brought over. It is context for F9-02 and enters the repository in that issue.
 
-## 1. Objetivo
+## 1. Goal
 
-Um site de resumos de literatura pediátrica gerados por IA, publicado três vezes por semana, para uso pessoal, com calculadoras clínicas em seguida.
+A site of AI-generated summaries of pediatric literature, published three times a week, for personal use, with clinical calculators afterwards.
 
-| Usuário | Necessidade | Implicação |
+| User | Need | Implication |
 | --- | --- | --- |
-| Usuário principal (médico) | Ver o que saiu de relevante sem garimpar; calcular rápido | Resumo curto com link para a fonte; calculadoras no celular |
-| Filipe | Operar sem trabalho manual recorrente; mostrar o trabalho | Publicação automática, retirada simples e repositório público |
+| Main user (physician) | See what relevant came out without digging; calculate fast | Short summary with a link to the source; calculators on the phone |
+| Filipe | Run it with no recurring manual work; show the work | Automatic publishing, simple withdrawal and a public repository |
 
-## 2. Decisões incorporadas
+## 2. Decisions built in
 
-| Decisão | Efeito |
+| Decision | Effect |
 | --- | --- |
-| O site não cita nenhum profissional | Sem assinatura, sem autoria, sem identificação profissional |
-| Texto no genérico "médico" | Vale para site, repositório, issues, ADRs e commits |
-| Repositório público | CI gratuito; nada que identifique alguém entra em arquivo, issue, PR ou commit |
-| Sem etapa de revisão | O que passar na validação automática é publicado |
-| Publicado pode ser retirado depois | Mecanismo de retirada no ADR-003 |
-| Sem indexação, e o `noindex` basta | `noindex` em tudo, sem sitemap, sem Search Console, sem login |
-| Quem sobe o arquivo: Filipe ou o Grok Bot | Mesmo caminho para os dois: PR com merge automático |
-| Fontes de curadoria informadas depois | ADR próprio (F0-03) |
-| Rotina no próprio dia | Segunda, quarta e sexta de manhã, com publicação direta |
-| Aviso de curadoria por IA | Em toda edição, na home e no README |
-| Domínio depois da fase 3 | Fase 4, após validar o uso do MVP |
-| Curvas de prematuros validadas no início da issue | F8-03 começa por essa validação |
-| Associar um médico, revisar e indexar | Fase 9 |
-| Mantidas | Custo zero, sem e-mail, sem cadastro, sem publicidade, sem PALS, público médico |
+| The site names no professional | No byline, no authorship, no professional identification |
+| Text uses the generic "médico" | Applies to the site, repository, issues, ADRs and commits |
+| Public repository | Free CI; nothing that identifies anyone enters a file, issue, PR or commit |
+| No review step | What passes automatic validation is published |
+| What is published can be withdrawn later | Withdrawal mechanism in ADR-003 |
+| No indexing, and `noindex` is enough | `noindex` everywhere, no sitemap, no Search Console, no login |
+| Who uploads the file: Filipe or the Grok Bot | The same path for both: PR with automatic merge |
+| Curation sources provided later | Their own ADR (F0-03) |
+| Routine runs on the day itself | Monday, Wednesday and Friday mornings, with direct publishing |
+| AI curation notice | On every edition, on the home page and in the README |
+| Domain after phase 3 | Phase 4, after validating MVP use |
+| Preterm charts validated at the start of the issue | F8-03 starts with that validation |
+| Associate a physician, review and index | Phase 9 |
+| Kept | Zero cost, no e-mail, no sign-up, no ads, no PALS, physician audience |
 
-O repositório público muda duas coisas além do custo:
+The public repository changes two things besides cost:
 
-- **O merge automático precisa de lista de autores.** Qualquer pessoa abre PR, então o workflow só publica PRs do Filipe ou do bot.
-- **O conteúdo fica achável pelo GitHub.** O `noindex` cobre o site, não o repositório. O README leva o mesmo aviso de conteúdo gerado por IA.
+- **Automatic merge needs an author list.** Anyone can open a PR, so the workflow only publishes PRs from Filipe or the bot.
+- **The content can be found through GitHub.** `noindex` covers the site, not the repository. The README carries the same AI-generated content notice.
 
-## 3. Escopo
+## 3. Scope
 
-**MVP: fases 0 a 3, custo zero**
+**MVP: phases 0 to 3, zero cost**
 
-- Site estático em `*.pages.dev`, não indexável.
-- Home com as edições recentes, página de edição, tags e RSS.
-- Formato de arquivo para o Grok, validado automaticamente.
-- Publicação automática por PR e retirada por mudança de status.
-- Aviso de conteúdo gerado por IA e não validado.
+- Static site on `*.pages.dev`, not indexable.
+- Home page with recent editions, edition page, tags and RSS.
+- File format for Grok, validated automatically.
+- Automatic publishing by PR and withdrawal by a status change.
+- Notice that the content is AI-generated and unvalidated.
 
-**Depois do MVP**
+**After the MVP**
 
-- Domínio `pedsletter.com.br` (fase 4), ainda sem indexação.
-- Calculadoras sem fármaco (fases 5 a 8).
-- Revisão clínica, associação a um médico, indexação e calculadoras com fármaco (fase 9).
+- `pedsletter.com.br` domain (phase 4), still without indexing.
+- Drug-free calculators (phases 5 to 8).
+- Clinical review, association with a physician, indexing and drug calculators (phase 9).
 
-## 4. Métricas
+## 4. Metrics
 
-- **Cadência:** edição publicada em pelo menos 10 de 12 datas previstas por mês.
-- **Automação:** pelo menos 80% das edições publicadas sem intervenção do Filipe.
-- **Qualidade:** zero link quebrado publicado; número de edições retiradas por mês.
-- **Uso:** o usuário principal lê os resumos ao menos 3 vezes por semana e diz se atendem.
-- **Custo:** zero até a compra do domínio.
-- **Técnica:** Lighthouse de 95 ou mais.
+- **Cadence:** an edition published on at least 10 of the 12 scheduled dates a month.
+- **Automation:** at least 80% of editions published without Filipe stepping in.
+- **Quality:** zero broken links published; number of editions withdrawn per month.
+- **Use:** the main user reads the summaries at least 3 times a week and says whether they help.
+- **Cost:** zero until the domain is bought.
+- **Technical:** Lighthouse 95 or higher.
 
-SEO só vira métrica na fase 9.
+SEO becomes a metric only in phase 9.
 
-## 5. Stack e custo
+## 5. Stack and cost
 
-Astro + Markdown no Cloudflare Pages, com GitHub público e CI, Cloudflare Web Analytics sem cookies e a rotina agendada no Grok. Tudo gratuito; o domínio `pedsletter.com.br`, na fase 4, é o único custo. Alternativas e o desenho completo estão em [`architecture/visao-geral.md`](architecture/visao-geral.md).
+Astro + Markdown on Cloudflare Pages, with public GitHub and CI, cookieless Cloudflare Web Analytics and the scheduled routine on Grok. All free; the `pedsletter.com.br` domain, in phase 4, is the only cost. Alternatives and the full design are in [`architecture/overview.md`](architecture/overview.md).
 
-## 6. Como um resumo vira post
+## 6. How a summary becomes a post
 
-Um arquivo Markdown com frontmatter YAML por edição chega por PR, passa pela validação no CI, entra na `main` por merge automático e é publicado pelo Cloudflare Pages. Uma edição sai do ar por `status: retirado`, por remoção do arquivo ou por reversão do deploy. Detalhe em [`architecture/visao-geral.md`](architecture/visao-geral.md) e no [ADR-0003](decisions/0003-formato-e-caminho-de-publicacao.md). As regras da rotina do Grok estão no `ROADMAP.md`, fase 2.
+One Markdown file with YAML frontmatter per edition arrives by PR, passes CI validation, reaches `main` by automatic merge and is published by Cloudflare Pages. An edition comes down by `status: retirado`, by deleting the file or by reverting the deploy. Details in [`architecture/overview.md`](architecture/overview.md) and in [ADR-0003](decisions/0003-publishing-format-and-path.md). The Grok routine rules are in `ROADMAP.md`, phase 2.
 
-## 7. Catálogo de calculadoras
+## 7. Calculator catalog
 
-| # | Calculadora | Valor | Esforço | Fonte de referência | Fase |
+Effort: S small, M medium, L large.
+
+| # | Calculator | Value | Effort | Reference source | Phase |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Hidratação de manutenção | Alto | P | Holliday e Segar, Pediatrics 1957; nota sobre fluido isotônico, AAP, Feld et al., Pediatrics 2018 | 5 |
-| 2 | Superfície corporal e IMC | Médio | P | Mosteller, NEJM 1987 | 6 |
-| 3 | Dose por peso genérica | Alto | P | Aritmética; parâmetros informados pelo usuário | 6 |
-| 4 | Curva OMS 0–5 anos | Alto | G | WHO Child Growth Standards 2006, tabelas LMS oficiais | 6 |
-| 5 | Curva OMS 5–19 anos | Alto | M | WHO Reference 2007 (de Onis et al., Bull WHO 2007) | 7 |
-| 6 | Idade corrigida do prematuro | Médio | P | SBP, Seguimento ambulatorial do prematuro de risco | 7 |
-| 7 | Perda de peso do recém-nascido (%) | Médio | P | Aritmética; limiares de SBP e AAP | 7 |
-| 8 | Estatura-alvo familiar | Médio | P | Tanner et al., Arch Dis Child 1970 | 7 |
-| 9 | TFG estimada (Schwartz) | Médio | P | Schwartz et al., JASN 2009 | 7 |
-| 10 | Reidratação oral, planos A, B e C | Médio | M | Ministério da Saúde, Manejo do paciente com diarreia | 8 |
-| 11 | Curvas de prematuros | Médio | G | Intergrowth-21st (Villar et al., Lancet 2014), a validar | 8 |
-| 12 | Percentil de pressão arterial | Médio | G | AAP 2017 (Flynn et al., Pediatrics) | 8 |
-| 13 | Bilirrubina e fototerapia | Médio | G | AAP 2022 (Kemper et al., Pediatrics) | 8 |
-| 14 | Curva CDC 2000 | Baixo no Brasil | M | CDC Growth Charts 2000, arquivos LMS | 8 |
-| 15 | Antitérmicos | Alto | M | SBP como padrão; bula ANVISA, Harriet Lane e BNFc como comparação | 9 |
-| 16 | Antibióticos comuns por peso | Alto | M | SBP como padrão; bula ANVISA e Harriet Lane como comparação | 9 |
+| 1 | Maintenance fluids | High | S | Holliday and Segar, Pediatrics 1957; note on isotonic fluid, AAP, Feld et al., Pediatrics 2018 | 5 |
+| 2 | Body surface area and BMI | Medium | S | Mosteller, NEJM 1987 | 6 |
+| 3 | Generic weight-based dose | High | S | Arithmetic; parameters entered by the user | 6 |
+| 4 | WHO chart 0–5 years | High | L | WHO Child Growth Standards 2006, official LMS tables | 6 |
+| 5 | WHO chart 5–19 years | High | M | WHO Reference 2007 (de Onis et al., Bull WHO 2007) | 7 |
+| 6 | Preterm corrected age | Medium | S | SBP, Seguimento ambulatorial do prematuro de risco | 7 |
+| 7 | Newborn weight loss (%) | Medium | S | Arithmetic; SBP and AAP thresholds | 7 |
+| 8 | Mid-parental target height | Medium | S | Tanner et al., Arch Dis Child 1970 | 7 |
+| 9 | Estimated GFR (Schwartz) | Medium | S | Schwartz et al., JASN 2009 | 7 |
+| 10 | Oral rehydration, plans A, B and C | Medium | M | Ministério da Saúde, Manejo do paciente com diarreia | 8 |
+| 11 | Preterm growth charts | Medium | L | Intergrowth-21st (Villar et al., Lancet 2014), to be validated | 8 |
+| 12 | Blood pressure percentile | Medium | L | AAP 2017 (Flynn et al., Pediatrics) | 8 |
+| 13 | Bilirubin and phototherapy | Medium | L | AAP 2022 (Kemper et al., Pediatrics) | 8 |
+| 14 | CDC 2000 chart | Low in Brazil | M | CDC Growth Charts 2000, LMS files | 8 |
+| 15 | Antipyretics | High | M | SBP as the default; ANVISA package insert, Harriet Lane and BNFc for comparison | 9 |
+| 16 | Common antibiotics by weight | High | M | SBP as the default; ANVISA package insert and Harriet Lane for comparison | 9 |
 
-As referências acima são autores de artigos e entidades citados como fonte das fórmulas; não são pessoas ligadas ao site.
+The references above are article authors and organizations cited as the source of the formulas; they are not people connected to the site.
 
-**Regra de fontes para doses** (vale a partir da fase 9): a SBP é o padrão; o conflito entre fontes fica visível, em bloco que mostra cada fonte e o que difere; se a SBP não se posicionar, vale a bula da ANVISA, e a página diz isso.
+**Source rule for doses** (from phase 9): SBP is the default; a conflict between sources stays visible, in a block that shows each source and what differs; if SBP takes no position, the ANVISA package insert applies, and the page says so.
 
-## 8. Segurança do conteúdo
+## 8. Content safety
 
-- **Aviso em toda edição, na home e no README:** "Curadoria e resumos gerados por IA, sem revisão por profissional de saúde. Confira sempre a fonte original."
-- **Aviso de público:** "Conteúdo destinado a médicos e demais profissionais de saúde."
-- **Artigo inventado ou link errado:** a validação confere se cada URL responde e se cada DOI resolve.
-- **Número errado no resumo:** nada automático pega. O aviso, o link para a fonte e a retirada são a mitigação.
-- **Alcance limitado:** o site não é indexado nem divulgado.
-- **Direito autoral:** resumo em palavras próprias e link para a fonte.
+- **Notice on every edition, on the home page and in the README:** "Curadoria e resumos gerados por IA, sem revisão por profissional de saúde. Confira sempre a fonte original."
+- **Audience notice:** "Conteúdo destinado a médicos e demais profissionais de saúde."
+- **Invented article or wrong link:** validation checks that each URL responds and each DOI resolves.
+- **Wrong number in a summary:** nothing automatic catches it. The notice, the link to the source and withdrawal are the mitigation.
+- **Limited reach:** the site is neither indexed nor promoted.
+- **Copyright:** summary in our own words and a link to the source.
 
-As regras das calculadoras, de privacidade, de acessibilidade e de performance estão em [`architecture/visao-geral.md`](architecture/visao-geral.md).
+The rules for calculators, privacy, accessibility and performance are in [`architecture/overview.md`](architecture/overview.md).
 
-## 9. Riscos
+## 9. Risks
 
-- **Informação médica errada no ar.** É o risco aceito desta versão. Mitigação: aviso de IA, link para a fonte, site não indexado e retirada simples.
-- **O repositório público é achável.** Os resumos aparecem no GitHub e em buscadores, mesmo com o site em `noindex`. Mitigação: aviso de IA no README; o risco é aceito em troca da visibilidade.
-- **PR de terceiros.** Mitigação: lista de autores e bloqueio de forks em F2-05.
-- **O histórico do Git não esquece.** Edição retirada ou nome escrito por engano continuam no histórico. Mitigação: F1-06 barra antes do merge; reescrever o histórico fica como último recurso.
-- **Nome de profissional entra por descuido.** Mitigação: F1-06 e a regra do genérico "médico".
-- **O bot publica algo fora do padrão.** Mitigação: validação de formato e links, e merge restrito à pasta de posts.
-- **Token do bot vazado.** Mitigação: acesso só a este repositório, com validade; revogação descrita no guia de operação.
-- **A rotina do Grok não entrega o que o plano supõe.** Mitigação: F0-02 testa antes; o envio manual cobre.
-- **Calculadora sem validação clínica.** Mitigação: casos de fonte publicada, selo visível e nenhuma tabela de fármacos antes da fase 9.
-- **Direito autoral.** Mitigação: resumo em palavras próprias e link para a fonte.
-- **Regulatório ANVISA.** Antes de F9-05, checar a RDC 657/2022 e a RDC 96/2008.
+- **Wrong medical information goes live.** It is the accepted risk of this version. Mitigation: AI notice, link to the source, non-indexed site and simple withdrawal.
+- **The public repository can be found.** The summaries show up on GitHub and in search engines, even with the site on `noindex`. Mitigation: AI notice in the README; the risk is accepted in exchange for visibility.
+- **Third-party PRs.** Mitigation: author list and fork block in F2-05.
+- **Git history does not forget.** A withdrawn edition or a name written by mistake stays in the history. Mitigation: F1-06 blocks it before merge; rewriting history is the last resort.
+- **A professional's name slips in.** Mitigation: F1-06 and the generic "médico" rule.
+- **The bot publishes something off-format.** Mitigation: format and link validation, and merge restricted to the posts folder.
+- **Leaked bot token.** Mitigation: access to this repository only, with an expiry; revocation described in the operations guide.
+- **The Grok routine does not deliver what the plan assumes.** Mitigation: F0-02 tests it first; manual upload covers it.
+- **Calculator without clinical validation.** Mitigation: cases from a published source, a visible badge and no drug tables before phase 9.
+- **Copyright.** Mitigation: summary in our own words and a link to the source.
+- **ANVISA regulation.** Before F9-05, check RDC 657/2022 and RDC 96/2008.
 
-## 10. Ressalvas do plano
+## 10. Plan caveats
 
-- Três pontos são recomendação de quem escreveu o plano, aceitos na aprovação: calculadoras com fármaco só na fase 9, resumos sem recomendação de dose e publicação por PR com merge automático.
-- O que a rotina agendada do Grok consegue fazer não foi verificado. F0-02 testa.
-- Os limites dos planos gratuitos foram citados de memória. F0-01 confere.
+- Three points are recommendations by the plan's author, accepted on approval: drug calculators only in phase 9, summaries without dose recommendations, and publishing by PR with automatic merge.
+- What the Grok scheduled routine can do was not verified. F0-02 tests it.
+- The free-plan limits were cited from memory. F0-01 checks them.
 
-## 11. Perguntas em aberto
+## 11. Open questions
 
-1. **Fontes de curadoria:** a lista entra no ADR-001 quando o Filipe informar; bloqueia F2-02.
-2. **Doses nos resumos:** a rotina não escreve recomendação de dose enquanto não houver revisão. A regra vale até o Filipe dizer o contrário.
+1. **Curation sources:** the list enters ADR-001 when Filipe provides it; it blocks F2-02.
+2. **Doses in the summaries:** the routine writes no dose recommendation until there is review. The rule holds until Filipe says otherwise.
