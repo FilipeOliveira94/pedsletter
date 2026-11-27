@@ -32,7 +32,7 @@ For each task:
 8. Run the review gates in "Agent workflow" below and fix blocking findings.
 9. Update the docs and `PROJECT_STATUS.md` (current phase only; history goes to `docs/status-log.md`).
 10. Commit, push the branch, open the PR with a summary and read the CI. Report to Filipe: changed files, commands run, results, reviewer verdicts, limitations and the next step.
-11. Filipe reviews the PR, merges it and deletes the branch. The agent never merges.
+11. Filipe reviews the PR and merges it. GitHub deletes the merged branch automatically. The agent never merges.
 
 ### Size and risk (in force since 2026-11-24)
 
@@ -46,7 +46,7 @@ For each task:
 
 | Role | Responsibility |
 | --- | --- |
-| Filipe | Picks the issue, approves plans, reviews the PR, merges it and deletes the branch. Confirms any switch to Fable. |
+| Filipe | Picks the issue, approves plans, reviews the PR and merges it (GitHub deletes the merged branch automatically). Confirms any switch to Fable. |
 | Claude in T3 Code (Claude Opus 5.5) | Per issue: rating, plan, implementation on a new branch from an up-to-date `main`, checks, tests and review gates, commit, push of the branch and PR with a summary. Never merges. |
 | Review subagents (Sonnet 5.5) | `po-reviewer` checks the plan and the finished branch of every issue rated above Sm + Lo against the acceptance; `code-reviewer` checks the branch for bugs, security flaws and regressions. They only report: they never edit, merge or push. |
 
@@ -179,7 +179,7 @@ The prompts to plan, implement and close an issue are in `docs/agent-workflow.md
 - A PR resolves one issue and cites its ID and the acceptance checked.
 - Conventional Commits, in English.
 - Filipe's order to implement authorizes the agent to commit, push the feature branch, open the PR and read the CI. Never push to `main`.
-- Merge, branch deletion and CD pipelines are Filipe's. No agent or bot merges.
+- Merge and CD pipelines are Filipe's; GitHub deletes the merged branch automatically. No agent or bot merges or deletes a branch.
 - Project exception, not an agent one: content PRs in `src/content/posts/` are published by the auto-merge workflow when validation passes (F2-05, ADR-003).
 - A PR that mixes content and code follows the normal flow.
 
