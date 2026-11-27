@@ -6,6 +6,24 @@ Newest entries first.
 
 ---
 
+### 2026-11-27 — F0-09: plan-review decisions recorded
+
+On 2026-11-26 four agents reviewed the plan: three critics (security and risk, performance, minimalist) and one that combined their findings. Filipe decided D1 otherwise: the main user does not see the F0-08 trial edition, the MVP goes live without the main user's check, and the main user's answer stays in F3-03. He approved D2 to D13 as proposed. The combined plan, with his decisions, is in [`plan-review-2026-11-26.md`](plan-review-2026-11-26.md).
+
+D9 had approved a job commit with the Actions `GITHUB_TOKEN`. GitHub's docs show that a ruleset cannot exempt that token, so the commit could not pass the "PR required" rule planned for F0-01. On 2026-11-27 Filipe chose the GitHub App PR with GitHub's auto-merge instead: no custom merge workflow, and the App's private key stays. ADR-003 now records that path and stays `proposed`.
+
+What changed in the docs:
+
+- `ROADMAP.md`: merged, cut, deferred and new issues, raised ratings, restated metrics, gates G0 to G3, phase 4 folded into phase 9, and F0-09 and F0-10 added.
+- `DECISIONS.md`: a Waivers section with W1, the phase-gate waiver.
+- ADR-004: amended for Python from the F0-08 trial, the budget split and no numbers in tier 2 items.
+- `AGENTS.md`: the domain moves to phase 9 in §1; §4 now covers posts about the project; the line on removing a pushed name now matches GitHub's docs; the publishing, fork and analytics lines follow the new path.
+- The architecture overview: the new path and checks.
+
+F0-08's own changes from D2 go in F0-08's PR. Docs only. The checks were `make docs-lint`, a relative-link check, a roadmap consistency check and a §4 search of the diff; the PR has their output.
+
+---
+
 ### 2026-11-26 — F0-03: ADR-001 approved
 
 Filipe approved the ADR-001 source list as it stands, to be reviewed again before the MVP closes. ADR-001 is now `approved`, and the review is a new issue, F3-06 (Lo, Sm), in phase 3 after the two weeks of operation (F3-02) and before the usage decision (F3-03). The domains and feeds are still unchecked; F2-11 checks them. Docs only; `make docs-lint` passes.
