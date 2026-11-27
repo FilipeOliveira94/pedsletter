@@ -5,10 +5,10 @@
 | State | `approved` |
 | Opened | 2026-11-25 |
 | Decided | 2026-11-25 (Filipe, in the F0-07 planning thread) |
-| Amended | 2026-11-26 (Filipe's decisions D3, D6 and D7 on the plan review; recorded in F0-09) |
+| Amended | 2026-11-26 (Filipe's decisions D3, D6 and D7 on the plan review; recorded in F0-09); 2026-11-27 (gate G0: two calls and the edition slots; recorded in F0-08) |
 | Owner | Filipe (product owner) |
 | Index ID | ADR-004 |
-| Related issues | F0-07, F0-08, F0-09, F2-05, F2-09, F2-11 to F2-13, F3-02, F3-05, F3-07 |
+| Related issues | F0-07, F0-08, F0-09, F2-05, F2-09, F2-11 to F2-13, F3-02, F3-05, F3-07, F7-08 |
 | Replaces | The Grok scheduled routine from the final plan (F0-02, F2-06) |
 | Replaced by | — |
 
@@ -24,7 +24,7 @@ The site publishes without review (ADR-002), so whatever generates the edition m
 - **Where it runs:** a scheduled GitHub Actions workflow, Monday, Wednesday and Friday morning (F2-09). The Anthropic API key exists only as a secret of that workflow.
 - **What it does:**
   1. Collect candidates from the ADR-001 sources: journals through their feeds and PubMed, and bodies and news through web search restricted to the ADR-001 domains. Collection is deterministic, keeps a record of URLs already seen, and runs without the model (F2-11).
-  2. Send the candidates to the model, which triages them and writes the summaries. It returns structured output only, never a file or a command (F2-12).
+  2. Send the candidates to the model, which triages them and writes the summaries. It returns structured output only, never a file or a command (F2-12). Two calls (amended 2026-11-27, G0): the first searches the tier 2 domains and returns notes; the second ranks the candidates and the search items and writes the summaries. The script, not the model, fills the edition slots from the ranking and keeps the selection log.
   3. Turn that output into the edition's `.md` file and check each item before any push (F2-13): the link matches a candidate of the run and resolves, tier 1 numbers appear in the abstract or fetched text, tier 2 items carry no numbers, a dose screen and the F1-06 names check pass. A failing item is dropped and named.
   4. Open the PR through the project's GitHub App and turn on GitHub's auto-merge (F2-05). From there, the ADR-003 path applies: required checks on the PR, then Cloudflare Pages.
 - **Budget:** at most US$30 a month on the API, for every run: scheduled, development, eval and reruns. Split (amended 2026-11-26, D7):
@@ -62,6 +62,8 @@ The site publishes without review (ADR-002), so whatever generates the edition m
 Filipe's decision in the F0-07 planning thread on 2026-11-25: Claude via the API, Sonnet first, news in the MVP, up to US$30 a month. The cost estimate in the plan (about US$10 a month on Sonnet for 13 runs) is an estimate from token assumptions, not a measurement; F0-08 replaces it with a measured figure.
 
 The amendment comes from Filipe's decisions of 2026-11-26 on the plan review (D3, D6 and D7 in [`docs/plan-review-2026-11-26.md`](../plan-review-2026-11-26.md)): Python from the F0-08 trial, because tested code exists and the site toolchain validates the file anyway; the budget split; tier 2 items without numbers.
+
+F0-08 measured the cost on 2026-11-27 ([`docs/spikes/F0-08-api-trial.md`](../spikes/F0-08-api-trial.md)). A two-call run with 37 candidates and 8 searches cost US$0.348, US$4.52 a month at 13 runs, and the Console billed what the script computed (US$0.49 over three runs). Filipe approved the trial edition with Sonnet 5.5 and set the edition slots; gate G0 passed. The API accepted search and structured output in one call, but the workspace's web search limit was 0 at the time, so no search ran in it; Filipe chose two calls, and how one call behaves with working search is unmeasured.
 
 ## Revisit when
 

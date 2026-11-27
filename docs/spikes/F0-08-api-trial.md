@@ -2,11 +2,11 @@
 
 | F0-08 | Detail |
 | --- | --- |
-| State | In progress: paid runs done on 2026-11-27; Filipe's verdict pending |
+| State | Done: gate G0 passed on 2026-11-27, approved with Sonnet 5.5 |
 | Rating | Risk Hi (raised from Med: the API key and the spend cap), Size Md (raised from Sm on 2026-11-27: about 1,000 hand-written lines) |
 | Script | [`spikes/F0-08/trial.py`](../../spikes/F0-08/trial.py). F2-11 to F2-13 start from it and review the part each takes (D6) |
 | Model | `claude-sonnet-5-5`, effort `high` (set explicitly), `max_tokens` 32000, prompt caching on |
-| Trial cap | US$3 in total, one paid run, one rerun only for the U7 split (Filipe, 2026-11-26; plan review D2) |
+| Trial cap | US$3 in total, one paid run, one rerun only for the U7 split (Filipe, 2026-11-26; plan review D2). Filipe authorized two more runs on 2026-11-27, after the first made no search; spent US$0.494 |
 | Exit | Gate G0 (`ROADMAP.md`), target 2026-12-11 |
 
 ## Setup
@@ -86,7 +86,7 @@ Run 1 (`out/20261127T190256Z`): combined call, 7-day window, 18 candidates. Run 
 | Wall-clock time | 45.5 s | 94.5 s |
 | Items | 6 articles | 3 articles, 1 guideline, 2 news; no alert found |
 | Run cost (computed) | US$0.111 | US$0.348 |
-| Console billing (U8) | US$0.11, matching the computed cost | Pending: Filipe reads it in the Console |
+| Console billing (U8) | US$0.11, matching the computed cost | US$0.49 for the three runs, matching the computed US$0.494 |
 | Monthly projection, run × 13 | US$1.45 | US$4.52 |
 | G0 cost band | ≤ US$10: proceed | ≤ US$10: proceed |
 
@@ -98,16 +98,12 @@ Run 1 (`out/20261127T190256Z`): combined call, 7-day window, 18 candidates. Run 
 
 ## Quality verdict (G0)
 
-Pending. Filipe reads the edition against this checklist and records the verdict:
+Filipe read the run 3 edition on 2026-11-27: "the articles are great, pediatric filter is spot on". After run 1 he noted the edition held only journal articles, which led to the two-call flow and the slots. Verdict: approved with Sonnet 5.5; gate G0 passes.
 
-- Every link resolves and is from an ADR-001 source.
-- Every number in a summary appears in the source; tier 2 items carry no numbers except dates.
-- Any dose is stated in the article and attributed to it; no dose of our own.
-- Summaries are in the model's own words, in pt-BR, with the four sections.
-- General-medicine items say how they affect pediatrics.
-- Triage: would he have picked these items? How many are worth reading (G0: fewer than 2 means fix the prompt)?
-- Do the tier 2 items add anything (D3)?
-- Verdict: continue with Sonnet, adjust the prompt, try Opus, or stop.
+- Cost band: US$4.52 a month, under US$10: proceed.
+- Tier 2 (D3): run 3 placed one guideline and two news items; Filipe approved the edition with them, so tier 2 stays in the MVP without numbers.
+- Minimum items (D4): with 30- and 90-day windows a run had 37 candidates, so the minimum of 3 stands.
+- Follow-up: Filipe wants to review later which items were placed and dropped, as in `selection.json` (F7-08).
 
 ## Limitations
 

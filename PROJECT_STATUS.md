@@ -7,7 +7,7 @@ Operational record of the **current phase**. The issue backlog and the acceptanc
 | Repository | [FilipeOliveira94/pedsletter](https://github.com/FilipeOliveira94/pedsletter) |
 | Started | 2026-11-14 |
 | Final plan approved | 2026-11-15 |
-| Last update | 2026-11-27 (F0-09: plan-review decisions recorded) |
+| Last update | 2026-11-27 (F0-08: API trial recorded; gate G0 passed) |
 | Current phase | Phase 0 — Prerequisites |
 | Phase status | In progress |
 
@@ -31,8 +31,8 @@ On 2026-11-26 a plan review proposed changes, and Filipe decided on them: D1 oth
 
 ## Next steps
 
-1. **F0-08** — Cost and quality trial of the API. Its own PR takes the D2 changes: trial-only credits with auto-reload off, the key revoked after the run, caching on, the production edition format and the free replay of past PubMed windows. Then the paid run, which Filipe authorizes, and gate G0.
-2. **F0-01** — Accounts and repository: the Cloudflare Pages link, the free-plan limits, the `main` ruleset (PR required), a read-only default token and push protection. It can run while F0-08 waits for credits.
+1. **Dose rule correction** — Filipe allowed on 2026-11-27 a dose stated in the article and attributed to it; the D8 record, the roadmap generation rule and the F2-13 dose screen still ban every dose. A separate change corrects them.
+2. **F0-01** — Accounts and repository: the Cloudflare Pages link, the free-plan limits, the `main` ruleset (PR required), a read-only default token and push protection.
 3. **F0-05** — Check the acceptance of ADR-003, which F0-09 updated for GitHub's auto-merge.
 4. **F0-10** — Trim the status docs; any time after F0-09.
 
@@ -49,7 +49,7 @@ On 2026-11-26 a plan review proposed changes, and Filipe decided on them: D1 oth
 | F0-05 | ADR-003: publishing format and path | Not started | [`0003`](docs/decisions/0003-publishing-format-and-path.md) updated in F0-09 for GitHub's auto-merge, `proposed` |
 | F0-06 | Translate the docs to English | Delivered | F0-06 PR; `make docs-lint` passes |
 | F0-07 | Rewrite the roadmap for the Claude API pipeline | Delivered | F0-07 PR; [ADR-004](docs/decisions/0004-generation-by-claude-api.md) `approved` |
-| F0-08 | Cost and quality trial of the API | Not started | — |
+| F0-08 | Cost and quality trial of the API | Delivered | F0-08 PR; [`docs/spikes/F0-08-api-trial.md`](docs/spikes/F0-08-api-trial.md); gate G0 passed |
 | F0-09 | Record the plan-review decisions | Delivered | F0-09 PR; [`docs/plan-review-2026-11-26.md`](docs/plan-review-2026-11-26.md) |
 | F0-10 | Trim the status docs | Not started | — |
 
@@ -58,8 +58,8 @@ Acceptance detail: `ROADMAP.md` → Phase 0.
 ### Phase 0 acceptance
 
 - [ ] Accounts created: public repository, a Cloudflare Pages project linked to it and a Claude API account with a monthly spend limit.
-- [ ] API trial recorded, with cost and quality measured (F0-08).
-- [ ] Gate G0 decided from the trial.
+- [x] API trial recorded, with cost and quality measured (F0-08).
+- [x] Gate G0 decided from the trial.
 - [ ] ADR-001 to ADR-004 written.
 
 ---
@@ -70,8 +70,8 @@ Acceptance detail: `ROADMAP.md` → Phase 0.
 | --- | --- |
 | Date | 2026-11-27 |
 | Environment | Local, WSL2 |
-| Checks | `make docs-lint`, relative-link check, roadmap consistency check (dependencies, merged rows, ratings), §4 notice and name search on the diff |
-| Result | See the F0-09 PR |
+| Checks | F0-08: 66 unit tests of the trial script, `trial.py --dry-run`, three paid runs (the third produced the edition), `make docs-lint` |
+| Result | See the F0-08 PR and [`docs/spikes/F0-08-api-trial.md`](docs/spikes/F0-08-api-trial.md) |
 
 ---
 
@@ -82,13 +82,13 @@ Acceptance detail: `ROADMAP.md` → Phase 0.
 | ADR-001 | Curation sources | `approved` | Unblocks F0-08 and phase 2; reviewed again in F3-03 |
 | ADR-002 | Publishing without review or indexing | `approved` | Defines the content rules in AGENTS.md §4 |
 | ADR-003 | Publishing format and path | `proposed` | GitHub App PR merged by GitHub's auto-merge (Filipe's choice of 2026-11-27); approval depends on F2-09 |
-| ADR-004 | Generation by the Claude API | `approved` | Sonnet 5.5, GitHub Actions, up to US$30 a month; amended on 2026-11-26 (Python from the F0-08 trial, budget split, tier 2 items without numbers); defines F0-08 and phase 2 |
+| ADR-004 | Generation by the Claude API | `approved` | Sonnet 5.5, GitHub Actions, up to US$30 a month; amended on 2026-11-26 (Python from the F0-08 trial, budget split, tier 2 items without numbers) and on 2026-11-27 at G0 (two calls, edition slots); defines phase 2 |
 
 Waiver W1 (`DECISIONS.md`): phase 2 issues follow their own dependencies, and Filipe merges the editions until F2-05 exists.
 
 ## Active risks
 
-- The cost per run is an estimate (about US$10 a month with Sonnet), not a measurement. F0-08 measures it before any pipeline code, and G0 decides from it: up to US$10 a month, proceed; US$10 to 20, tune; above US$20, redesign.
+- One measured run cost US$0.348 (US$4.52 a month at 13 runs). Cost varies with the candidate count and the searches; F3-02 measures two weeks. The search call's worst-case bound is US$1.15 a run, so F2-12's per-run cap must stay well under it.
 - Until F3-03, only Filipe's read catches an error that got past the checks; the main user is asked only once the MVP is live (Filipe's decision D1 of 2026-11-26).
 - The ADR-001 domains and feeds have not been checked. F2-11 checks them.
 - Fetched text may carry an injected instruction into a site published without review. Mitigation: structured output, no write tool for the model, and the pre-push gate (F2-12, F2-13).
@@ -102,4 +102,4 @@ None.
 
 ## Open questions
 
-1. **Doses in the summaries:** generation writes no dose recommendation until there is review, and the F2-13 dose screen drops any item that carries a dose (Filipe's decision D8 of 2026-11-26). The rule holds until Filipe says otherwise.
+1. **Doses in the summaries:** Filipe decided on 2026-11-27 that a summary may give a dose only as the article states it, attributed to it, and that no dose of our own appears (the calculators included). D8 as recorded bans every dose; the correction of D8, the generation rule and F2-13 is the next step above.
