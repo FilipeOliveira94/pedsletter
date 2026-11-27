@@ -6,6 +6,16 @@ Newest entries first.
 
 ---
 
+### 2026-11-27 — F0-08: API trial recorded, gate G0 passed
+
+Three paid runs of the trial script ([`spikes/F0-08/trial.py`](../spikes/F0-08/trial.py)) on 2026-11-27, US$0.494 in all, matching the Console's US$0.49. Run 1 (one call, search and structured output together) produced 6 articles and no search. Filipe then set the two-call flow and the edition slots. Run 2 stopped before the write call: every search came back `too_many_requests`, because the `pedsletter` workspace's web search limit was 0; Filipe set it to 2 a second. Run 3 searched 8 times and produced 3 articles, 1 guideline and 2 news items for US$0.348, US$4.52 a month at 13 runs.
+
+Filipe approved the edition with Sonnet 5.5 (gate G0) and asked for a page to review the selection log later (F7-08). The trial report is [`docs/spikes/F0-08-api-trial.md`](spikes/F0-08-api-trial.md). ADR-004 is amended with the two calls and the slots; F2-11 to F2-13 take the trial's findings. The edition and run outputs stay in the git-ignored `spikes/F0-08/out/`.
+
+Checks: 66 unit tests of the trial script, the dry run, `make docs-lint`. The key file was deleted after each run and Filipe disabled the key.
+
+---
+
 ### 2026-11-27 — F0-09: plan-review decisions recorded
 
 On 2026-11-26 four agents reviewed the plan: three critics (security and risk, performance, minimalist) and one that combined their findings. Filipe decided D1 otherwise: the main user does not see the F0-08 trial edition, the MVP goes live without the main user's check, and the main user's answer stays in F3-03. He approved D2 to D13 as proposed. The combined plan, with his decisions, is in [`plan-review-2026-11-26.md`](plan-review-2026-11-26.md).
