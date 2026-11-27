@@ -2,25 +2,34 @@
   "_comment": "SYNTHETIC fixture for unit tests and --dry-run. Hand-written, not model output. No dose, no real article.",
   "titulo": "Edição de teste (fixture sintética)",
   "resumo": "Texto sintético usado apenas para testar a renderização.",
+  "tags": ["neonatologia", "teste"],
   "artigos": [
     {
-      "tipo": "artigo",
+      "categoria": "artigo",
+      "tipo": "ensaio clínico randomizado",
       "titulo": "Estudo sintético em lactentes",
       "fonte": "J Pediatr",
       "url": "https://doi.org/10.0000/synthetic.0001",
-      "data": "2026-11-20",
-      "resumo": "Resumo sintético: a taxa caiu de 12,5% para 8% em 1.204 lactentes.",
+      "publicadoEm": "2026-11-20",
+      "acesso": "apenas resumo",
       "porqueImporta": "Texto sintético sobre a relevância para a pediatria.",
+      "oQueFoiFeito": "Texto sintético sobre o método.",
+      "resultado": "A taxa caiu de 12,5% para 8% em 1.204 lactentes.",
+      "limitacoes": "Texto sintético sobre as limitações.",
       "candidato": "90000001"
     },
     {
-      "tipo": "alerta",
+      "categoria": "alerta",
+      "tipo": "alerta de segurança",
       "titulo": "Alerta sintético",
       "fonte": "CDC",
       "url": "https://www.cdc.gov/synthetic-alert",
-      "data": "2026-11-24",
-      "resumo": "Resumo sintético de um alerta.",
+      "publicadoEm": "2026-11-24",
+      "acesso": "texto completo",
       "porqueImporta": "Texto sintético.",
+      "oQueFoiFeito": "Texto sintético sobre o alerta emitido em 24 de novembro de 2026.",
+      "resultado": "Texto sintético.",
+      "limitacoes": "Texto sintético.",
       "candidato": ""
     }
   ]

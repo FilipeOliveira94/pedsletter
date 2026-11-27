@@ -109,15 +109,43 @@ class ValidateTest(unittest.TestCase):
         with self.assertRaises(trial.InvalidEdition):
             trial.validate_edition(resp)
 
+    def test_unknown_categoria_rejected(self):
+        resp = self.response()
+        resp["artigos"][0]["categoria"] = "opiniao"
+        with self.assertRaises(trial.InvalidEdition):
+            trial.validate_edition(resp)
+
 
 class RenderTest(unittest.TestCase):
-    def test_notices_verbatim(self):
-        resp = json.loads((FIXTURES / "response.json").read_text())
-        md = trial.render_markdown(resp, "2026-11-26")
-        self.assertIn(AI_NOTICE, md)
-        self.assertIn(AUDIENCE_NOTICE, md)
-        # AI notice comes before the first item
-        self.assertLess(md.index(AI_NOTICE), md.index(resp["artigos"][0]["titulo"]))
+    def setUp(self):
+        self.resp = json.loads((FIXTURES / "response.json").read_text())
+        self.resp.pop("_comment")
+        self.md = trial.render_markdown(self.resp, "2026-11-26")
+
+    def test_notices_verbatim_before_items(self):
+        self.assertIn(AI_NOTICE, self.md)
+        self.assertIn(AUDIENCE_NOTICE, self.md)
+        self.assertLess(self.md.index(AI_NOTICE), self.md.index("## " + self.resp["artigos"][0]["titulo"]))
+
+    def test_frontmatter_fields(self):
+        self.assertTrue(self.md.startswith("---\n"))
+        front = self.md.split("---\n")[1]
+        for key in ("titulo:", "data: 2026-11-26", "resumo:", "tags:", "status: publicado", "artigos:"):
+            self.assertIn(key, front)
+        for key in ("titulo:", "fonte:", "url:", "publicadoEm: 2026-11-20", "tipo:", "categoria: artigo", "acesso:"):
+            self.assertIn(key, front)
+        # string values are JSON-quoted, which is valid YAML
+        line = next(l for l in front.splitlines() if l.startswith("titulo:"))
+        self.assertEqual(json.loads(line.split(":", 1)[1]), self.resp["titulo"])
+
+    def test_four_sections_per_item(self):
+        for heading in ("**Por que importa:**", "**O que foi feito:**", "**Resultado:**", "**Limitações:**"):
+            self.assertEqual(self.md.count(heading), len(self.resp["artigos"]))
+
+    def test_item_count_note(self):
+        self.assertEqual(trial.item_count_note(self.resp), "2 items: below the 3-item minimum")
+        self.resp["artigos"] *= 2
+        self.assertEqual(trial.item_count_note(self.resp), "4 items")
 
 
 class PreCheckTest(unittest.TestCase):
@@ -136,6 +164,283 @@ class PreCheckTest(unittest.TestCase):
         self.assertFalse(trial.link_allowed("https://www.gov.br/fazenda/x", set(), domains))
         self.assertFalse(trial.link_allowed("https://evilcdc.gov.example.com/", set(), domains))
         self.assertFalse(trial.link_allowed("https://doi.org/10.1/other", known, domains))
+
+
+class DoseScreenTest(unittest.TestCase):
+    def test_flags_doses(self):
+        self.assertTrue(trial.dose_hits("Usou 5 mg/kg/dia por 7 dias."))
+        self.assertTrue(trial.dose_hits("Uma dose de 10 mL."))
+        self.assertTrue(trial.dose_hits("Recebeu 250 mcg."))
+
+    def test_ignores_non_doses(self):
+        self.assertEqual(trial.dose_hits("Caiu de 12,5% para 8% em 2026-11-20."), [])
+
+    def test_attribution(self):
+        self.assertTrue(trial.dose_attributed("Segundo o artigo, 5 mg/kg/dia."))
+        self.assertFalse(trial.dose_attributed("Use 5 mg/kg/dia."))
+
+
+class Tier2NumbersTest(unittest.TestCase):
+    def test_number_flagged(self):
+        self.assertEqual(trial.tier2_numbers("A incidência caiu 30% no período."), ["30"])
+
+    def test_dates_allowed(self):
+        self.assertEqual(trial.tier2_numbers("Publicado em 2026-11-24, válido desde 24/11/2026."), [])
+        self.assertEqual(trial.tier2_numbers("Emitido em 24 de novembro de 2026."), [])
+
+
+class FetchTest(unittest.TestCase):
+    def setUp(self):
+        self.calls = []
+
+        def fake(url):
+            self.calls.append(url)
+            return "200"
+
+        self.fake = fake
+        self.domains = ["cdc.gov", "gov.br/saude"]
+        self.cands = {"https://doi.org/10.1/abc", "https://pubmed.ncbi.nlm.nih.gov/123/"}
+
+    def test_off_list_never_fetched(self):
+        status = trial.check_link("https://example.com/x", self.cands, self.domains, self.fake)
+        self.assertEqual(status, "off-list, not fetched")
+        self.assertEqual(self.calls, [])
+
+    def test_doi_checked_at_handle_api(self):
+        trial.check_link("https://doi.org/10.1/abc", self.cands, self.domains, self.fake)
+        self.assertEqual(self.calls, ["https://doi.org/api/handles/10.1/abc"])
+
+    def test_pubmed_fetched_directly(self):
+        trial.check_link("https://pubmed.ncbi.nlm.nih.gov/123/", self.cands, self.domains, self.fake)
+        self.assertEqual(self.calls, ["https://pubmed.ncbi.nlm.nih.gov/123/"])
+
+    def test_tier2_one_retry(self):
+        def failing(url):
+            self.calls.append(url)
+            return "503"
+
+        status = trial.check_link("https://www.cdc.gov/a", self.cands, self.domains, failing)
+        self.assertEqual(status, "503")
+        self.assertEqual(len(self.calls), 2)
+
+
+class WorstCaseTest(unittest.TestCase):
+    def test_bound_counts_search_iterations(self):
+        # 8 searches: input read 9 times (270k) + results 10k x (1+...+8) = 360k, at the $2.50 cache-write rate;
+        # 32k output x $10/MTok; 8 searches x $0.01
+        self.assertAlmostEqual(trial.worst_case_usd(30_000, 32_000, 8), 630_000 * 2.5e-6 + 0.32 + 0.08)
+
+    def test_bound_without_tools(self):
+        self.assertAlmostEqual(trial.worst_case_usd(30_000, 32_000, 0), 30_000 * 2.5e-6 + 0.32)
+
+    def test_bound_over_cap_blocks_before_request(self):
+        with tempfile.TemporaryDirectory() as d:
+            spend = Path(d) / "spend.json"
+            spend.write_text(json.dumps({"total_usd": 2.5}))
+            with self.assertRaises(trial.BudgetExceeded):
+                trial.check_budget(spend, extra=trial.worst_case_usd(30_000, 32_000, 8))
+
+
+class SplitModeTest(unittest.TestCase):
+    def setUp(self):
+        self.sources = json.loads((HERE / "sources.json").read_text())
+        self.cands = trial.parse_pubmed((FIXTURES / "pubmed_sample.xml").read_text())
+
+    def test_combined_request(self):
+        r = trial.build_request(self.cands, self.sources, "2026-11-26", 7)
+        self.assertEqual(r["tools"][0]["type"], "web_search_20260209")
+        self.assertIn("format", r["output_config"])
+        self.assertEqual(r["output_config"]["effort"], "high")
+        self.assertEqual(r["cache_control"], {"type": "ephemeral"})
+
+    def test_search_call_has_no_format(self):
+        a = trial.build_search_request(self.sources, "2026-11-26", 7)
+        self.assertEqual(a["tools"][0]["allowed_domains"], self.sources["tier2_domains"])
+        self.assertNotIn("format", a.get("output_config", {}))
+
+    def test_write_call_has_no_tools(self):
+        b = trial.build_write_request(self.cands, "notes from the search call", "2026-11-26", 7)
+        self.assertNotIn("tools", b)
+        self.assertIn("format", b["output_config"])
+        self.assertIn("notes from the search call", b["messages"][0]["content"])
+
+
+class ReplayTest(unittest.TestCase):
+    def test_windows(self):
+        from datetime import date
+
+        w = trial.replay_windows(date(2026, 11, 27), weeks=8)
+        self.assertEqual(len(w), 24)
+        for ed, start, end in w:
+            self.assertIn(ed.weekday(), (0, 2, 4))
+            self.assertEqual((end - start).days + 1, 3 if ed.weekday() == 0 else 2)
+            self.assertLess(ed, date(2026, 11, 27))
+
+    def test_projection(self):
+        # base US$0.10 + US$0.01 per candidate; windows of 10 and 20 candidates
+        p = trial.per_window_projection(base_usd=0.10, per_candidate_usd=0.01, counts=[10, 20])
+        self.assertAlmostEqual(p["mean_window_usd"], 0.25)
+        self.assertAlmostEqual(p["monthly_usd"], 0.25 * 13)
+
+
+def _bad_request(message):
+    import anthropic
+    import httpx2
+
+    resp = httpx2.Response(400, request=httpx2.Request("POST", "https://api.anthropic.com/v1/messages"))
+    return anthropic.BadRequestError(message, response=resp, body=None)
+
+
+class _Msg:
+    def __init__(self, text, stop="end_turn"):
+        from types import SimpleNamespace as NS
+
+        self.content = [NS(type="text", text=text)]
+        self.stop_reason = stop
+        self.stop_details = None
+        self.model = "claude-sonnet-5-5"
+        self.usage = NS(input_tokens=1000, output_tokens=100, cache_creation_input_tokens=0,
+                        cache_read_input_tokens=0, server_tool_use=NS(web_search_requests=1, web_fetch_requests=0))
+
+
+class _FakeClient:
+    """Raises `first_error` on the first request, then answers in order."""
+
+    def __init__(self, first_error, answers):
+        self.first_error, self.answers, self.requests = first_error, list(answers), []
+        self.messages = self
+        self.error_on = None  # request number (1-based) that gets a 400
+        self.crash = False
+
+    def stream(self, **req):
+        self.requests.append(req)
+        client = self
+        n = len(self.requests)
+
+        class _S:
+            def __enter__(self):
+                if client.first_error is not None:
+                    err, client.first_error = client.first_error, None
+                    raise err
+                if client.error_on == n:
+                    raise _bad_request("rejected continuation")
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+            def get_final_message(self):
+                if client.crash:
+                    raise ConnectionError("dropped mid-stream")
+                return client.answers.pop(0)
+
+        return _S()
+
+
+class RunModelTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.old_spend = trial.SPEND_FILE
+        trial.SPEND_FILE = Path(self.tmp.name) / "spend.json"
+        sources = json.loads((HERE / "sources.json").read_text())
+        cands = trial.parse_pubmed((FIXTURES / "pubmed_sample.xml").read_text())
+        self.request = trial.build_request(cands, sources, "2026-11-26", 7)
+        self.split = (trial.build_search_request(sources, "2026-11-26", 7),
+                      lambda notes: trial.build_write_request(cands, notes, "2026-11-26", 7))
+
+    def tearDown(self):
+        trial.SPEND_FILE = self.old_spend
+        self.tmp.cleanup()
+
+    def ledger(self):
+        return trial.SpendLedger(trial.SPEND_FILE)
+
+    def test_400_triggers_split_rerun(self):
+        fake = _FakeClient(_bad_request("output_config.format is not supported with web_search"),
+                           [_Msg("search notes"), _Msg('{"titulo": "x"}')])
+        ledger = self.ledger()
+        _, text, meta = trial.run_model(self.request, "k", ledger, self.split, client=fake)
+        self.assertEqual(meta["u7"]["combined_call"], "rejected")
+        self.assertEqual(text, '{"titulo": "x"}')
+        self.assertEqual(len(fake.requests), 3)  # rejected combined, search, write
+        self.assertNotIn("tools", fake.requests[2])
+        self.assertIn("search notes", fake.requests[2]["messages"][0]["content"])
+        self.assertEqual(ledger.usage["web_search_requests"], 2)
+        # the projection uses the write call, which carries the candidates
+        self.assertEqual(meta["request_chars"], trial.request_chars(fake.requests[2]))
+
+    def test_credit_error_does_not_split_and_releases_reservation(self):
+        trial.SPEND_FILE.write_text(json.dumps({"total_usd": 0.25}))
+        fake = _FakeClient(_bad_request("Your credit balance is too low"), [])
+        with self.assertRaises(Exception):
+            trial.run_model(self.request, "k", self.ledger(), self.split, client=fake)
+        self.assertEqual(len(fake.requests), 1)
+        self.assertAlmostEqual(trial.spent_so_far(trial.SPEND_FILE), 0.25)  # unbilled: nothing kept
+
+    def test_continuation_resends_request_unchanged(self):
+        fake = _FakeClient(None, [_Msg("", stop="pause_turn"), _Msg('{"ok": 1}')])
+        trial.run_model(self.request, "k", self.ledger(), self.split, client=fake)
+        # the continuation is resent unchanged (documented pause_turn pattern)
+        self.assertEqual(fake.requests[1]["tools"], fake.requests[0]["tools"])
+        self.assertEqual(fake.requests[1]["messages"][0], self.request["messages"][0])
+        self.assertEqual(fake.requests[1]["messages"][1]["role"], "assistant")
+
+    def test_empty_search_notes_stop_before_write_call(self):
+        fake = _FakeClient(_bad_request("format not supported"), [_Msg("", stop="max_tokens")])
+        with self.assertRaises(trial.SplitAborted):
+            trial.run_model(self.request, "k", self.ledger(), self.split, client=fake)
+        self.assertEqual(len(fake.requests), 2)  # no write call
+
+    def test_400_after_a_billed_turn_does_not_split(self):
+        fake = _FakeClient(None, [_Msg("", stop="pause_turn")])
+        fake.error_on = 2  # the continuation is rejected
+        with self.assertRaises(Exception):
+            trial.run_model(self.request, "k", self.ledger(), self.split, client=fake)
+        self.assertEqual(len(fake.requests), 2)
+
+    def test_pause_turn_continues_and_sums(self):
+        fake = _FakeClient(None, [_Msg("", stop="pause_turn"), _Msg('{"ok": 1}')])
+        ledger = self.ledger()
+        _, text, meta = trial.run_model(self.request, "k", ledger, self.split, client=fake)
+        self.assertEqual(text, '{"ok": 1}')
+        self.assertEqual(ledger.usage["input_tokens"], 2000)
+        self.assertEqual([t["web_search_requests"] for t in ledger.turns], [1, 1])
+        self.assertEqual(meta["u7"]["combined_call"], "ok")
+
+    def test_spend_on_disk_after_each_turn(self):
+        fake = _FakeClient(None, [_Msg('{"ok": 1}')])
+        ledger = self.ledger()
+        trial.run_model(self.request, "k", ledger, self.split, client=fake)
+        self.assertAlmostEqual(trial.spent_so_far(trial.SPEND_FILE), ledger.run_cost())
+
+    def test_crash_mid_request_keeps_reservation(self):
+        fake = _FakeClient(None, [])
+        fake.crash = True
+        with self.assertRaises(ConnectionError):
+            trial.run_model(self.request, "k", self.ledger(), self.split, client=fake)
+        self.assertGreater(trial.spent_so_far(trial.SPEND_FILE), 0.5)  # the worst case stays reserved
+
+    def test_reservation_over_cap_blocks_before_request(self):
+        trial.SPEND_FILE.write_text(json.dumps({"total_usd": 2.0}))
+        fake = _FakeClient(None, [_Msg('{"ok": 1}')])
+        with self.assertRaises(trial.BudgetExceeded):
+            trial.run_model(self.request, "k", self.ledger(), self.split, client=fake)
+        self.assertEqual(fake.requests, [])
+
+
+class MiscTest(unittest.TestCase):
+    def test_round_robin(self):
+        groups = [[{"j": "a", "i": i} for i in range(5)], [{"j": "b", "i": 0}], [{"j": "c", "i": 0}]]
+        out = trial.round_robin(groups, 4)
+        self.assertEqual([x["j"] for x in out], ["a", "b", "c", "a"])
+
+    def test_redirects_not_followed(self):
+        h = trial._NoRedirect()
+        self.assertIsNone(h.redirect_request(None, None, 302, "Found", {}, "http://169.254.169.254/"))
+
+    def test_key_file_inside_repo_refused(self):
+        with self.assertRaises(SystemExit):
+            trial.read_key(str(HERE / "sources.json"))
 
 
 if __name__ == "__main__":
