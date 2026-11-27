@@ -2,7 +2,7 @@
 
 | F0-08 | Detail |
 | --- | --- |
-| State | In progress: script, tests and replay done; paid run pending API credits |
+| State | In progress: paid run done on 2026-11-27; Filipe's verdict pending |
 | Rating | Risk Hi (raised from Med: the API key and the spend cap), Size Md (raised from Sm on 2026-11-27: about 1,000 hand-written lines) |
 | Script | [`spikes/F0-08/trial.py`](../../spikes/F0-08/trial.py). F2-11 to F2-13 start from it and review the part each takes (D6) |
 | Model | `claude-sonnet-5-5`, effort `high` (set explicitly), `max_tokens` 32000, prompt caching on |
@@ -24,10 +24,12 @@
 
 ## Checks run
 
-- `spikes/F0-08/.venv/bin/python -m unittest discover -s spikes/F0-08`: 48 tests pass. They cover cost and cap, the worst-case bound, the on-disk reservation (released after an unbilled 400, kept after a crash mid-request, blocking a request over the cap before it is sent), the continuation resent unchanged, redirects not followed, journal round-robin, PubMed parsing, schema rejection with no file written, the edition format and both notices, the dose screen and attribution, tier 2 numbers, allow-listed fetches, the U7 split on a fake 400 (with the projection taken from the write call), no split on a credit error or on a 400 after a billed turn, no write call after empty search notes, `pause_turn` continuation with summed usage, the replay windows and the projection.
+- `spikes/F0-08/.venv/bin/python -m unittest discover -s spikes/F0-08`: 50 tests pass. They cover cost and cap, the worst-case bound, the on-disk reservation (released after an unbilled 400, kept after a crash mid-request, blocking a request over the cap before it is sent), the continuation resent unchanged, redirects not followed, journal round-robin, PubMed parsing, schema rejection with no file written, the edition format and both notices, the dose screen and attribution, tier 2 numbers, allow-listed fetches, the U7 split on a fake 400 (with the projection taken from the write call), no split on a credit error or on a 400 after a billed turn, no write call after empty search notes, `pause_turn` continuation with summed usage, the replay windows, and the projection (input priced uncached, so a run that read the cache cannot give a negative fixed part).
 - `trial.py --dry-run`: renders the synthetic fixture in the production format.
 - Real PubMed collection on 2026-11-26 (no API call): 24 candidates from 9 of the 12 journals.
-- First paid attempt on 2026-11-26: refused by the API before any processing, "credit balance is too low". Nothing billed; trial spend US$0.00.
+- Paid attempts on 2026-11-26 and 2026-11-27: refused by the API before any processing, "credit balance is too low" (the credits first bought sat in the Claude app plan, not the API organization). Nothing billed; trial spend US$0.00.
+- Paid run on 2026-11-27 (`out/20261127T190256Z`): one combined call, `end_turn`, 6 items. Trial spend US$0.111.
+- `trial.py --project out/20261127T190256Z`: the per-window projection below.
 
 ## Replay of 8 weeks of windows (P8, free)
 
@@ -70,21 +72,25 @@ Entrez dates of past windows can still shift as PubMed indexes late records. The
 
 ## Measured figures
 
-Pending the paid run. `trial.py --project out/<run>` fills the per-window projection.
+Run of 2026-11-27, 7-day window, 18 candidates.
 
 | Measure | Value |
 | --- | --- |
-| Input tokens (incl. cache writes and reads) | — |
-| Output tokens | — |
-| Web searches | — |
+| Input tokens (incl. cache writes and reads) | 98,132: 10 uncached, 24,871 cache write, 73,251 cache read |
+| Output tokens | 4,187 |
+| Web searches | 0 |
 | Effort | high |
-| Wall-clock time | — |
-| One call or split (U7) | — |
-| Run cost (computed) | — |
-| Console billing for the run (U8) | — |
-| Monthly projection, flat (run × 13) | — |
-| Monthly projection, per window (replay) | — |
-| G0 cost band | — |
+| Wall-clock time | 45.5 s |
+| One call or split (U7) | One call: search and structured output were accepted together |
+| Run cost (computed) | US$0.111 as billed; US$0.287 with all input priced as a cache write |
+| Console billing for the run (U8) | Pending: Filipe reads it in the Console |
+| Monthly projection, flat (run × 13) | US$1.45 as billed; US$3.73 uncached |
+| Monthly projection, per window (replay) | US$2.32 (mean US$0.18 a window, max US$0.33), uncached |
+| G0 cost band | ≤ US$10: proceed |
+
+- **Cache read on a first call.** 73,251 input tokens were read from the cache although no earlier request in the organization had been answered. Until the Console figure confirms it, the projection prices every input token as a cache write: a scheduled run sends new candidates days after the last one and should not count on a cache.
+- **No searches.** The model made no tier 2 search, so the run says nothing about search cost or about whether tier 2 items add anything (D3). Eight searches would add about US$0.36 a run if the search loop reads the context back from the cache (8 re-reads of 98k tokens at the read rate, 80,000 tokens of results at the write rate, US$0.08 in search fees), about US$4.70 a month. If nothing is cached, the script's worst-case bound adds US$2.94 a run, which at 13 runs passes the US$30 limit. Which of the two holds is unmeasured; F2-12's per-run budget must stop a run before that, and F2-11 or F3-02 measures real search cost.
+- **Pre-check findings for F2-13.** All 6 links resolved (HTTP 200) and came from the run. Two "missing numbers" were false positives: the abstracts write 3 643 376 and 10 048 with spaces, the edition with dots, so the number check must normalize thousand separators. The dose screen flagged one dose taken from the article (a dosing limit the abstract states), attributed with "segundo o relato", which the attribution pattern did not recognize, and two uses of the word "dose" with no number.
 
 ## Quality verdict (G0)
 
@@ -104,4 +110,4 @@ Pending. Filipe reads the edition against this checklist and records the verdict
 - One run is one data point; F3-02 measures two weeks.
 - The journal feeds are not exercised; F2-11 decides feeds versus PubMed.
 - Numbers in tier 2 items cannot be checked against the page: the search results' text is not returned to the script, so the rule is "no numbers but dates".
-- The per-window projection splits the run's cost into a fixed part and a per-candidate part by the candidates' share of the first request's characters; output length does not scale exactly with the candidate count.
+- The per-window projection splits the run's uncached cost into a fixed part and a per-candidate part by the candidates' share of the first request's characters; output length does not scale exactly with the candidate count. `request_chars` leaves out the tool definitions and the output schema, so the per-candidate slope may be too steep and windows smaller than the run's 18 candidates underestimated. The flat uncached US$3.73 a month is the conservative figure.

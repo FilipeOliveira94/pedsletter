@@ -851,10 +851,20 @@ def per_window_projection(base_usd: float, per_candidate_usd: float, counts: lis
             "monthly_usd": round(mean * RUNS_PER_MONTH, 6)}
 
 
-def project_from_run(run_dir: Path, replay_file: Path) -> dict:
-    """Split the run's cost into a fixed part and a per-candidate part, then price each replayed window.
+def uncached_cost_usd(u: dict) -> float:
+    """The run's cost with every input token priced as a cache write.
 
-    Per-candidate cost = the candidates' share of the first turn's input (by characters) at the input price.
+    A scheduled run sends new candidates each time, days after the last one, so it cannot count on
+    reading a cache. Pricing all input at the write rate keeps the projection conservative.
+    """
+    tokens_in = u["input_tokens"] + u["cache_creation_input_tokens"] + u["cache_read_input_tokens"]
+    return cost_usd(dict(u, input_tokens=0, cache_read_input_tokens=0, cache_creation_input_tokens=tokens_in))
+
+
+def project_from_run(run_dir: Path, replay_file: Path) -> dict:
+    """Split the run's uncached cost into a fixed part and a per-candidate part, then price each replayed window.
+
+    Per-candidate cost = the candidates' share of the first turn's input (by characters) at the cache-write price.
     Everything else (prompt, searches, output, continuations) counts as fixed.
     """
     m = json.loads((run_dir / "metrics.json").read_text())
@@ -862,11 +872,14 @@ def project_from_run(run_dir: Path, replay_file: Path) -> dict:
     r = json.loads(replay_file.read_text())
     n = max(len(cands), 1)
     share = len(_candidates_block(cands)) / max(m["request_chars"], 1)  # of the request that carried them
-    per_candidate = m["first_turn_input_tokens"] * share * PRICE_INPUT_MTOK / 1e6 / n
-    base = m["run_cost_usd"] - per_candidate * len(cands)
+    per_candidate = m["first_turn_input_tokens"] * share * PRICE_CACHE_WRITE_MTOK / 1e6 / n
+    uncached = uncached_cost_usd(m["usage"])
+    base = uncached - per_candidate * len(cands)
     out = per_window_projection(base, per_candidate, [w["candidates"] for w in r["windows"]])
-    out.update({"base_usd": round(base, 6), "per_candidate_usd": round(per_candidate, 6),
-                "flat_x13_usd": m["monthly_projection_usd"]})
+    out.update({"run_cost_usd": m["run_cost_usd"], "uncached_run_usd": uncached,
+                "base_usd": round(base, 6), "per_candidate_usd": round(per_candidate, 6),
+                "flat_x13_usd": m["monthly_projection_usd"],
+                "uncached_x13_usd": monthly_projection(uncached)})
     return out
 
 

@@ -282,6 +282,33 @@ class ReplayTest(unittest.TestCase):
         self.assertAlmostEqual(p["mean_window_usd"], 0.25)
         self.assertAlmostEqual(p["monthly_usd"], 0.25 * 13)
 
+    def test_uncached_cost_prices_cache_reads_as_writes(self):
+        u = {"input_tokens": 10, "output_tokens": 1000, "cache_creation_input_tokens": 90,
+             "cache_read_input_tokens": 900_000, "web_search_requests": 1}
+        expected = 900_100 * 2.50 / 1e6 + 1000 * 10 / 1e6 + 0.01
+        self.assertAlmostEqual(trial.uncached_cost_usd(u), expected)
+
+    def test_project_from_run_base_not_negative_with_cache_reads(self):
+        # a run whose input was mostly read from cache must not yield a negative fixed part
+        cands = [{"pmid": str(i), "journal": "J", "title": "t", "date": "2026-11-20",
+                  "url": "https://doi.org/10.0/x", "abstract": "a" * 2000} for i in range(10)]
+        from trial import _candidates_block
+        chars = len(_candidates_block(cands)) + 5000
+        # like the real run: input mostly read from cache, so the billed cost is below the
+        # candidates' input at the full rate (the old projection then gave a negative base)
+        usage = {"input_tokens": 10, "output_tokens": 1000, "cache_creation_input_tokens": 2000,
+                 "cache_read_input_tokens": 98_000, "web_search_requests": 0}
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            (d / "candidates.json").write_text(json.dumps({"log": [], "candidates": cands}))
+            (d / "metrics.json").write_text(json.dumps({
+                "usage": usage, "request_chars": chars, "first_turn_input_tokens": 100_010,
+                "run_cost_usd": trial.cost_usd(usage), "monthly_projection_usd": 0}))
+            (d / "replay.json").write_text(json.dumps({"windows": [{"candidates": 10}, {"candidates": 2}]}))
+            p = trial.project_from_run(d, d / "replay.json")
+        self.assertGreater(p["base_usd"], 0)
+        self.assertGreater(p["uncached_run_usd"], p["run_cost_usd"])
+
 
 def _bad_request(message):
     import anthropic
