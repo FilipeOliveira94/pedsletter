@@ -247,19 +247,19 @@ class SplitModeTest(unittest.TestCase):
         self.cands = trial.parse_pubmed((FIXTURES / "pubmed_sample.xml").read_text())
 
     def test_combined_request(self):
-        r = trial.build_request(self.cands, self.sources, "2026-11-26", 7)
+        r = trial.build_request(self.cands, self.sources, "2026-11-26")
         self.assertEqual(r["tools"][0]["type"], "web_search_20260209")
         self.assertIn("format", r["output_config"])
         self.assertEqual(r["output_config"]["effort"], "high")
         self.assertEqual(r["cache_control"], {"type": "ephemeral"})
 
     def test_search_call_has_no_format(self):
-        a = trial.build_search_request(self.sources, "2026-11-26", 7)
+        a = trial.build_search_request(self.sources, "2026-11-26")
         self.assertEqual(a["tools"][0]["allowed_domains"], self.sources["tier2_domains"])
         self.assertNotIn("format", a.get("output_config", {}))
 
     def test_write_call_has_no_tools(self):
-        b = trial.build_write_request(self.cands, "notes from the search call", "2026-11-26", 7)
+        b = trial.build_write_request(self.cands, "notes from the search call", "2026-11-26")
         self.assertNotIn("tools", b)
         self.assertIn("format", b["output_config"])
         self.assertIn("notes from the search call", b["messages"][0]["content"])
@@ -371,9 +371,9 @@ class RunModelTest(unittest.TestCase):
         trial.SPEND_FILE = Path(self.tmp.name) / "spend.json"
         sources = json.loads((HERE / "sources.json").read_text())
         cands = trial.parse_pubmed((FIXTURES / "pubmed_sample.xml").read_text())
-        self.request = trial.build_request(cands, sources, "2026-11-26", 7)
-        self.split = (trial.build_search_request(sources, "2026-11-26", 7),
-                      lambda notes: trial.build_write_request(cands, notes, "2026-11-26", 7))
+        self.request = trial.build_request(cands, sources, "2026-11-26")
+        self.split = (trial.build_search_request(sources, "2026-11-26"),
+                      lambda notes: trial.build_write_request(cands, notes, "2026-11-26"))
 
     def tearDown(self):
         trial.SPEND_FILE = self.old_spend
@@ -453,6 +453,175 @@ class RunModelTest(unittest.TestCase):
         with self.assertRaises(trial.BudgetExceeded):
             trial.run_model(self.request, "k", self.ledger(), self.split, client=fake)
         self.assertEqual(fake.requests, [])
+
+
+class SlotTest(unittest.TestCase):
+    """Edition slots (Filipe, 2026-11-27)."""
+
+    def setUp(self):
+        from datetime import date, timedelta
+
+        self.today = date(2026, 11, 27)
+        self.cands = []
+        self._day = lambda age: (self.today - timedelta(days=age)).isoformat()
+
+    def art(self, n, age=5):
+        pmid = f"{len(self.cands) + 1}"
+        self.cands.append({"pmid": pmid, "date": self._day(age)})
+        return {"categoria": "artigo", "candidato": pmid, "titulo": f"a{n}", "publicadoEm": ""}
+
+    def t2(self, cat, n, age=2):
+        return {"categoria": cat, "candidato": "", "titulo": f"{cat}{n}", "publicadoEm": self._day(age)}
+
+    def pick(self, ranked):
+        items, log = trial.select_items(ranked, self.cands, self.today)
+        return [i["titulo"] for i in items], log
+
+    def test_filipe_example_articles_yield_to_empty_categories(self):
+        # 5 articles ranked first, then 1 news and 1 alert: articles drop to 4
+        ranked = [self.art(i) for i in range(5)] + [self.t2("noticia", 1), self.t2("alerta", 1)]
+        got, _ = self.pick(ranked)
+        self.assertEqual(got, ["a0", "a1", "a2", "a3", "alerta1", "noticia1"])
+
+    def test_articles_fill_free_places_when_nothing_else(self):
+        got, _ = self.pick([self.art(i) for i in range(6)])
+        self.assertEqual(len(got), 6)
+
+    def test_only_one_article_older_than_30_days_in_its_slot(self):
+        ranked = [self.art(0, age=40), self.art(1, age=50), self.t2("alerta", 1)]
+        got, log = self.pick(ranked)
+        # the second old article only gets a free place, after the in-cap alert
+        self.assertEqual(log[0]["placed"], "artigo slot, 90 days")
+        self.assertEqual(log[1]["placed"], "free place")
+        self.assertEqual(log[2]["placed"], "alerta slot, 30 days")
+
+    def test_caps_sum_past_six_keeps_rank_order(self):
+        ranked = ([self.art(0), self.art(1), self.art(2, age=60), self.t2("diretriz", 1, age=30)]
+                  + [self.t2("alerta", i) for i in range(2)] + [self.t2("noticia", i) for i in range(2)])
+        got, log = self.pick(ranked)
+        # every category's best item first, then the other in-cap items in rank order
+        self.assertEqual(got, ["a0", "a1", "a2", "diretriz1", "alerta0", "noticia0"])
+        self.assertTrue(log[5]["placed"].startswith("not placed"))
+        self.assertTrue(log[7]["placed"].startswith("not placed"))
+
+    def test_empty_category_beats_a_second_item(self):
+        # news ranked last still beats the second alert
+        ranked = [self.art(0), self.art(1), self.art(2), self.t2("diretriz", 1, age=10),
+                  self.t2("alerta", 0), self.t2("alerta", 1), self.t2("noticia", 0)]
+        got, _ = self.pick(ranked)
+        self.assertIn("noticia0", got)
+        self.assertNotIn("alerta1", got)
+
+    def test_duplicate_url_dropped(self):
+        n = self.t2("noticia", 1) | {"url": "https://cdc.gov/x"}
+        got, log = self.pick([n, dict(n)])
+        self.assertEqual(len(got), 1)
+        self.assertEqual(log[1]["dropped"], "duplicate")
+
+    def test_article_date_rendered_from_pubmed(self):
+        a = self.art(0, age=3) | {"publicadoEm": "2020-01-01"}
+        self.pick([a])
+        self.assertEqual(a["publicadoEm"], self._day(3))
+
+    def test_windows_drop_out_of_range_items(self):
+        ranked = [self.t2("noticia", 1, age=8), self.t2("diretriz", 1, age=61), self.t2("alerta", 1, age=31),
+                  self.art(0, age=91), self.t2("noticia", 2, age=7)]
+        got, log = self.pick(ranked)
+        self.assertEqual(got, ["noticia2"])
+        self.assertEqual([("dropped" in r) for r in log], [True, True, True, True, False])
+
+    def test_unknown_candidate_and_missing_date_dropped(self):
+        ranked = [{"categoria": "artigo", "candidato": "999", "titulo": "x", "publicadoEm": ""},
+                  self.t2("alerta", 1) | {"publicadoEm": ""}]
+        got, log = self.pick(ranked)
+        self.assertEqual(got, [])
+        self.assertEqual(log[0]["dropped"], "not a collected candidate")
+        self.assertEqual(log[1]["dropped"], "no publication date")
+
+    def test_article_age_comes_from_pubmed_not_the_model(self):
+        a = self.art(0, age=200) | {"publicadoEm": self._day(1)}
+        got, log = self.pick([a])
+        self.assertEqual(got, [])
+        self.assertIn("outside the 90-day window", log[0]["dropped"])
+
+    def test_edition_order_articles_first(self):
+        ranked = [self.t2("noticia", 1), self.art(0), self.t2("diretriz", 1, age=10)]
+        got, _ = self.pick(ranked)
+        self.assertEqual(got, ["a0", "diretriz1", "noticia1"])
+
+
+class CollectTest(unittest.TestCase):
+    def test_two_windows_tagged(self):
+        from datetime import date
+        from unittest import mock
+
+        calls = []
+
+        def fake_esearch(term, days, retmax, mindate=None, maxdate=None):
+            calls.append((days, retmax, mindate, maxdate))
+            return {"idlist": ["90000001"] if mindate is None else ["90000002", "90000001"]}
+
+        xml = (FIXTURES / "pubmed_sample.xml").read_text()
+        sources = {"tier1": [{"name": "J", "ta": "J Pediatr", "general": False}]}
+        with mock.patch.object(trial, "esearch", fake_esearch), \
+                mock.patch.object(trial, "efetch", lambda ids: xml), mock.patch.object(trial.time, "sleep"):
+            cands, log = trial.collect(sources, date(2026, 11, 27))
+        self.assertEqual(calls[0], (30, 3, None, None))
+        self.assertEqual(calls[1][2:], (date(2026, 8, 29), date(2026, 10, 27)))
+        self.assertEqual({c["pmid"]: c["janela"] for c in cands}, {"90000001": "30d", "90000002": "90d"})
+        self.assertEqual(log[0]["found_90d"], 1)  # a record in both windows counts as recent
+
+
+class TwoCallTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.spend = Path(self.tmp.name) / "spend.json"
+        sources = json.loads((HERE / "sources.json").read_text())
+        self.cands = trial.parse_pubmed((FIXTURES / "pubmed_sample.xml").read_text())
+        self.search = trial.build_search_request(sources, "2026-11-27")
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_search_then_write(self):
+        fake = _FakeClient(None, [_Msg("notes"), _Msg('{"titulo": "x"}')])
+        _, text, meta = trial.run_two_calls(
+            self.search, lambda n: trial.build_write_request(self.cands, n, "2026-11-27"), "k",
+            trial.SpendLedger(self.spend), client=fake)
+        self.assertEqual(text, '{"titulo": "x"}')
+        self.assertEqual(meta["u7"], {"flow": "two calls"})
+        self.assertIn("tools", fake.requests[0])
+        self.assertNotIn("format", fake.requests[0].get("output_config", {}))
+        self.assertNotIn("tools", fake.requests[1])
+        self.assertIn("<search_notes>\nnotes", fake.requests[1]["messages"][0]["content"])
+
+    def test_no_search_aborts_before_write_and_notes_saved(self):
+        from types import SimpleNamespace as NS
+
+        msg = _Msg("nothing found")
+        msg.usage.server_tool_use = NS(web_search_requests=0)
+        fake = _FakeClient(None, [msg])
+        saved = []
+        with self.assertRaises(trial.SplitAborted):
+            trial.run_two_calls(self.search, lambda n: trial.build_write_request(self.cands, n, "2026-11-27"),
+                                "k", trial.SpendLedger(self.spend), client=fake, save_notes=saved.append)
+        self.assertEqual(len(fake.requests), 1)  # no write call
+        self.assertEqual(saved, ["nothing found"])
+
+    def test_search_errors_listed(self):
+        from types import SimpleNamespace as NS
+
+        content = [NS(type="server_tool_use"),
+                   NS(type="web_search_tool_result", content=NS(type="web_search_tool_result_error",
+                                                               error_code="too_many_requests")),
+                   NS(type="web_search_tool_result", content=[NS(url="https://cdc.gov/x", title="t")])]
+        self.assertEqual(trial.search_errors(content), ["too_many_requests"])
+
+    def test_search_prompt_demands_searches_and_windows(self):
+        p = self.search["system"]
+        self.assertIn("at least one search for guidelines, one for safety alerts and one for news", p)
+        for w in ("last 60 days", "last 30 days", "last 7 days"):
+            self.assertIn(w, p)
 
 
 class MiscTest(unittest.TestCase):
