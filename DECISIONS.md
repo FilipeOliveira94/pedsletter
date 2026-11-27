@@ -26,12 +26,20 @@ Short index of PedsLetter's decisions. **Rationale, alternatives, consequences a
 
 | ID | Topic | Decision | Implemented | State | ADR |
 | --- | --- | --- | --- | --- | --- |
-| ADR-001 | Curation sources | Closed list in two tiers: journals by feed and PubMed; organizations and news by domain-restricted search. Approved for now; Filipe reviews it again before the MVP closes (F3-06) | — | `approved` | [ADR-0001](docs/decisions/0001-curation-sources.md) |
+| ADR-001 | Curation sources | Closed list in two tiers: journals by feed and PubMed; organizations and news by domain-restricted search. Approved for now; Filipe reviews it again before the MVP closes (F3-03, which took F3-06) | — | `approved` | [ADR-0001](docs/decisions/0001-curation-sources.md) |
 | ADR-002 | Publishing without review or indexing | What passes automatic validation is published; `noindex` everywhere, no sitemap; AI notice; simple withdrawal. Review, association with a physician and indexing wait for phase 9 | — | `approved` | [ADR-0002](docs/decisions/0002-publishing-without-review-or-indexing.md) |
-| ADR-003 | Publishing format and path | Markdown with YAML frontmatter, one file per edition; PR opened by the project's GitHub App, auto-merged for allowed authors; withdrawal by `status: retirado`. Approval depends on F2-09 | — | `proposed` | [ADR-0003](docs/decisions/0003-publishing-format-and-path.md) |
-| ADR-004 | Generation by the Claude API | A GitHub Actions script calls Sonnet 5.5 on candidates collected from the ADR-001 sources; structured output, grounding checked, up to US$30 a month. Replaces the Grok routine | — | `approved` | [ADR-0004](docs/decisions/0004-generation-by-claude-api.md) |
+| ADR-003 | Publishing format and path | Markdown with YAML frontmatter, one file per edition; PR opened by the project's GitHub App and merged by GitHub's auto-merge once the `main` ruleset's required checks pass (Filipe's choice of 2026-11-27); no merge workflow; withdrawal by `status: retirado`. Approval depends on F2-09 | — | `proposed` | [ADR-0003](docs/decisions/0003-publishing-format-and-path.md) |
+| ADR-004 | Generation by the Claude API | A Python script in GitHub Actions, started from the F0-08 trial code, calls Sonnet 5.5 on candidates collected from the ADR-001 sources; structured output, each item checked before any push, up to US$30 a month split between scheduled runs, development and eval runs, and a reserve. Tier 2 items carry no numbers until F3-07. Amended on 2026-11-26. Replaces the Grok routine | — | `approved` | [ADR-0004](docs/decisions/0004-generation-by-claude-api.md) |
 
 `—` means not implemented yet or not verified in the repository yet.
+
+## Waivers
+
+A waiver lets work skip a roadmap rule for a stated scope and time (`ROADMAP.md`: "Do not start a phase before its dependencies are met, or before an explicit waiver is recorded in `DECISIONS.md`").
+
+| ID | Rule waived | What it allows | Decided | Ends |
+| --- | --- | --- | --- | --- |
+| W1 | Phase gate: phase 2 starts only after phase 1 | Phase 2 issues follow their own issue-level dependencies, so they can start before phase 1 closes. Until F2-05 exists, Filipe dispatches the generation run, uploads the validated file and merges the PR himself after CI passes. The checks are the same | Filipe, 2026-11-26 (D5 in [`docs/plan-review-2026-11-26.md`](docs/plan-review-2026-11-26.md)) | When F2-05 is verified |
 
 ## How to record a new decision
 
@@ -45,6 +53,7 @@ Short index of PedsLetter's decisions. **Rationale, alternatives, consequences a
 
 | Date | Change |
 | --- | --- |
+| 2026-11-27 | F0-09: ADR-003's path changes to the GitHub App PR merged by GitHub's auto-merge (Filipe's choice of 2026-11-27, after the job commit approved on 2026-11-26 proved incompatible with a "PR required" ruleset); still `proposed`. ADR-004 amended with Filipe's decisions of 2026-11-26: Python from the F0-08 trial, the budget split, no numbers in tier 2 items, the eval set before the first model or prompt change. New Waivers section with W1 (phase gate) |
 | 2026-11-26 | F0-03: ADR-001 `approved` (Filipe's decision); the full review moves to F3-06 |
 | 2026-11-26 | F0-06: index, ADRs and states translated to English (`pendente` → `pending`, `proposto` → `proposed`, `aprovado` → `approved`, `substituído` → `superseded`, `rejeitado` → `rejected`); ADR files 0001 to 0003 renamed to English slugs. No decision changed |
 | 2026-11-25 | ADR-004 `approved` (Filipe's decision): generation by the Claude API instead of Grok. ADR-001 becomes `proposed`, with the initial two-tier list. ADR-003 swaps the Grok Bot submission for the GitHub App |
