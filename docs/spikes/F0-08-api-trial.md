@@ -2,7 +2,7 @@
 
 | F0-08 | Detail |
 | --- | --- |
-| State | In progress: paid run done on 2026-11-27; Filipe's verdict pending |
+| State | In progress: paid runs done on 2026-11-27; Filipe's verdict pending |
 | Rating | Risk Hi (raised from Med: the API key and the spend cap), Size Md (raised from Sm on 2026-11-27: about 1,000 hand-written lines) |
 | Script | [`spikes/F0-08/trial.py`](../../spikes/F0-08/trial.py). F2-11 to F2-13 start from it and review the part each takes (D6) |
 | Model | `claude-sonnet-5-5`, effort `high` (set explicitly), `max_tokens` 32000, prompt caching on |
@@ -32,6 +32,7 @@
 - `trial.py --project out/20261127T190256Z`: the per-window projection below.
 - The first run made no search. Filipe then set the flow and the edition slots (2026-11-27): call A always searches, call B ranks articles and search items, and the script fills at most 6 places: up to 2 articles from the last 30 days and 1 from the last 90, 1 guideline from the last 60 days, 2 alerts from the last 30 days, 2 news items from the last 7 days. A category with no item yet takes precedence over a second item of another; places still free go to the next items in rank order. Collection now takes, per journal, the newest records of the last 30 days and of 31 to 90 days ago.
 - Second paid run on 2026-11-27 (`out/20261127T220021Z`): 37 candidates collected; call A stopped after 94 s because every web search came back `too_many_requests`, so nothing was billed for search and the script stopped before call B. Run cost US$0.035; trial spend US$0.147. The first run's 73,251 cache-read tokens fit the same pattern: the server-side loop re-reads the context after each failed search.
+- Third paid run on 2026-11-27 (`out/20261127T221301Z`), after Filipe raised the workspace's web search limit from 0 to 2 a second: both calls ended with `end_turn`, 6 items. Run cost US$0.348; trial spend US$0.494.
 
 ## Replay of 8 weeks of windows (P8, free)
 
@@ -74,25 +75,26 @@ Entrez dates of past windows can still shift as PubMed indexes late records. The
 
 ## Measured figures
 
-Run of 2026-11-27, 7-day window, 18 candidates.
+Run 1 (`out/20261127T190256Z`): combined call, 7-day window, 18 candidates. Run 3 (`out/20261127T221301Z`): two calls with the edition slots, 37 candidates from the 30- and 90-day windows. Run 2 stopped on the search limit (see Checks run).
 
-| Measure | Value |
-| --- | --- |
-| Input tokens (incl. cache writes and reads) | 98,132: 10 uncached, 24,871 cache write, 73,251 cache read |
-| Output tokens | 4,187 |
-| Web searches | 0 |
-| Effort | high |
-| Wall-clock time | 45.5 s |
-| One call or split (U7) | One call: search and structured output were accepted together |
-| Run cost (computed) | US$0.111 as billed; US$0.287 with all input priced as a cache write |
-| Console billing for the run (U8) | Pending: Filipe reads it in the Console |
-| Monthly projection, flat (run × 13) | US$1.45 as billed; US$3.73 uncached |
-| Monthly projection, per window (replay) | US$2.32 (mean US$0.18 a window, max US$0.33), uncached |
-| G0 cost band | ≤ US$10: proceed |
+| Measure | Run 1, combined call | Run 3, two calls |
+| --- | --- | --- |
+| Input tokens | 98,132: 10 uncached, 24,871 cache write, 73,251 cache read | Search call 96,112: 14 uncached, 28,347 cache write, 67,751 cache read. Write call 37,206 uncached |
+| Output tokens | 4,187 | 4,025 search, 7,520 write |
+| Web searches | 0 (every search refused, see below) | 8 billed, 75 results |
+| Effort | high | high |
+| Wall-clock time | 45.5 s | 94.5 s |
+| Items | 6 articles | 3 articles, 1 guideline, 2 news; no alert found |
+| Run cost (computed) | US$0.111 | US$0.348 |
+| Console billing (U8) | US$0.11, matching the computed cost | Pending: Filipe reads it in the Console |
+| Monthly projection, run × 13 | US$1.45 | US$4.52 |
+| G0 cost band | ≤ US$10: proceed | ≤ US$10: proceed |
 
-- **Cache read on a first call.** 73,251 input tokens were read from the cache although no earlier request in the organization had been answered. Until the Console figure confirms it, the projection prices every input token as a cache write: a scheduled run sends new candidates days after the last one and should not count on a cache.
-- **No searches.** The model made no tier 2 search, so the run says nothing about search cost or about whether tier 2 items add anything (D3). Eight searches would add about US$0.36 a run if the search loop reads the context back from the cache (8 re-reads of 98k tokens at the read rate, 80,000 tokens of results at the write rate, US$0.08 in search fees), about US$4.70 a month. If nothing is cached, the script's worst-case bound adds US$2.94 a run, which at 13 runs passes the US$30 limit. Which of the two holds is unmeasured; F2-12's per-run budget must stop a run before that, and F2-11 or F3-02 measures real search cost.
-- **Pre-check findings for F2-13.** All 6 links resolved (HTTP 200) and came from the run. Two "missing numbers" were false positives: the abstracts write 3 643 376 and 10 048 with spaces, the edition with dots, so the number check must normalize thousand separators. The dose screen flagged one dose taken from the article (a dosing limit the abstract states), attributed with "segundo o relato", which the attribution pattern did not recognize, and two uses of the word "dose" with no number.
+- **Search was refused in runs 1 and 2.** The `pedsletter` workspace had its web search limit at 0 uses a second; every search came back `too_many_requests` and was not billed. In run 1 the model then wrote the edition from the journal articles alone; the 73,251 cache-read tokens fit the server-side loop re-reading the context after each refused search. Filipe set the limit to 2 a second before run 3.
+- **Where run 3's money went.** The search call cost US$0.198: 8 searches at US$0.01, 4,025 output tokens, and the search loop re-read the context from the cache on each step, so most of its input was billed at the read rate. The write call cost US$0.150: 37,206 input tokens at the full rate (it carries no cache mark) and 7,520 output tokens for a ranked list of 10 items. Run 3 is the shape of a production run, so US$4.52 a month is the working figure. The earlier per-window projection from run 1 no longer applies: a run's candidates now come from 30- and 90-day windows, not from the days since the last edition.
+- **Search worst case.** The script's bound for the search call was US$1.15, against US$0.198 spent; the bound assumes no cache, and run 3 shows the loop does read it.
+- **Pre-check findings for F2-13.** Every link came from the run and was on the allow-list. All resolved except the AAP News page, which answered 403 to the script although its URL came from the search results, so F2-13 needs a rule for allow-listed sites that refuse scripts. The number check gave false positives in both runs: the edition writes pt-BR numbers (1,4 for 1.4; 3.643.376 for 3 643 376), so it must normalize decimal and thousand separators before comparing. The dose screen flagged the word "dose" with no number, and in run 1 missed the attribution "segundo o relato". No tier 2 item carried a number other than a date.
+- **Slot behaviour.** Ranked 10 items: 6 articles, 2 guidelines, 2 news. The third-ranked article, 5 days old, took the 90-day article slot, as the overlapping slots allow; the 51-day-old article ranked sixth did not get a place. The guideline was 60 days old, the edge of its window.
 
 ## Quality verdict (G0)
 
