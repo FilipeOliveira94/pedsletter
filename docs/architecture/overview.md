@@ -107,7 +107,7 @@ The generation job checks each item before any push (F2-13), and the format, lin
 | Duplicates | An already published URL raises a warning; a URL from a withdrawn edition fails validation | F2-11 |
 | Authorship | Block-list terms fail CI, in the PR text too; the generation job runs the same check before any push | F1-06 |
 | Grounding | Every URL and title match a candidate or search result of the same run, from an ADR-001 source; every number in a tier 1 summary appears in the abstract or fetched text; tier 2 items carry no numbers except dates | F2-13 |
-| Dose | A dose screen on every field; a hit drops the item | F2-13 |
+| Dose | A dose screen on every field; a dose not attributed to the article drops the item; the site marks each dose with "confira no artigo" | F2-13, F1-04 |
 
 ### Auto-merge
 

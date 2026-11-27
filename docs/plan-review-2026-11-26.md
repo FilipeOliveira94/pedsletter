@@ -43,7 +43,7 @@ The architecture holds: model-free collection, one structured-output call, a sta
 | F2-01 | Modify | Med/Sm | Add: `url` is `https://` on an ADR-001 host (S7) |
 | F2-11 (+F2-04) | Merge | Med→Hi/Md | From the spike collector (M3, D6); used URLs read from `src/content/posts/`; a withdrawn edition's URL fails; path-scoped tier 2 domains pinned to a host such as `www.gov.br`, so the gate does not rely on U6 (S1); replayed windows as fixtures (P8) |
 | F2-12 (+F2-14, F2-02 prompt) | Merge | Hi/Md (Lg if D6 picks TypeScript; estimate) | From the spike (M3). Caching, `cache_read_input_tokens` > 0 logged (P5); model, effort, `max_tokens` in `src/config/` (P11); YAML serializer (S7); hash-locked dependencies (S10); dispatch only until F2-09. No request whose worst case (input + `max_tokens` + `max_uses`) breaks the per-run cap; cap × 13 plus reruns under the monthly limit; production key in its own workspace and limit if offered (U5), else a month-to-date guard (S9, P3, D7). Logs and PR text carry counts and IDs, never raw output; artifacts keep inputs and validated editions (S4, M8) |
-| F2-13 (+F2-03, F2-02 check) | Merge | Hi/Md | Runs in the job before any push (S3). Per item: URL and title bound to one candidate or search result (S1); tier 1 numbers in the abstract; tier 2 items carry no numbers but dates (S1); dose screen on every field (S2, D8); F1-06 names; DOI registered at doi.org, PMID via E-utilities, allow-listed tier 2 page with one retry (S12, P2, M7). Failing items drop, named; under 3 items, no edition (P1). Fixtures with an off-list URL, a dose, a name, raw HTML and an unsupported number are each blocked, no API call (S8). F2-02's check: three recorded windows, sent as one Message Batch, pass every check (P3) |
+| F2-13 (+F2-03, F2-02 check) | Merge | Hi/Md | Runs in the job before any push (S3). Per item: URL and title bound to one candidate or search result (S1); tier 1 numbers in the abstract; tier 2 items carry no numbers but dates (S1); dose screen on every field (S2, D8; since F0-11 only an unattributed dose fails); F1-06 names; DOI registered at doi.org, PMID via E-utilities, allow-listed tier 2 page with one retry (S12, P2, M7). Failing items drop, named; under 3 items, no edition (P1). Fixtures with an off-list URL, a dose, a name, raw HTML and an unsupported number are each blocked, no API call (S8; the dose fixtures since F0-11 are in `ROADMAP.md` F2-13). F2-02's check: three recorded windows, sent as one Message Batch, pass every check (P3) |
 
 With D5, the first edition publishes after F2-13: Filipe dispatches the run, uploads the validated file (`ADR-0003:25`) and merges after CI; withdrawal meanwhile is deletion or a Pages rollback (`ADR-0003:36-37`). That makes 11 issues instead of 27; without D5, 14 to 16.
 
@@ -112,7 +112,7 @@ MVP close: 17 issues (19 with F1-08 and F1-09) against 32 open today. Under D9's
 | ID | Decision | Lands in | Reason |
 | --- | --- | --- | --- |
 | S1 | adapt | F2-11, F2-12, F2-13 | No numbers in tier 2 items closes the gap in scope |
-| S2 | adopt | F2-13, D8 | Deterministic dose screen; a hit drops the item |
+| S2 | adopt | F2-13, D8 | Deterministic dose screen; a hit drops the item (since F0-11, a hit without attribution to the article) |
 | S3 | adopt | F2-13, F1-06; `AGENTS.md:89` in D12 | Checks before any push; hook reads names from the environment |
 | S4 | adopt | F1-06, F2-12 | Logs carry indexes, not terms; a missing secret fails |
 | S5 | adopt | F0-01, F2-05 | Ruleset now; named required checks once checks exist |
@@ -161,7 +161,7 @@ D2–D13 approved as recommended; D1 decided otherwise. Ordered by the first wor
 5. **D5. Phase-gate waiver (after F1-01).** Issue-level dependencies under a `DECISIONS.md` waiver (`ROADMAP.md:15`), with you merging dispatched editions until the job commit exists (F2-05, D9); or keep the gate. *Approved:* waiver; same checks, 11 issues instead of 14–16.
 6. **D6. Pipeline language (F2-11).** Python from the spike, hash-locked, or TypeScript sharing the Astro schema; either edits `ROADMAP.md:64`. *Approved:* Python; tested code exists, and the site toolchain validates the file anyway.
 7. **D7. Budget split (F2-12).** Amend ADR-004 to split the US$30 (scheduled, development and eval, reserve); production key in its own workspace. *Approved:* scheduled = F0-08's run cost × 13; development and eval via Batches; the rest reserve.
-8. **D8. Dose-screen hit (F2-13).** Drop the item, or park the edition for you. *Approved:* drop; count drops in F3-02.
+8. **D8. Dose-screen hit (F2-13).** Drop the item, or park the edition for you. *Approved:* drop; count drops in F3-02. *Changed on 2026-11-27 (F0-11):* the screen as written banned every dose, which Filipe said was overlooked. A summary may give a dose as the linked article states it, attributed to it in the same sentence; only an unattributed dose is a hit and drops the item.
 9. **D9. Publishing path (F0-05, F2-05).** Hardened App PR with auto-merge, or a job commit with `GITHUB_TOKEN` (edits `AGENTS.md:53`, `:97`, `:102`, `:183` and ADR-003). *Approved:* job commit: no private key, a smaller issue, no privileged workflow on pull requests. *Changed on 2026-11-27 (F0-09):* a ruleset cannot exempt `GITHUB_TOKEN`, so Filipe chose the App PR with GitHub's auto-merge. It keeps the App's private key and still needs no privileged workflow on pull requests.
 10. **D10. RSS and analytics.** F1-08 only for a feed reader; F1-09 dropped, or kept with a §5 exception for a beacon script (unverified). *Approved:* Filipe settles F1-08 before it starts (how the main user reads is a habit question, not a content check); drop F1-09.
 11. **D11. Repository visibility.** Public (free CI, "show the work", `docs/project-genesis.md:14`) or a private editions repository; does §4 cover your posts about the project? *Approved:* public; yes.
@@ -175,7 +175,7 @@ D2–D13 approved as recommended; D1 decided otherwise. Ordered by the first wor
 | No main-user signal before F3-03: until then, errors past the checks surface only through Filipe's read | Filipe's D1; ADR-002 publishes without review | An error report from any reader; a withdrawal |
 | A grounded number attached to the wrong claim goes live (`ADR-0002:45`) | Approved ADR-002 | A misleading error past the checks (G2); rising withdrawals (`ADR-0002:59`) |
 | Tier 2 items lose their figures | Cheapest S1 control in scope | Filipe's read or the main user's F3-03 answer flags missing figures: open F3-07 |
-| The dose screen drops relevant items | §4 fails closed | The main user asks for dropped items; drop counts in F3-02 |
+| The dose screen drops relevant items (since F0-11, only unattributed doses) | §4 fails closed | The main user asks for dropped items; drop counts in F3-02 |
 | A dead publisher page behind a registered DOI | Publishers block scripts (spike doc :14) | The main user reports a dead link |
 | Pushed content is visible on GitHub (`ADR-0002:46`; PR refs, U1) | Public repository by decision | Any §4 hit in a branch, PR, log or artifact: D11 |
 | No dedicated failure alert | GitHub's notice, checked in F2-09 | A failed run unnoticed on a scheduled date |
