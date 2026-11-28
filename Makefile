@@ -3,6 +3,9 @@
 
 .PHONY: docs-lint help install dev build lint test
 
+# No Astro telemetry, locally or in CI (AGENTS.md §8).
+export ASTRO_TELEMETRY_DISABLED := 1
+
 # Target not implemented yet: warn and exit with an error, so that no
 # script or CI treats a placeholder as a check that passed.
 define not_yet

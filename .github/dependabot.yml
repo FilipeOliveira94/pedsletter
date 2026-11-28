@@ -9,3 +9,7 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # One PR a week for all npm updates, not one per package.
+    groups:
+      npm:
+        patterns: ["*"]
