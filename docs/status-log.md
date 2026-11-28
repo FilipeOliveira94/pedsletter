@@ -6,6 +6,21 @@ Newest entries first.
 
 ---
 
+### 2026-11-27 — F0-11: dose rule corrected
+
+During F0-08 Filipe allowed a dose in a summary when the linked article states it and the summary attributes it to the article; no dose of our own appears, the calculators included. D8, the roadmap generation rule and F2-13 still banned every dose. F0-11 aligns them with `AGENTS.md` §4, which already allowed an attributed dose.
+
+What changed in the docs:
+
+- `ROADMAP.md`: the generation rule; F2-13 drops only an unattributed dose, with the attribution phrases and dose patterns in `src/config/` and four dose fixtures; F1-04 marks each dose with a visible "confira no artigo" mark and the same text on hover, at build time; F9-05 takes calculator doses from resolutions, guidelines and other public sources.
+- D8 in the plan review, ADR-004 step 3, the architecture overview and the project genesis carry a dated amendment.
+
+Accepted residual risk: the screen checks for an attribution phrase and, through the tier 1 number check, that the dose's numbers are in the abstract; it cannot compare the wording with the article.
+
+Check: `make docs-lint`.
+
+---
+
 ### 2026-11-27 — F0-08: API trial recorded, gate G0 passed
 
 Three paid runs of the trial script ([`spikes/F0-08/trial.py`](../spikes/F0-08/trial.py)) on 2026-11-27, US$0.494 in all, matching the Console's US$0.49. Run 1 (one call, search and structured output together) produced 6 articles and no search. Filipe then set the two-call flow and the edition slots. Run 2 stopped before the write call: every search came back `too_many_requests`, because the `pedsletter` workspace's web search limit was 0; Filipe set it to 2 a second. Run 3 searched 8 times and produced 3 articles, 1 guideline and 2 news items for US$0.348, US$4.52 a month at 13 runs.

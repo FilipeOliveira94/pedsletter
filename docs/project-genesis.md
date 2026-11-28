@@ -133,4 +133,4 @@ The rules for calculators, privacy, accessibility and performance are in [`archi
 ## 11. Open questions
 
 1. **Curation sources:** the list enters ADR-001 when Filipe provides it; it blocks F2-02.
-2. **Doses in the summaries:** the routine writes no dose recommendation until there is review. The rule holds until Filipe says otherwise.
+2. **Doses in the summaries:** the routine writes no dose recommendation until there is review. The rule holds until Filipe says otherwise. *On 2026-11-27 (F0-11) Filipe allowed a dose that the linked article states, attributed to it; doses of our own stay out until review, the calculators included.*

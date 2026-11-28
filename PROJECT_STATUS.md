@@ -7,7 +7,7 @@ Operational record of the **current phase**. The issue backlog and the acceptanc
 | Repository | [FilipeOliveira94/pedsletter](https://github.com/FilipeOliveira94/pedsletter) |
 | Started | 2026-11-14 |
 | Final plan approved | 2026-11-15 |
-| Last update | 2026-11-27 (F0-08: API trial recorded; gate G0 passed) |
+| Last update | 2026-11-27 (F0-11: dose rule corrected) |
 | Current phase | Phase 0 — Prerequisites |
 | Phase status | In progress |
 
@@ -31,10 +31,9 @@ On 2026-11-26 a plan review proposed changes, and Filipe decided on them: D1 oth
 
 ## Next steps
 
-1. **Dose rule correction** — Filipe allowed on 2026-11-27 a dose stated in the article and attributed to it; the D8 record, the roadmap generation rule and the F2-13 dose screen still ban every dose. A separate change corrects them.
-2. **F0-01** — Accounts and repository: the Cloudflare Pages link, the free-plan limits, the `main` ruleset (PR required), a read-only default token and push protection.
-3. **F0-05** — Check the acceptance of ADR-003, which F0-09 updated for GitHub's auto-merge.
-4. **F0-10** — Trim the status docs; any time after F0-09.
+1. **F0-01** — Accounts and repository: the Cloudflare Pages link, the free-plan limits, the `main` ruleset (PR required), a read-only default token and push protection.
+2. **F0-05** — Check the acceptance of ADR-003, which F0-09 updated for GitHub's auto-merge.
+3. **F0-10** — Trim the status docs; any time after F0-09.
 
 ---
 
@@ -52,6 +51,7 @@ On 2026-11-26 a plan review proposed changes, and Filipe decided on them: D1 oth
 | F0-08 | Cost and quality trial of the API | Delivered | F0-08 PR; [`docs/spikes/F0-08-api-trial.md`](docs/spikes/F0-08-api-trial.md); gate G0 passed |
 | F0-09 | Record the plan-review decisions | Delivered | F0-09 PR; [`docs/plan-review-2026-11-26.md`](docs/plan-review-2026-11-26.md) |
 | F0-10 | Trim the status docs | Not started | — |
+| F0-11 | Correct the dose rule | Delivered | F0-11 PR; D8 amended in [`docs/plan-review-2026-11-26.md`](docs/plan-review-2026-11-26.md) |
 
 Acceptance detail: `ROADMAP.md` → Phase 0.
 
@@ -102,4 +102,4 @@ None.
 
 ## Open questions
 
-1. **Doses in the summaries:** Filipe decided on 2026-11-27 that a summary may give a dose only as the article states it, attributed to it, and that no dose of our own appears (the calculators included). D8 as recorded bans every dose; the correction of D8, the generation rule and F2-13 is the next step above.
+None.
