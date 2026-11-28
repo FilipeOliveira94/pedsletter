@@ -1,0 +1,4 @@
+# No Disallow and no Sitemap line until phase 9 (AGENTS.md §4, ADR-002): a
+# crawler blocked here never reads the noindex that every page carries.
+User-agent: *
+Allow: /

@@ -43,6 +43,8 @@ jobs:
       - run: make install
       - run: make lint
       - run: make build
+      # F1-03: noindex, notices, no <script>, no sitemap, robots.txt, _headers.
+      - run: make site-check
 
   docs-lint:
     name: docs-lint

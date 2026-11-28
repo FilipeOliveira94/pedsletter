@@ -1,5 +1,8 @@
 # Cloudflare Pages headers. No indexing until phase 9 (AGENTS.md §4).
 # Cloudflare adds X-Robots-Tag: noindex to previews by default; this line
 # also covers production, which gets no default.
+# No JavaScript outside the calculators (AGENTS.md §5); phase 5 gives the
+# calculator pages their own policy (F5-05). scripts/site_check.py checks both.
 /*
   X-Robots-Tag: noindex, nofollow
+  Content-Security-Policy: script-src 'none'

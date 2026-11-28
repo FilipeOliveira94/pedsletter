@@ -1,0 +1,5 @@
+{
+  "_comment": "Path rules for scripts/site_check.py (F1-03). Paths are relative to dist/ and use fnmatch globs, where * also crosses /. F1-04 adds the edition route to aiNoticePaths; phase 5 adds the calculator pages to scriptAllowedPaths.",
+  "aiNoticePaths": ["index.html"],
+  "scriptAllowedPaths": []
+}
