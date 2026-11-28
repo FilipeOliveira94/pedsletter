@@ -135,7 +135,8 @@ Withdrawn or deleted text stays in the Git history.
 - `src/config/site.ts` has an `indexavel` switch, off.
 - With it off, every page carries `noindex` in the meta tag and in the `X-Robots-Tag` HTTP header, and the site builds no sitemap.
 - `robots.txt` has no `Disallow`: a crawler blocked by `robots.txt` never gets to read the `noindex`.
-- A test walks every page of the build and fails if any lacks `noindex` (F1-03).
+- `make site-check` (`scripts/site_check.py`, in the CI `build` job) walks every page of the build and fails if any lacks `noindex` or a §4 notice it must carry, or has a `<script>` outside the calculators; it also fails on a sitemap, a `Disallow` or `Sitemap` line in `robots.txt`, and a `_headers` without the `X-Robots-Tag` or the `script-src 'none'` policy (F1-03). Its path rules are in `src/config/site-check.json`, and the notice text in `src/config/avisos.json`, which `site.ts` imports.
+- The walker requires `noindex` whatever the switch says; F9-04 changes it together with `indexavel`.
 - The switch is turned on only in F9-04.
 
 ## No authorship

@@ -73,4 +73,4 @@ Set by Filipe in the dashboard (Settings > Build); the agent has no access to it
 | Production branch | `main`, automatic deployments on |
 | Preview branches | All non-production branches |
 
-Each branch push builds a preview at `<branch>.pedsletter.pages.dev`, with `/` turned into `-`. The Cloudflare preview is not a GitHub required check: it builds outside GitHub Actions.
+Each branch push builds a preview at `<branch>.pedsletter.pages.dev`, with `/` turned into `-` and the label cut to 28 characters (`feat/F1-03-site-nao-indexavel` became `feat-f1-03-site-nao-indexave`; the PR's `Cloudflare Pages` check gives the exact URL). The Cloudflare preview is not a GitHub required check: it builds outside GitHub Actions.

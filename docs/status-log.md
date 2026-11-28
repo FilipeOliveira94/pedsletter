@@ -6,6 +6,22 @@ Newest entries first.
 
 ---
 
+### 2026-11-28 — F1-03: non-indexable site
+
+`public/robots.txt` allows everything, with no `Disallow` and no `Sitemap` line. `public/_headers` keeps `X-Robots-Tag: noindex, nofollow` on `/*` and adds `Content-Security-Policy: script-src 'none'`. The two §4 notices moved from `src/config/site.ts` to `src/config/avisos.json`, which `site.ts` imports, so the checker reads the same copy. `scripts/site_check.py` (Python stdlib), run by `make site-check` in the CI `build` job after `make build`, walks `dist/` and fails, naming the file and the rule, on: a page without a robots meta that includes `noindex`; a page without the audience notice, or a page in `aiNoticePaths` without the AI notice (text hidden from the reader does not count); a `<script>` outside `scriptAllowedPaths`; a sitemap file or `<link rel="sitemap">`; a missing `robots.txt` or one with `Disallow` or `Sitemap`; a `_headers` without the header or the policy on `/*`, or one that detaches either with `!`; an empty build. The path rules live in `src/config/site-check.json`: the AI notice is required on `index.html`, and no page may have a script. F1-04 adds the edition route and phase 5 the calculators. The job names did not change, so the ruleset did not either.
+
+Checks:
+
+| Acceptance | Evidence |
+| --- | --- |
+| `noindex` in the meta tag and the `X-Robots-Tag` header | `make site-check` on the build passes. On the branch preview (`feat-f1-03-site-nao-indexave.pedsletter.pages.dev`) and the deployment preview, a GET of `/`, `/robots.txt` and an unknown path answers 200 with `x-robots-tag: noindex, nofollow`; `/` has `<meta name="robots" content="noindex, nofollow">` |
+| No sitemap | `dist/` has only `index.html`, `_headers` and `robots.txt`; unit tests fail a `sitemap*.xml`, `.xml.gz`, `.txt` and a sitemap link |
+| `robots.txt` has no `Disallow` | The preview serves the committed file. Before this change, production served the home page's HTML at `/robots.txt` (Cloudflare's fallback with no `404.html`) |
+| The walker fails on a missing `noindex` or notice, or a `<script>` | 42 unit tests on temporary `dist/` folders, one per rule, plus passing cases (an allowed script path, entities and line breaks in a notice). A copy of the real build broken by hand (meta removed, a `<script>`, a `Disallow`, a sitemap file, the policy removed) failed with five findings and exit 1 |
+| `_headers` sets `script-src 'none'` | The preview answers with `content-security-policy: script-src 'none'` on every path tried |
+
+Also run: `make test` (all tests), `make lint`, `make build`, `make docs-lint` and `make authorship` with a placeholder name. Production (`pedsletter.pages.dev`) gets the new headers and `robots.txt` only after the merge, and is not checked here. Size seen Md: about 520 hand-written lines with the tests, over the Sm limit.
+
 ### 2026-11-28 — F1-06: absence-of-authorship check
 
 `scripts/authorship_check.py` (Python stdlib) fails when a fixed term or a blocked proper name appears. The seven fixed terms live in `src/config/authorship.json`, each written with a JSON escape, so no file holds a term in plain text. The three docs that quoted the list (the ROADMAP F1-06 row, ADR-002 and the F0-04 entry below) now name it instead, by Filipe's decision; the check has no exemption. The names come only from the `AUTHORSHIP_BLOCKED_NAMES` environment variable; a missing or empty one is a setup error (exit 2). Matching ignores case, accents and runs of whitespace, decodes HTML entities, reads each line with and without its tags and catches a phrase split across two lines. The output gives the source, the line and the list index, never the term, the name or the line; a path that matches is redacted.
