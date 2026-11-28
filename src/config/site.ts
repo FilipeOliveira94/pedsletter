@@ -13,5 +13,3 @@ export const avisos = {
     "Curadoria e resumos gerados por IA, sem revisão por profissional de saúde. Confira sempre a fonte original.",
   publico: "Conteúdo destinado a médicos e demais profissionais de saúde.",
 } as const;
-// F1-01 proof: a deliberate type error that CI must reject. Reverted next commit.
-export const quebra: number = "texto";
