@@ -7,9 +7,9 @@ What F0-01 checked on 2026-11-28: the accounts the project runs on, the reposito
 | Account | State on 2026-11-28 | How it was checked |
 | --- | --- | --- |
 | GitHub repository [FilipeOliveira94/pedsletter](https://github.com/FilipeOliveira94/pedsletter) | Public, GitHub Free | `gh api repos/FilipeOliveira94/pedsletter` → `visibility: public` |
-| Cloudflare Pages project `pedsletter` (`pedsletter.pages.dev`) | Free plan, linked to this repository by the Cloudflare Git integration; automatic production and preview deployments paused until F1-01, as Filipe confirmed (the agent cannot read that dashboard setting) | The `Cloudflare Pages` check run (app `cloudflare-workers-and-pages`) on `main` at `09061f2`, conclusion `failure` ("Build failed"); `https://pedsletter.pages.dev/` answers 522, so nothing is served |
+| Cloudflare Pages project `pedsletter` (`pedsletter.pages.dev`) | Free plan, linked to this repository by the Cloudflare Git integration; deployments paused by F0-01 and turned back on by Filipe on 2026-11-28 for F1-01, with the build settings below | F0-01: the `Cloudflare Pages` check run (app `cloudflare-workers-and-pages`) on `main` at `09061f2` failed, and the site answered 522. F1-01: that check run passed on the PR #19 branch, and its preview answers 200 (`docs/status-log.md`) |
 
-The project was created with no build command and the output directory `dist`, which does not exist yet. The build Cloudflare runs when a project is created, on `09061f2`, failed, and as of 2026-11-28 nothing is served. F1-01 sets the build and turns deployments back on, with previews per branch, none for forks, and `noindex` (F1-03).
+The project was created with no build command and the output directory `dist`. The build Cloudflare runs when a project is created, on `09061f2`, failed. F1-01 set the build and turned deployments back on, with a preview per branch, none for forks, and `noindex` (section below). Production serves the site once F1-01 merges and `main` builds.
 
 ## Repository settings
 
