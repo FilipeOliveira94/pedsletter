@@ -21,7 +21,7 @@ Read with `gh api` on 2026-11-28. None was changed by F0-01.
 | Rule `pull_request` | `required_approving_review_count: 0`; merge, squash and rebase allowed | PR required with no required approval |
 | Rule `non_fast_forward` | Present | No force push |
 | Rule `deletion` | Present | No deletion |
-| Required checks | `build` and `docs-lint`, source GitHub Actions (integration 15368), added by F1-01 on 2026-11-28; `authorship` added by Filipe when F1-06 merges | F2-05 adds the content checks |
+| Required checks | `build` and `docs-lint`, source GitHub Actions (integration 15368), added by F1-01 on 2026-11-28; `authorship` added by Filipe on 2026-11-28 (F1-06, PR #21) | F2-05 adds the content checks |
 | Secret `AUTHORSHIP_BLOCKED_NAMES` | Repository Actions secret and Dependabot secret with the same value, set by Filipe for F1-06; the value is never written in the repository | Names reach the check only through a secret (F1-06); Dependabot PRs read only Dependabot secrets |
 | Actions `default_workflow_permissions` | `read`; `can_approve_pull_request_reviews: false` | Default `GITHUB_TOKEN` is read-only |
 | `secret_scanning`, `secret_scanning_push_protection` | `enabled` | Push protection on |
