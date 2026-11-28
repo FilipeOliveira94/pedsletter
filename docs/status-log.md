@@ -6,6 +6,14 @@ Newest entries first.
 
 ---
 
+### 2026-11-28 — Phase 0 closed
+
+Every phase 0 acceptance item is checked and every phase 0 issue is delivered or withdrawn (F0-01 to F0-11; F0-02 withdrawn). Gate G0 passed on 2026-11-27: proceed with Sonnet 5.5. The phase row in `ROADMAP.md` is `Delivered`. `PROJECT_STATUS.md` was rewritten for phase 1, and the README status table now names phase 1; its stack table also moves the domain to phase 9 (D13), drops the analytics that F1-09's withdrawal removed (D10), and gives the F0-08 run cost.
+
+Checks: the phase 0 issue table read row by row; `make docs-lint`; a §4 term search of the diff.
+
+---
+
 ### 2026-11-28 — F0-10: status docs trimmed
 
 Issue status now lives only in the `ROADMAP.md` tables. `PROJECT_STATUS.md` dropped its phase 0 progress table, its copy of the phase acceptance, the "Last validation" table, the "Active decisions" table and its "Last update" row; it keeps the current goal, next steps, active risks, blockers and open questions. The "Changelog" tables in `ROADMAP.md` and `DECISIONS.md` were dropped, with the roadmap's "Last update" row: each row repeated `git log`, this log or an ADR's Evidence section. The only roadmap row with no entry here (2026-11-24) is copied below. This log stays, because it holds the checks behind each issue, which `git log` does not. `AGENTS.md` §12 lists only the files still updated when an issue closes (D12), and `DECISIONS.md` no longer asks for a copy of active decisions in `PROJECT_STATUS.md`.
