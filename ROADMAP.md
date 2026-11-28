@@ -1,17 +1,16 @@
 # Roadmap
 
-PedsLetter's plan by issue. This file is the source of **scope, dependencies, issue status and acceptance criteria**. `PROJECT_STATUS.md` is the operational record of the **current phase**. The history lives in `docs/status-log.md`.
+PedsLetter's plan by issue. This file is the source of **scope, dependencies, issue status and acceptance criteria**; no other file keeps an issue's status. `PROJECT_STATUS.md` holds the current phase's next steps, risks and blockers. The history lives in `docs/status-log.md`, and the change by change record in `git log`.
 
 | Roadmap | Current |
 | --- | --- |
 | Origin | Final plan approved on 2026-11-15; summary in [`docs/project-genesis.md`](docs/project-genesis.md). Revised by the plan review of 2026-11-26: [`docs/plan-review-2026-11-26.md`](docs/plan-review-2026-11-26.md) |
-| Last update | 2026-11-28 (F0-05: ADR-003 acceptance checked) |
 | Related | `PROJECT_STATUS.md`, `DECISIONS.md`, `AGENTS.md` |
 
 **Status values:** `not started` · `in progress` · `delivered` · `verified` · `blocked` · `withdrawn`
 
 - Mark an issue **delivered** only when the change exists in the repository.
-- Mark it **verified** only when the acceptance has been checked and the result is in `docs/status-log.md`, the ADR or the architecture doc; `PROJECT_STATUS.md` summarizes.
+- Mark it **verified** only when the acceptance has been checked and the result is in `docs/status-log.md`, the ADR or the architecture doc.
 - Do not start a phase before its dependencies are met, or before an explicit waiver is recorded in `DECISIONS.md` (phase 2 has one, W1).
 - Do not create empty directories for phases that have not started.
 - One issue per PR, on a feature branch (AGENTS.md §13).
@@ -99,7 +98,7 @@ Dates proposed in the 2026-11-26 review and approved with the metrics (D12).
 | F0-07 | Rewrite the roadmap for the Claude API pipeline | Lo/Lo | Md/Md | — | Delivered | ADR-004 records generation by the Claude API (Sonnet 5.5, GitHub Actions, up to US$30 a month), `approved` by Filipe's decision.<br>Phases 0, 2 and 3 rewritten; F0-02 and F2-06 withdrawn; new issues for the pipeline and for reference material.<br>ADR-001 with the initial list; ADR-003 with the GitHub App path; `AGENTS.md` with the new cost rule.<br>README updated for the new pipeline (exception to the §12 rule, authorized by Filipe). |
 | F0-08 | Cost and quality trial of the API | Hi/Hi | Md/Lg | F0-03, F0-07 | Delivered | Claude API account with trial-only credits, auto-reload off and a US$30 monthly spend limit configured; the trial key is revoked after the run.<br>One manual run with Sonnet 5.5 over the ADR-001 sources, authorized by Filipe before it runs, with caching on; at most one rerun, which splits search from writing if search and structured output fail in one call (U7).<br>The edition follows the production format: 3 to 6 items, each with the four-section body; a dose appears only as the article states it, attributed to it (Filipe, 2026-11-27); tier 2 items carry no numbers except dates; only allow-listed links are fetched.<br>Input and output tokens, cache reads, number of searches, effort, wall-clock time, run cost, Console billing and projected monthly cost for 13 runs recorded.<br>A free replay of 8 weeks of Mon/Wed/Fri PubMed windows gives the candidate count per window and a per-window projection beside ×13.<br>Filipe reads the generated edition and records the verdict; exit through gate G0.<br>Size raised to Md on 2026-11-27: about 1,000 hand-written lines with the plan-review changes.<br>Changed on 2026-11-27 by Filipe's decisions: two more paid runs, because the first made no search (the workspace's web search limit was 0); the two-call flow and the edition slots (Generation rules); the per-window projection gives way to the third run's cost × 13, because a run now reads 30- and 90-day windows. Seen size Lg: 1,806 lines of script and tests. |
 | F0-09 | Record the plan-review decisions | Hi/Hi | Md/Md | — | Delivered | `ROADMAP.md`, `DECISIONS.md`, ADR-003, ADR-004, `AGENTS.md`, the architecture overview and the status docs record Filipe's decisions on the 2026-11-26 plan review (D1 decided otherwise, D2 to D13 approved) and his choice of 2026-11-27 for publishing: the App PR with GitHub's auto-merge.<br>The review is in `docs/plan-review-2026-11-26.md`.<br>F0-08's changes from D2 (trial-only credits, caching, the window replay) go in F0-08's own PR. |
-| F0-10 | Trim the status docs | Lo/- | Sm/- | F0-09 | Not started | Issue status lives only in the `ROADMAP.md` tables.<br>`PROJECT_STATUS.md` keeps the next steps, the active risks and the blockers.<br>Changelog tables that repeat `git log` are dropped, or kept with a reason.<br>`AGENTS.md` §12 lists only the files still updated when an issue closes (D12). |
+| F0-10 | Trim the status docs | Lo/Lo | Sm/Sm | F0-09 | Delivered | Issue status lives only in the `ROADMAP.md` tables.<br>`PROJECT_STATUS.md` keeps the next steps, the active risks and the blockers.<br>Changelog tables that repeat `git log` are dropped, or kept with a reason.<br>`AGENTS.md` §12 lists only the files still updated when an issue closes (D12). |
 | F0-11 | Correct the dose rule | Hi/Hi | Sm/Sm | F0-08 | Delivered | The D8 record, the generation rules, F2-13, ADR-004, the architecture overview and the project genesis follow Filipe's rule of 2026-11-27: a summary may give a dose only as the linked article states it, attributed to it; no dose of our own appears, the calculators included.<br>F1-04 marks each dose for the reader to confirm in the article.<br>Calculator doses come from resolutions, guidelines and other public sources (F9-05).<br>No record still bans an attributed dose. |
 
 The initial commit got ahead on the README text and the first three ADRs. The issues stay open and close by PR, with the acceptance checked.
@@ -339,20 +338,3 @@ Nothing in this phase starts without Filipe's explicit decision. The order matte
 
 **F9-05 regulatory check:** before starting, check ANVISA's RDC 657/2022 and RDC 96/2008.
 
----
-
-## Changelog
-
-| Date | Change |
-| --- | --- |
-| 2026-11-28 | F0-05: ADR-003 acceptance checked; the `status: retirado` row now matches F2-07 and F2-11 (the date on the withdrawn page; the block list is the F2-11 validation). ADR-003 stays `proposed` until F2-09. F0-05 delivered (Lo/Lo, Sm/Sm) |
-| 2026-11-28 | F0-01: Cloudflare Pages project `pedsletter` linked, with automatic deployments paused by Filipe until F1-01 and nothing served; the `main` ruleset, read-only `GITHUB_TOKEN` and push protection checked with `gh api`; free-plan limits checked against the providers' pages ([`docs/accounts.md`](docs/accounts.md)). F0-01 delivered (Med/Med, Sm/Sm) |
-| 2026-11-27 | F0-11: the dose rule follows Filipe's decision of 2026-11-27: a summary may give a dose only as the linked article states it, attributed to it. D8, the generation rules and F2-13 now drop only an unattributed dose; F1-04 marks each dose with "confira no artigo"; F9-05 takes doses from public sources. F0-11 delivered (Hi/Hi, Sm/Sm) |
-| 2026-11-27 | F0-08: API trial recorded ([`docs/spikes/F0-08-api-trial.md`](docs/spikes/F0-08-api-trial.md)); gate G0 passed: proceed with Sonnet 5.5, US$0.35 a run, US$4.52 a month. Filipe's edition slots and the two-call flow go into the generation rules, F2-11 and F2-12; F2-13 takes the number-format and blocked-page findings; new F7-08 (selection review page). F0-08 delivered (Hi/Hi, Md/Lg) |
-| 2026-11-27 | F0-09: the 2026-11-26 plan review recorded ([`docs/plan-review-2026-11-26.md`](docs/plan-review-2026-11-26.md)): D1 decided otherwise, D2 to D13 approved; on 2026-11-27 Filipe kept the GitHub App and swapped the custom auto-merge workflow for GitHub's auto-merge, because a ruleset cannot exempt `GITHUB_TOKEN`. Merged: F1-02 into F1-01; F1-05 and F1-07 into F1-04; F2-02 into F2-12 and F2-13; F2-03 into F2-13; F2-04 into F2-11; F2-08 into F2-07; F2-10 into F2-05; F2-14 into F2-12; F3-01 into F2-09; F3-06 into F3-03. Withdrawn: F1-09; F2-15 cut. Deferred: F3-05; F3-04 moves to phase 5. New: F0-09, F0-10, F3-07 (conditional), F5-07. Phase 4 folds into phase 9 with F4-01 and F4-02, and F6-02 moves there too. Metrics restated; gates G0 to G3 added; waiver W1 for phase 2. Raised: F0-01 to Med; F1-01, F1-04, F1-08, F2-11 and F4-01 to Hi. F0-09 delivered (Hi/Hi, Md/Md) |
-| 2026-11-26 | F0-03: ADR-001 `approved` by Filipe as the list for now; new F3-06 reviews the sources before the MVP closes. F0-03 delivered (Lo/Lo, Sm/Sm) |
-| 2026-11-26 | F0-04: ADR-002 acceptance checked; the F2-13 grounding check added to its mitigations and consequences. F0-04 delivered (Lo/Lo, Sm/Sm) |
-| 2026-11-26 | F0-06: the roadmap and the other repository docs translated to English; status values in English; ADR files 0001 to 0003 and the architecture doc renamed to English names. No scope, acceptance or ID changed. F0-06 delivered (Lo/Lo, Md/Md) |
-| 2026-11-25 | F0-07: generation moves from the Grok routine to the Claude API (ADR-004, Sonnet 5.5, up to US$30 a month). F0-02 and F2-06 withdrawn. New: F0-07, F0-08, F2-10 to F2-15, F3-05 and F7-07. Phases 0, 2 and 3 rewritten; news, guidelines and alerts enter the MVP. F3-04 moved to phase 1; growth charts before the other phase 6 calculators. F0-03 unblocked with the initial ADR-001 list. F0-06 is the next issue |
-| 2026-11-24 | New F0-06: translate the docs to English. Size and risk replace small/large in the workflow (`AGENTS.md` §3); every issue got the Expected/Seen Risk and Size columns |
-| 2026-11-15 | Initial roadmap: phases 0 to 9 and 59 issues, from the approved final plan. F0-03 starts `blocked`, waiting for the source list |

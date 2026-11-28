@@ -46,16 +46,4 @@ A waiver lets work skip a roadmap rule for a stated scope and time (`ROADMAP.md`
 1. Copy [`docs/decisions/_template.md`](docs/decisions/_template.md) to `docs/decisions/NNNN-short-slug.md`.
 2. Fill in context, decision, alternatives, consequences, evidence and review triggers.
 3. Add a row to the index above.
-4. In `PROJECT_STATUS.md` → **Active decisions**, list only those that shape the current phase or were approved in it. Do not copy the whole index.
-5. Once the choice is built and verified, fill **Implemented** with what actually exists.
-
-## Changelog
-
-| Date | Change |
-| --- | --- |
-| 2026-11-27 | F0-08: ADR-004 amended at gate G0 with Filipe's decisions: two calls (search, then rank and write) and the edition slots applied by the script. Evidence: the measured cost, US$0.348 a run |
-| 2026-11-27 | F0-09: ADR-003's path changes to the GitHub App PR merged by GitHub's auto-merge (Filipe's choice of 2026-11-27, after the job commit approved on 2026-11-26 proved incompatible with a "PR required" ruleset); still `proposed`. ADR-004 amended with Filipe's decisions of 2026-11-26: Python from the F0-08 trial, the budget split, no numbers in tier 2 items, the eval set before the first model or prompt change. New Waivers section with W1 (phase gate) |
-| 2026-11-26 | F0-03: ADR-001 `approved` (Filipe's decision); the full review moves to F3-06 |
-| 2026-11-26 | F0-06: index, ADRs and states translated to English (`pendente` → `pending`, `proposto` → `proposed`, `aprovado` → `approved`, `substituído` → `superseded`, `rejeitado` → `rejected`); ADR files 0001 to 0003 renamed to English slugs. No decision changed |
-| 2026-11-25 | ADR-004 `approved` (Filipe's decision): generation by the Claude API instead of Grok. ADR-001 becomes `proposed`, with the initial two-tier list. ADR-003 swaps the Grok Bot submission for the GitHub App |
-| 2026-11-15 | Initial log: ADR-001 `pending`, ADR-002 `approved` (final-plan decision), ADR-003 `proposed` |
+4. Once the choice is built and verified, fill **Implemented** with what actually exists.

@@ -6,6 +6,14 @@ Newest entries first.
 
 ---
 
+### 2026-11-28 — F0-10: status docs trimmed
+
+Issue status now lives only in the `ROADMAP.md` tables. `PROJECT_STATUS.md` dropped its phase 0 progress table, its copy of the phase acceptance, the "Last validation" table, the "Active decisions" table and its "Last update" row; it keeps the current goal, next steps, active risks, blockers and open questions. The "Changelog" tables in `ROADMAP.md` and `DECISIONS.md` were dropped, with the roadmap's "Last update" row: each row repeated `git log`, this log or an ADR's Evidence section. The only roadmap row with no entry here (2026-11-24) is copied below. This log stays, because it holds the checks behind each issue, which `git log` does not. `AGENTS.md` §12 lists only the files still updated when an issue closes (D12), and `DECISIONS.md` no longer asks for a copy of active decisions in `PROJECT_STATUS.md`.
+
+Checks: `make docs-lint`; a search for references to the dropped sections; a §4 term search of the diff.
+
+---
+
 ### 2026-11-28 — F0-05: ADR-003 acceptance checked
 
 ADR-003 records the `.md` format, the PR opened by the GitHub App and merged by GitHub's auto-merge once the required checks pass, and the withdrawal mechanism; it stays `proposed` until F2-09. The check found the `status: retirado` row behind F2-07 and F2-11: the withdrawn page also shows the date, and the bot's block list is the F2-11 validation that fails a file reusing a withdrawn URL. The ADR and the architecture overview now say so; the decision did not change. With F0-05, every phase 0 acceptance item is checked; F0-10 is the last open issue.
@@ -98,6 +106,12 @@ Filipe decided to move edition generation from the Grok routine to the Claude AP
 The roadmap was rewritten: F0-02 and F2-06, which depended on Grok, were withdrawn; F0-08 (cost and quality trial), F2-10 to F2-15 (GitHub App, collector, generator, grounding, budget, failure alert), F3-05 (evaluation set) and F7-07 (reference material) were added. F3-04 moved to phase 1, and the growth charts come before the other phase 6 calculators. ADR-001 got the initial two-tier list and became `proposed`; ADR-003 swaps the Grok Bot for the GitHub App, because a PR opened with the Actions `GITHUB_TOKEN` does not trigger PR validation. `AGENTS.md` replaces the zero-cost rule with one of up to US$30 a month for the API and widens Hi risk.
 
 The cost estimate (about US$10 a month with Sonnet over 13 runs) was not measured; F0-08 measures it. Docs only; `make docs-lint` passed.
+
+---
+
+### 2026-11-24 — Size and risk ratings
+
+Size and risk replaced small/large in the workflow (`AGENTS.md` §3), and every issue got the Expected/Seen Risk and Size columns. New F0-06: translate the docs to English. (From the roadmap's Changelog, dropped in F0-10.)
 
 ---
 
