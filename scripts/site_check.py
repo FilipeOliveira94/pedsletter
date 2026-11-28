@@ -6,14 +6,17 @@ Rules checked on `dist/` (AGENTS.md §4 and §5, ADR-002):
   `noindex`;
 - every page carries the audience notice, and every page matched by
   `aiNoticePaths` also carries the AI notice (text after HTML parsing, with
-  entities decoded and whitespace collapsed; text inside `<script>` and
-  `<style>` does not count);
+  entities decoded and whitespace collapsed; text inside `<script>`,
+  `<style>`, `<template>`, `<noscript>`, `<title>`, `<textarea>` or an element
+  with `hidden` does not count);
 - no page outside `scriptAllowedPaths` has a `<script>` element;
-- no sitemap: no `sitemap*.xml` or `sitemap*.xml.gz` file, no
+- no sitemap: no `sitemap*.xml`, `sitemap*.xml.gz` or `sitemap*.txt` file, no
   `<link rel="sitemap">`;
 - `robots.txt` exists and has no `Disallow` and no `Sitemap` line;
 - `_headers` has a `/*` rule with `X-Robots-Tag` including `noindex` and a
-  `Content-Security-Policy` whose `script-src` is exactly `'none'`;
+  `Content-Security-Policy` whose `script-src` is exactly `'none'` (and whose
+  `script-src-elem` and `script-src-attr`, when present, are too); no rule
+  detaches either header with `!`;
 - at least one page exists, so an empty build never passes.
 
 The notice wording comes from `src/config/avisos.json` (the file `site.ts`
@@ -39,7 +42,14 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).resolve().parent.parent / "src" / "config"
 SPACES = re.compile(r"\s+")
-SITEMAP_FILE = re.compile(r"sitemap.*\.xml(\.gz)?", re.IGNORECASE)
+SITEMAP_FILE = re.compile(r"sitemap.*\.(xml|xml\.gz|txt)", re.IGNORECASE)
+# Text inside these never reaches the reader, so a notice there does not count.
+HIDDEN_TEXT = {"script", "style", "template", "noscript", "title", "textarea"}
+# A robots meta inside these is not applied by the browser or the crawler.
+INERT = {"template", "noscript"}
+# Void elements never get an end tag, so they never open a hiding scope.
+VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+CSP_SCRIPT_DIRECTIVES = {"script-src", "script-src-elem", "script-src-attr"}
 ROBOTS_FORBIDDEN = re.compile(r"^\s*(disallow|sitemap)\s*:", re.IGNORECASE)
 
 
@@ -90,30 +100,39 @@ class PageParser(HTMLParser):
         self.robots: list[str] = []
         self.scripts = 0
         self.sitemap_link = False
-        self._skip = 0
+        # Open elements that hide text or make a meta inert, innermost last.
+        self._stack: list[tuple[str, bool, bool]] = []
+
+    def _hidden(self) -> bool:
+        return any(h for _, h, _ in self._stack)
+
+    def _inert(self) -> bool:
+        return any(i for _, _, i in self._stack)
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         a = {k.lower(): (v or "") for k, v in attrs}
         if tag == "script":
             self.scripts += 1
-        if tag in ("script", "style"):
-            self._skip += 1
-        if tag == "meta" and a.get("name", "").strip().lower() == "robots":
+        if tag == "meta" and a.get("name", "").strip().lower() == "robots" and not self._inert():
             self.robots.append(a.get("content", ""))
         if tag == "link" and "sitemap" in a.get("rel", "").lower().split():
             self.sitemap_link = True
+        hidden = tag in HIDDEN_TEXT or "hidden" in a
+        if (hidden or tag in INERT) and tag not in VOID:
+            self._stack.append((tag, hidden, tag in INERT))
 
     def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         self.handle_starttag(tag, attrs)
-        if tag in ("script", "style"):
-            self._skip -= 1
+        self.handle_endtag(tag)
 
     def handle_endtag(self, tag: str) -> None:
-        if tag in ("script", "style") and self._skip:
-            self._skip -= 1
+        for i in range(len(self._stack) - 1, -1, -1):
+            if self._stack[i][0] == tag:
+                del self._stack[i:]
+                break
 
     def handle_data(self, data: str) -> None:
-        if not self._skip:
+        if not self._hidden():
             self.text.append(data)
 
 
@@ -146,7 +165,7 @@ def check_robots(dist: Path) -> list[Finding]:
     if not path.is_file():
         return [Finding("robots.txt", "missing")]
     out = []
-    for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+    for n, line in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), 1):
         m = ROBOTS_FORBIDDEN.match(line.split("#", 1)[0])
         if m:
             word = "Disallow" if m.group(1).lower() == "disallow" else "Sitemap"
@@ -154,33 +173,48 @@ def check_robots(dist: Path) -> list[Finding]:
     return out
 
 
-def parse_headers(text: str) -> dict[str, dict[str, list[str]]]:
-    """Cloudflare `_headers`: an unindented URL pattern, then indented `Name: value` lines."""
+def parse_headers(text: str) -> tuple[dict[str, dict[str, list[str]]], list[tuple[str, str]]]:
+    """Cloudflare `_headers`: an unindented URL pattern, then indented `Name: value` lines.
+
+    Returns the rules and the `! Name` detach lines as (pattern, lowercased name).
+    """
     rules: dict[str, dict[str, list[str]]] = {}
+    detached: list[tuple[str, str]] = []
+    pattern = ""
     current: dict[str, list[str]] | None = None
     for line in text.splitlines():
         if not line.strip() or line.lstrip().startswith("#"):
             continue
         if not line[0].isspace():
-            current = rules.setdefault(line.strip(), {})
+            pattern = line.strip()
+            current = rules.setdefault(pattern, {})
+        elif line.strip().startswith("!"):
+            detached.append((pattern, line.strip()[1:].strip().lower()))
         elif current is not None and ":" in line:
             name, value = line.split(":", 1)
             current.setdefault(name.strip().lower(), []).append(value.strip())
-    return rules
+    return rules, detached
 
 
 def csp_blocks_scripts(policy: str) -> bool:
+    """`script-src 'none'`, and no `script-src-elem` or `-attr` that loosens it."""
+    sources = {}
     for directive in policy.split(";"):
         parts = directive.split()
-        if parts and parts[0].lower() == "script-src":
-            return [p.lower() for p in parts[1:]] == ["'none'"]
-    return False
+        if parts and parts[0].lower() in CSP_SCRIPT_DIRECTIVES:
+            sources.setdefault(parts[0].lower(), [p.lower() for p in parts[1:]])
+    return sources.get("script-src") == ["'none'"] and all(v == ["'none'"] for v in sources.values())
 
 
 def check_headers(dist: Path) -> list[Finding]:
     path = dist / "_headers"
-    root = parse_headers(path.read_text(encoding="utf-8")).get("/*", {}) if path.is_file() else {}
-    out = []
+    rules, detached = parse_headers(path.read_text(encoding="utf-8-sig")) if path.is_file() else ({}, [])
+    root = rules.get("/*", {})
+    out = [
+        Finding("_headers", f"rule {pattern} detaches {name} with !")
+        for pattern, name in detached
+        if name in ("x-robots-tag", "content-security-policy")
+    ]
     robots = {t.strip().lower() for v in root.get("x-robots-tag", []) for t in v.split(",")}
     if "noindex" not in robots:
         out.append(Finding("_headers", "no X-Robots-Tag with noindex on /*"))

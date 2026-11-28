@@ -177,6 +177,45 @@ class SiteCheckTest(unittest.TestCase):
         self.write("_headers", "/*\n  X-Robots-Tag: noindex\n  content-security-policy: object-src 'none'; script-src 'none'\n")
         self.assertEqual(self.findings(), [])
 
+    def test_headers_detach_on_subpath_fails(self):
+        self.write("_headers", HEADERS + "/calculadoras/*\n  ! Content-Security-Policy\n  ! X-Robots-Tag\n")
+        found = [f.message for f in self.findings() if f.path == "_headers"]
+        self.assertEqual(len(found), 2, found)
+
+    def test_headers_csp_script_src_elem_loosened_fails(self):
+        self.write("_headers", "/*\n  X-Robots-Tag: noindex\n  Content-Security-Policy: script-src 'none'; script-src-elem 'self'\n")
+        self.assertFails("_headers", "Content-Security-Policy")
+
+    def test_notice_in_hidden_containers_does_not_count(self):
+        for wrap in ("<template>{}</template>", "<noscript>{}</noscript>", "<div hidden>{}</div>", "<textarea>{}</textarea>"):
+            with self.subTest(wrap=wrap):
+                self.write("sobre/index.html", page().replace(f"<p>{PUBLICO}</p>", wrap.format(PUBLICO)))
+                self.assertFails("sobre/index.html", "audience notice")
+
+    def test_notice_in_title_does_not_count(self):
+        self.write("sobre/index.html", page().replace(f"<p>{PUBLICO}</p>", "").replace("<title>t", f"<title>{PUBLICO}"))
+        self.assertFails("sobre/index.html", "audience notice")
+
+    def test_text_after_hidden_container_counts(self):
+        self.write("sobre/index.html", page().replace("<footer>", "<div hidden><p>x</p></div><footer>"))
+        self.assertEqual(self.findings(), [])
+
+    def test_hidden_void_element_does_not_hide_later_text(self):
+        self.write("sobre/index.html", page().replace("<footer>", '<input type="hidden" hidden><footer>'))
+        self.assertEqual(self.findings(), [])
+
+    def test_robots_meta_inside_noscript_does_not_count(self):
+        self.write("sobre/index.html", page(head='<noscript><meta name="robots" content="noindex"></noscript>'))
+        self.assertFails("sobre/index.html", "noindex")
+
+    def test_robots_disallow_after_bom_fails(self):
+        (self.dist / "robots.txt").write_text("Disallow: /\n", encoding="utf-8-sig")
+        self.assertFails("robots.txt", "Disallow")
+
+    def test_sitemap_txt_fails(self):
+        self.write("sitemap.txt", "https://x/\n")
+        self.assertFails("sitemap.txt", "sitemap")
+
     def test_empty_dist_fails(self):
         shutil.rmtree(self.dist)
         self.dist.mkdir()
