@@ -1,5 +1,5 @@
 # PedsLetter — common development commands
-# Requires: GNU make. Node.js and the package manager come in F1-01.
+# Requires: GNU make, Node.js (version in .nvmrc) and npm.
 
 .PHONY: docs-lint help install dev build lint test
 
@@ -13,20 +13,20 @@ endef
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*##"; printf "Targets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  %-10s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-install: ## Install dependencies (placeholder; F1-01)
-	$(call not_yet,install,F1-01)
+install: ## Install dependencies from the lockfile
+	npm ci
 
-dev: ## Start the Astro dev server (placeholder; F1-01)
-	$(call not_yet,dev,F1-01)
+dev: ## Start the Astro dev server
+	npm run dev
 
-build: ## Build the static site (placeholder; F1-01)
-	$(call not_yet,build,F1-01)
+build: ## Build the static site into dist/
+	npm run build
 
 docs-lint: ## Check Markdown tables (no empty header)
 	python3 scripts/check_markdown_tables.py
 
-lint: ## Run lint and type checks (placeholder; F1-01)
-	$(call not_yet,lint,F1-01)
+lint: ## Type-check the project (astro check; a type error fails)
+	npm run check
 
-test: ## Run the tests (placeholder; F1-01)
-	$(call not_yet,test,F1-01)
+test: ## Run the tests (placeholder; the first test comes in F1-03)
+	$(call not_yet,test,F1-03)

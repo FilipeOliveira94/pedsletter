@@ -1,0 +1,5 @@
+# Cloudflare Pages headers. No indexing until phase 9 (AGENTS.md §4).
+# Cloudflare adds X-Robots-Tag: noindex to previews by default; this line
+# also covers production, which gets no default.
+/*
+  X-Robots-Tag: noindex, nofollow
