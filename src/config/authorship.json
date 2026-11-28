@@ -1,0 +1,13 @@
+{
+  "_comment": "F1-06 block list (AGENTS.md section 4). Each term carries one JSON \\u escape, so this file never holds a term in plain text and the check needs no exemption. Proper names never go here: they come from the environment variable named below (a CI secret, or the shell for the pre-commit hook).",
+  "names_env": "AUTHORSHIP_BLOCKED_NAMES",
+  "terms": [
+    "\u0043RM",
+    "\u0052QE",
+    "D\u0072.",
+    "D\u0072a.",
+    "revisado\u0020por",
+    "m\u00e9dico respons\u00e1vel",
+    "m\u00e9dica respons\u00e1vel"
+  ]
+}

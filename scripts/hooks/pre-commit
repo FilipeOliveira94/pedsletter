@@ -1,0 +1,6 @@
+#!/bin/sh
+# Refuse a commit whose staged files carry a block-list term or a blocked
+# proper name (F1-06, AGENTS.md §4). The names come from the environment
+# variable AUTHORSHIP_BLOCKED_NAMES, never a file; without it the commit fails.
+# Turn it on with `make hooks`.
+exec python3 "$(dirname "$0")/../authorship_check.py" --staged
