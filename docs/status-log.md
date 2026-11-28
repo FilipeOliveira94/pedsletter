@@ -6,6 +6,26 @@ Newest entries first.
 
 ---
 
+### 2026-11-28 — F1-01: Astro project, CI and preview deploy
+
+The repository now has a static Astro 7.4.13 site with strict TypeScript (the `strictest` preset; TypeScript 6.0.3, since `@astrojs/check` 0.9.12 supports only 5 and 6), installed with npm from exact pins and a lockfile, Node.js 22.23.4 (`.nvmrc`). The only page is a placeholder home with both §4 notices and the noindex meta tag. `src/config/site.ts` holds the `indexavel` switch (off) and the notice texts, and `public/_headers` sends `X-Robots-Tag: noindex, nofollow` on every path. There is no sitemap and no `robots.txt`. The Makefile `install`, `dev`, `build` and `lint` targets work; `test` stays a placeholder until F1-03.
+
+CI (`.github/workflows/ci.yml`) runs `build` (install, `astro check`, build) and `docs-lint` on every PR and every push to `main`, with a read-only token, actions pinned by commit SHA, `persist-credentials: false`, no `paths:` filter and no secret. The "secrets set per step" criterion holds vacuously: the workflow has no secret, and its header says a later job sets one with `env:` on the step that uses it (F1-06, F2-05). Dependabot updates the actions and the npm packages weekly. `build` and `docs-lint` are required checks of the `protect-main` ruleset, reported by GitHub Actions only (integration 15368). Filipe set the Cloudflare Pages build (`docs/accounts.md`) and turned deployments on.
+
+Checks:
+
+| Acceptance | Evidence |
+| --- | --- |
+| A type error fails the build | On PR #19, a commit adding `export const quebra: number = "texto";` failed `build` at `make lint` with `ts(2322)` (run 46103108695); its revert passed (run 46103165990). Same result locally with `make lint` |
+| A preview per branch, none for a fork PR | The `Cloudflare Pages` check passed on the branch, and `feat-f1-01-astro-ci-preview.pedsletter.pages.dev` answers 200. Fork PRs: Cloudflare's GitHub integration and known-issues pages say they get no preview and no setting changes it; not exercised, since there is no second account, and Filipe accepted the docs as evidence |
+| Previews keep `noindex` | `curl -I` on the branch and the deployment preview URLs shows `x-robots-tag: noindex, nofollow`; the HTML has `<meta name="robots" content="noindex, nofollow">`, both notices and no `<script>` |
+| Pinned actions, Dependabot, per-step secrets, no persisted credentials | `ci.yml` and `dependabot.yml` as above |
+| CI jobs are required checks | A `gh api` read of ruleset 27377947 lists `build` and `docs-lint` with integration 15368; PR #19 merge state `CLEAN` |
+
+Also run: `make docs-lint`, `make build`, a §4 term search of the diff.
+
+---
+
 ### 2026-11-28 — Phase 0 closed
 
 Every phase 0 acceptance item is checked and every phase 0 issue is delivered or withdrawn (F0-01 to F0-11; F0-02 withdrawn). Gate G0 passed on 2026-11-27: proceed with Sonnet 5.5. The phase row in `ROADMAP.md` is `Delivered`. `PROJECT_STATUS.md` was rewritten for phase 1, and the README status table now names phase 1; its stack table also moves the domain to phase 9 (D13), drops the analytics that F1-09's withdrawal removed (D10), and gives the F0-08 run cost.

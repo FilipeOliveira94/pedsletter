@@ -1,0 +1,15 @@
+# Keeps the SHA-pinned actions and the exact npm versions current (F1-01).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    # One PR a week for all npm updates, not one per package.
+    groups:
+      npm:
+        patterns: ["*"]

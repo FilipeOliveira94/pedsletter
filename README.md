@@ -55,7 +55,7 @@ Details in [`docs/architecture/overview.md`](docs/architecture/overview.md).
 make help
 ```
 
-`install`, `dev`, `build`, `lint` and `test` exist as placeholders and start working in F1-01.
+`make install` installs the pinned dependencies (npm, Node.js version in `.nvmrc`), `make dev` starts the Astro dev server, `make build` builds the site into `dist/`, `make lint` type-checks it and `make docs-lint` checks the Markdown tables. `make test` is still a placeholder; the first test comes in F1-03.
 
 ## 🤝 How to contribute
 

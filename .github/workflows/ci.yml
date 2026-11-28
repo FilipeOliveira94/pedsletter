@@ -1,0 +1,52 @@
+# CI for every PR and every push to main.
+#
+# The job names `build` and `docs-lint` are required checks in the `main`
+# ruleset (F1-01). Renaming a job breaks the merge gate: change the ruleset in
+# the same PR. No `paths:` filter, so a required job never ends up skipped.
+#
+# Rules (AGENTS.md §8): runs on `pull_request`, never `pull_request_target`;
+# read-only token; actions pinned by full commit SHA (Dependabot keeps them
+# current); checkout keeps no credentials. This workflow uses no secret. A
+# later job that needs one sets it with `env:` on the step that uses it, never
+# on the job or the workflow.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  # Never cancel a run on main, so every main commit keeps a completed check.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: make install
+      - run: make lint
+      - run: make build
+
+  docs-lint:
+    name: docs-lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: make docs-lint
