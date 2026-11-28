@@ -16,9 +16,9 @@ The site is not indexable: every page carries `noindex` and there is no sitemap.
 
 | Status | Now |
 | --- | --- |
-| Current phase | Phase 0 — Prerequisites. In progress |
-| Goal | Accounts, a cost and quality trial of the Claude API, and ADRs (F0-01 to F0-08) |
-| In the repository | Docs and skeleton. No site code yet (it starts in F1-01) |
+| Current phase | Phase 1 — Site foundation. Not started; phase 0 closed on 2026-11-28 |
+| Goal | A static site on `*.pages.dev`, not indexable, with the AI notice (F1-01, F1-03, F1-04, F1-06) |
+| In the repository | Docs, ADR-001 to ADR-004 and the F0-08 trial script. No site code yet (it starts in F1-01) |
 | Record | [`PROJECT_STATUS.md`](PROJECT_STATUS.md) · scope in [`ROADMAP.md`](ROADMAP.md) |
 
 ---
@@ -30,7 +30,7 @@ The site is not indexable: every page carries `noindex` and there is no sitemap.
 | Static, non-indexable site with the AI notice | Planned | 1 |
 | Content pipeline: collection from the sources → generation by the Claude API → PR → validation → automatic merge → publishing | Planned | 2 |
 | MVP in use, with scheduled generation and news, guidelines and alerts | Planned | 3 |
-| `pedsletter.com.br` domain | Planned | 4 |
+| `pedsletter.com.br` domain | Planned | 9 |
 | Drug-free calculators, growth charts and reference material | Planned | 5 to 8 |
 | Clinical review, association with a physician, indexing and drug calculators | Future, only with an explicit decision | 9 |
 
@@ -41,11 +41,11 @@ The MVP is phases 0 to 3.
 | Layer | Choice | Cost |
 | --- | --- | --- |
 | Site | Astro + Markdown, strict TypeScript | Free |
-| Hosting | Cloudflare Pages (`*.pages.dev` until phase 4) | Free |
+| Hosting | Cloudflare Pages (`*.pages.dev` until phase 9) | Free |
 | Repository and CI | GitHub, public repository, GitHub Actions | Free |
-| Analytics | Cloudflare Web Analytics, no cookies | Free |
-| Generation | A GitHub Actions script that calls the Claude API (Sonnet 5.5), Monday, Wednesday and Friday mornings ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)) | Up to US$30 a month; F0-08 measures it |
-| Domain | `pedsletter.com.br` | Paid; phase 4 |
+| Analytics | None for now (F1-09 withdrawn); any future analytics stays cookieless | Free |
+| Generation | A GitHub Actions script that calls the Claude API (Sonnet 5.5), Monday, Wednesday and Friday mornings ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)) | Up to US$30 a month; one F0-08 run cost US$0.348 |
+| Domain | `pedsletter.com.br` | Paid; phase 9 |
 
 Details in [`docs/architecture/overview.md`](docs/architecture/overview.md).
 
