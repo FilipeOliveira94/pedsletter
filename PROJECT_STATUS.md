@@ -34,4 +34,4 @@ None.
 
 ## Open questions
 
-None.
+- Do Google's and Groq's terms allow the site's use? Google's free tier bars use "in clinical practice, to provide medical advice"; Groq's says the services "should not be used for medical ... advice". The site publishes literature summaries for health professionals. Filipe decides before F3-09 ([`docs/spikes/F3-08-free-tier-models.md`](docs/spikes/F3-08-free-tier-models.md)).

@@ -6,6 +6,21 @@ Newest entries first.
 
 ---
 
+### 2026-11-28 — F3-08: free-tier model survey
+
+A check of the docs under waiver W2, with no code and no API call: Google AI Studio and Groq, from their own pages, against the F0-08 run 3 shape (search call about 96,000 input tokens, write call about 37,000). Result in [`docs/spikes/F3-08-free-tier-models.md`](spikes/F3-08-free-tier-models.md).
+
+Checks:
+
+| Acceptance | Evidence |
+| --- | --- |
+| Candidate list checked against current model pages | Groq's deprecations page shuts down every Llama 4 and Qwen3 model named in the request; `openai/gpt-oss-120b`, `openai/gpt-oss-20b` and `qwen/qwen3.8-27b` remain. Google lists `gemini-3.8-flash` and `gemini-3.5-flash-lite` as Stable and free |
+| Card, limits, schema, context, search, training, terms per candidate | One table per provider in the spike doc, with the pages read. Gemini's Free limits are shown only in AI Studio and Groq's tab is not named, so both console checks stay open for F3-09 |
+| Checked against one production run | Groq's 8K tokens a minute is below either call; Gemini's free tier has no grounding on current Flash models and no domain allow list. `gemini-3.8-flash` is the only drop-in candidate, for the write call |
+| Result names the F3-09 candidates and roles | `gemini-3.8-flash` (write call or fallback), `gemini-3.5-flash-lite` below it; Groq only with one call per candidate. The search call stays on Claude, so a free write call saves at most US$0.150 a run |
+
+Open: the providers' terms against medical advice, for Filipe (`PROJECT_STATUS.md`).
+
 ### 2026-11-28 — F1-03: non-indexable site
 
 `public/robots.txt` allows everything, with no `Disallow` and no `Sitemap` line. `public/_headers` keeps `X-Robots-Tag: noindex, nofollow` on `/*` and adds `Content-Security-Policy: script-src 'none'`. The two §4 notices moved from `src/config/site.ts` to `src/config/avisos.json`, which `site.ts` imports, so the checker reads the same copy. `scripts/site_check.py` (Python stdlib), run by `make site-check` in the CI `build` job after `make build`, walks `dist/` and fails, naming the file and the rule, on: a page without a robots meta that includes `noindex`; a page without the audience notice, or a page in `aiNoticePaths` without the AI notice (text hidden from the reader does not count); a `<script>` outside `scriptAllowedPaths`; a sitemap file or `<link rel="sitemap">`; a missing `robots.txt` or one with `Disallow` or `Sitemap`; a `_headers` without the header or the policy on `/*`, or one that detaches either with `!`; an empty build. The path rules live in `src/config/site-check.json`: the AI notice is required on `index.html`, and no page may have a script. F1-04 adds the edition route and phase 5 the calculators. The job names did not change, so the ruleset did not either.

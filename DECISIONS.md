@@ -40,6 +40,7 @@ A waiver lets work skip a roadmap rule for a stated scope and time (`ROADMAP.md`
 | ID | Rule waived | What it allows | Decided | Ends |
 | --- | --- | --- | --- | --- |
 | W1 | Phase gate: phase 2 starts only after phase 1 | Phase 2 issues follow their own issue-level dependencies, so they can start before phase 1 closes. Until F2-05 exists, Filipe dispatches the generation run, uploads the validated file and merges the PR himself after CI passes. The checks are the same | Filipe, 2026-11-26 (D5 in [`docs/plan-review-2026-11-26.md`](docs/plan-review-2026-11-26.md)) | When F2-05 is verified |
+| W2 | Phase gate: phase 3 starts only after phase 2 | F3-08 (free-tier model survey) runs before phase 3. It is a check of provider docs with no code and no API call; F3-09 keeps its dependencies | Filipe, 2026-11-28, in the F3-08 thread | When F3-08 is delivered |
 
 ## How to record a new decision
 
