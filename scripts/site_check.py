@@ -100,7 +100,8 @@ class PageParser(HTMLParser):
         self.robots: list[str] = []
         self.scripts = 0
         self.sitemap_link = False
-        # Open elements that hide text or make a meta inert, innermost last.
+        # Every open non-void element as (tag, hides text, makes a meta inert),
+        # innermost last, so an end tag closes the element a browser would.
         self._stack: list[tuple[str, bool, bool]] = []
 
     def _hidden(self) -> bool:
@@ -118,12 +119,12 @@ class PageParser(HTMLParser):
         if tag == "link" and "sitemap" in a.get("rel", "").lower().split():
             self.sitemap_link = True
         hidden = tag in HIDDEN_TEXT or "hidden" in a
-        if (hidden or tag in INERT) and tag not in VOID:
+        if tag not in VOID:
             self._stack.append((tag, hidden, tag in INERT))
 
     def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        # Browsers ignore `/>` on a non-void element and leave it open.
         self.handle_starttag(tag, attrs)
-        self.handle_endtag(tag)
 
     def handle_endtag(self, tag: str) -> None:
         for i in range(len(self._stack) - 1, -1, -1):

@@ -200,6 +200,20 @@ class SiteCheckTest(unittest.TestCase):
         self.write("sobre/index.html", page().replace("<footer>", "<div hidden><p>x</p></div><footer>"))
         self.assertEqual(self.findings(), [])
 
+    def test_same_name_child_does_not_close_hidden_parent(self):
+        for wrap in ("<div hidden><div>a</div>{}</div>", "<section hidden><section>a</section>{}</section>"):
+            with self.subTest(wrap=wrap):
+                self.write("sobre/index.html", page().replace(f"<p>{PUBLICO}</p>", wrap.format(PUBLICO)))
+                self.assertFails("sobre/index.html", "audience notice")
+
+    def test_self_closed_template_stays_open(self):
+        self.write("sobre/index.html", page().replace(f"<p>{PUBLICO}</p>", f"<template/>{PUBLICO}"))
+        self.assertFails("sobre/index.html", "audience notice")
+
+    def test_unclosed_paragraphs_do_not_hide_notice(self):
+        self.write("sobre/index.html", page().replace("<footer>", "<p>a<p>b<ul><li>c<li>d</ul><footer>"))
+        self.assertEqual(self.findings(), [])
+
     def test_hidden_void_element_does_not_hide_later_text(self):
         self.write("sobre/index.html", page().replace("<footer>", '<input type="hidden" hidden><footer>'))
         self.assertEqual(self.findings(), [])
