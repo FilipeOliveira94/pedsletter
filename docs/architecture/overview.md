@@ -124,7 +124,7 @@ The App token is created on each run, lasts one hour and grants access only to t
 
 | Method | When to use it | Effect |
 | --- | --- | --- |
-| `status: retirado` (default) | An edition with an error or poor content | It disappears from the home page, the tags and the RSS; the URL shows "edição retirada" and the reason; its articles go onto the bot's block list |
+| `status: retirado` (default) | An edition with an error or poor content | It disappears from the home page, the tags and the RSS; the URL shows "edição retirada", the date and the reason, without the content (F2-07); its URLs go onto the bot's block list, and validation fails a file that reuses one (F2-11) |
 | Delete the file | Content that must not stay visible on the site | The URL returns 404 |
 | Revert the deploy in Cloudflare Pages | Emergency | Back to the previous version in seconds, without touching the repository |
 

@@ -5,7 +5,7 @@ PedsLetter's plan by issue. This file is the source of **scope, dependencies, is
 | Roadmap | Current |
 | --- | --- |
 | Origin | Final plan approved on 2026-11-15; summary in [`docs/project-genesis.md`](docs/project-genesis.md). Revised by the plan review of 2026-11-26: [`docs/plan-review-2026-11-26.md`](docs/plan-review-2026-11-26.md) |
-| Last update | 2026-11-28 (F0-01: accounts and repository checked) |
+| Last update | 2026-11-28 (F0-05: ADR-003 acceptance checked) |
 | Related | `PROJECT_STATUS.md`, `DECISIONS.md`, `AGENTS.md` |
 
 **Status values:** `not started` · `in progress` · `delivered` · `verified` · `blocked` · `withdrawn`
@@ -84,7 +84,7 @@ Dates proposed in the 2026-11-26 review and approved with the metrics (D12).
 - [x] Accounts created: public repository, a Cloudflare Pages project linked to it and a Claude API account with a monthly spend limit (F0-01, F0-08).
 - [x] API trial recorded, with cost and quality measured (F0-08).
 - [x] Gate G0 decided from the trial.
-- [ ] ADR-001 to ADR-004 written.
+- [x] ADR-001 to ADR-004 written.
 
 ### Issues
 
@@ -94,7 +94,7 @@ Dates proposed in the 2026-11-26 review and approved with the metrics (D12).
 | F0-02 | Test the Grok scheduled routine | -/- | -/- | — | Withdrawn | Withdrawn on 2026-11-25: generation moved to the Claude API (ADR-004). The equivalent trial is F0-08. |
 | F0-03 | ADR-001: curation sources | Lo/Lo | Sm/Sm | Filipe's review | Delivered | Closed two-tier list (journals by feed; organizations and news by domain-restricted search), with the inclusion criteria.<br>Initial list proposed in F0-07; closes when Filipe reviews it and ADR-001 becomes `approved`.<br>Does not block phase 1.<br>Approved by Filipe on 2026-11-26 as the list for now; the full review moved to F3-06, now part of F3-03. |
 | F0-04 | ADR-002: publishing without review or indexing | Lo/Lo | Sm/Sm | — | Delivered | Records the decision, the rationale, the mitigations and the conditions for review (phase 9).<br>Names no professional. |
-| F0-05 | ADR-003: publishing format and path | Lo/- | Sm/- | F0-07, F0-09 | Not started | Records the `.md` format, the PR opened by the GitHub App and merged by GitHub's auto-merge once the required checks pass (Filipe's choice of 2026-11-27), and the withdrawal mechanism.<br>ADR-003 stays `proposed` until F2-09. |
+| F0-05 | ADR-003: publishing format and path | Lo/Lo | Sm/Sm | F0-07, F0-09 | Delivered | Records the `.md` format, the PR opened by the GitHub App and merged by GitHub's auto-merge once the required checks pass (Filipe's choice of 2026-11-27), and the withdrawal mechanism.<br>ADR-003 stays `proposed` until F2-09. |
 | F0-06 | Translate the repository docs to English | Lo/Lo | Md/Md | F0-07 | Delivered | ROADMAP, PROJECT_STATUS, DECISIONS, ADRs, `docs/` and README in English (Filipe's decision, 2026-11-24; `AGENTS.md` and the prompts are already in English).<br>Site content and the §4 mandatory notices stay in Portuguese, in the README too.<br>Issue and decision IDs do not change.<br>Next issue after F0-07. |
 | F0-07 | Rewrite the roadmap for the Claude API pipeline | Lo/Lo | Md/Md | — | Delivered | ADR-004 records generation by the Claude API (Sonnet 5.5, GitHub Actions, up to US$30 a month), `approved` by Filipe's decision.<br>Phases 0, 2 and 3 rewritten; F0-02 and F2-06 withdrawn; new issues for the pipeline and for reference material.<br>ADR-001 with the initial list; ADR-003 with the GitHub App path; `AGENTS.md` with the new cost rule.<br>README updated for the new pipeline (exception to the §12 rule, authorized by Filipe). |
 | F0-08 | Cost and quality trial of the API | Hi/Hi | Md/Lg | F0-03, F0-07 | Delivered | Claude API account with trial-only credits, auto-reload off and a US$30 monthly spend limit configured; the trial key is revoked after the run.<br>One manual run with Sonnet 5.5 over the ADR-001 sources, authorized by Filipe before it runs, with caching on; at most one rerun, which splits search from writing if search and structured output fail in one call (U7).<br>The edition follows the production format: 3 to 6 items, each with the four-section body; a dose appears only as the article states it, attributed to it (Filipe, 2026-11-27); tier 2 items carry no numbers except dates; only allow-listed links are fetched.<br>Input and output tokens, cache reads, number of searches, effort, wall-clock time, run cost, Console billing and projected monthly cost for 13 runs recorded.<br>A free replay of 8 weeks of Mon/Wed/Fri PubMed windows gives the candidate count per window and a per-window projection beside ×13.<br>Filipe reads the generated edition and records the verdict; exit through gate G0.<br>Size raised to Md on 2026-11-27: about 1,000 hand-written lines with the plan-review changes.<br>Changed on 2026-11-27 by Filipe's decisions: two more paid runs, because the first made no search (the workspace's web search limit was 0); the two-call flow and the edition slots (Generation rules); the per-window projection gives way to the third run's cost × 13, because a run now reads 30- and 90-day windows. Seen size Lg: 1,806 lines of script and tests. |
@@ -345,6 +345,7 @@ Nothing in this phase starts without Filipe's explicit decision. The order matte
 
 | Date | Change |
 | --- | --- |
+| 2026-11-28 | F0-05: ADR-003 acceptance checked; the `status: retirado` row now matches F2-07 and F2-11 (the date on the withdrawn page; the block list is the F2-11 validation). ADR-003 stays `proposed` until F2-09. F0-05 delivered (Lo/Lo, Sm/Sm) |
 | 2026-11-28 | F0-01: Cloudflare Pages project `pedsletter` linked, with automatic deployments paused by Filipe until F1-01 and nothing served; the `main` ruleset, read-only `GITHUB_TOKEN` and push protection checked with `gh api`; free-plan limits checked against the providers' pages ([`docs/accounts.md`](docs/accounts.md)). F0-01 delivered (Med/Med, Sm/Sm) |
 | 2026-11-27 | F0-11: the dose rule follows Filipe's decision of 2026-11-27: a summary may give a dose only as the linked article states it, attributed to it. D8, the generation rules and F2-13 now drop only an unattributed dose; F1-04 marks each dose with "confira no artigo"; F9-05 takes doses from public sources. F0-11 delivered (Hi/Hi, Sm/Sm) |
 | 2026-11-27 | F0-08: API trial recorded ([`docs/spikes/F0-08-api-trial.md`](docs/spikes/F0-08-api-trial.md)); gate G0 passed: proceed with Sonnet 5.5, US$0.35 a run, US$4.52 a month. Filipe's edition slots and the two-call flow go into the generation rules, F2-11 and F2-12; F2-13 takes the number-format and blocked-page findings; new F7-08 (selection review page). F0-08 delivered (Hi/Hi, Md/Lg) |

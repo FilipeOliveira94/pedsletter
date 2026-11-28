@@ -7,7 +7,7 @@ Operational record of the **current phase**. The issue backlog and the acceptanc
 | Repository | [FilipeOliveira94/pedsletter](https://github.com/FilipeOliveira94/pedsletter) |
 | Started | 2026-11-14 |
 | Final plan approved | 2026-11-15 |
-| Last update | 2026-11-28 (F0-01: accounts and repository checked) |
+| Last update | 2026-11-28 (F0-05: ADR-003 acceptance checked) |
 | Current phase | Phase 0 — Prerequisites |
 | Phase status | In progress |
 
@@ -31,8 +31,8 @@ On 2026-11-26 a plan review proposed changes, and Filipe decided on them: D1 oth
 
 ## Next steps
 
-1. **F0-05** — Check the acceptance of ADR-003, which F0-09 updated for GitHub's auto-merge.
-2. **F0-10** — Trim the status docs; any time after F0-09.
+1. **F0-10** — Trim the status docs, the last open phase 0 issue. Every phase 0 acceptance item is now checked.
+2. **F1-01** — Astro project, strict TypeScript, CI and preview deploy, once phase 0 closes.
 
 ---
 
@@ -44,7 +44,7 @@ On 2026-11-26 a plan review proposed changes, and Filipe decided on them: D1 oth
 | F0-02 | Test the Grok scheduled routine | Withdrawn | Replaced by F0-08 ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)) |
 | F0-03 | ADR-001: curation sources | Delivered | F0-03 PR; [`0001`](docs/decisions/0001-curation-sources.md) `approved`; full review in F3-03 |
 | F0-04 | ADR-002: publishing without review or indexing | Delivered | F0-04 PR; acceptance checked in [`0002`](docs/decisions/0002-publishing-without-review-or-indexing.md) → Evidence |
-| F0-05 | ADR-003: publishing format and path | Not started | [`0003`](docs/decisions/0003-publishing-format-and-path.md) updated in F0-09 for GitHub's auto-merge, `proposed` |
+| F0-05 | ADR-003: publishing format and path | Delivered | F0-05 PR; acceptance checked in [`0003`](docs/decisions/0003-publishing-format-and-path.md) → Evidence; `proposed` until F2-09 |
 | F0-06 | Translate the docs to English | Delivered | F0-06 PR; `make docs-lint` passes |
 | F0-07 | Rewrite the roadmap for the Claude API pipeline | Delivered | F0-07 PR; [ADR-004](docs/decisions/0004-generation-by-claude-api.md) `approved` |
 | F0-08 | Cost and quality trial of the API | Delivered | F0-08 PR; [`docs/spikes/F0-08-api-trial.md`](docs/spikes/F0-08-api-trial.md); gate G0 passed |
@@ -59,7 +59,7 @@ Acceptance detail: `ROADMAP.md` → Phase 0.
 - [x] Accounts created: public repository, a Cloudflare Pages project linked to it and a Claude API account with a monthly spend limit (F0-01, F0-08).
 - [x] API trial recorded, with cost and quality measured (F0-08).
 - [x] Gate G0 decided from the trial.
-- [ ] ADR-001 to ADR-004 written.
+- [x] ADR-001 to ADR-004 written.
 
 ---
 
@@ -69,8 +69,8 @@ Acceptance detail: `ROADMAP.md` → Phase 0.
 | --- | --- |
 | Date | 2026-11-28 |
 | Environment | Local, WSL2 |
-| Checks | F0-01: `gh api` reads of the repository, the `main` ruleset, Actions permissions and the Cloudflare Pages check run; `curl` on `pedsletter.pages.dev`; `make docs-lint` |
-| Result | See the F0-01 PR and [`docs/accounts.md`](docs/accounts.md) |
+| Checks | F0-05: ADR-003 read against the F0-05 acceptance and against F0-01, F2-01, F2-05, F2-07, F2-09 and F2-11; `make docs-lint`; a §4 term search of the diff |
+| Result | See the F0-05 PR and [`docs/decisions/0003-publishing-format-and-path.md`](docs/decisions/0003-publishing-format-and-path.md) → Evidence |
 
 ---
 
