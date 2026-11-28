@@ -6,6 +6,14 @@ Newest entries first.
 
 ---
 
+### 2026-11-28 — F0-05: ADR-003 acceptance checked
+
+ADR-003 records the `.md` format, the PR opened by the GitHub App and merged by GitHub's auto-merge once the required checks pass, and the withdrawal mechanism; it stays `proposed` until F2-09. The check found the `status: retirado` row behind F2-07 and F2-11: the withdrawn page also shows the date, and the bot's block list is the F2-11 validation that fails a file reusing a withdrawn URL. The ADR and the architecture overview now say so; the decision did not change. With F0-05, every phase 0 acceptance item is checked; F0-10 is the last open issue.
+
+Checks: `make docs-lint`; a §4 term search of the diff.
+
+---
+
 ### 2026-11-28 — F0-01: accounts and repository
 
 Filipe created the Cloudflare Pages project `pedsletter` on the free plan, linked to this repository, with no build command and the output directory `dist`, then paused automatic production and preview deployments (his confirmation; the agent cannot read that setting). The build Cloudflare runs on creation, on `09061f2`, failed as intended, and as of 2026-11-28 `pedsletter.pages.dev` serves nothing (522). F1-01 sets the build and turns deployments on.

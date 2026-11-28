@@ -34,7 +34,7 @@ Until F2-05 exists, waiver W1 (`DECISIONS.md`) applies: Filipe dispatches the ru
 
 | Method | When to use it | Effect |
 | --- | --- | --- |
-| `status: retirado` (default) | An edition with an error or poor content | It disappears from the home page, the tags and the RSS; the URL shows "edição retirada" and the reason; its articles go onto the bot's block list |
+| `status: retirado` (default) | An edition with an error or poor content | It disappears from the home page, the tags and the RSS; the URL shows "edição retirada", the date and the reason, without the content (F2-07); its URLs go onto the bot's block list, and validation fails a file that reuses one (F2-11) |
 | Delete the file | Content that must not stay visible on the site | The URL returns 404 |
 | Revert the deploy in Cloudflare Pages | Emergency | Back to the previous version in seconds, without touching the repository |
 
@@ -72,6 +72,17 @@ Until F2-05 exists, waiver W1 (`DECISIONS.md`) applies: Filipe dispatches the ru
 None yet for the path itself. On 2026-11-25 the Grok routine was replaced by generation through the Claude API (ADR-004), and F0-02 was withdrawn.
 
 On 2026-11-26 the plan review approved a job commit with `GITHUB_TOKEN` (D9 in [`docs/plan-review-2026-11-26.md`](../plan-review-2026-11-26.md)). While planning F0-09, GitHub's docs ("Creating rulesets for a repository") showed that a ruleset's bypass list takes only repository roles, teams, GitHub Apps and Dependabot, not `GITHUB_TOKEN`, so that commit could not pass the "PR required" rule. On 2026-11-27 Filipe chose the App PR with GitHub's auto-merge.
+
+F0-05 checked this ADR on 2026-11-28 against its acceptance:
+
+| F0-05 acceptance | Where the ADR records it |
+| --- | --- |
+| The `.md` format | Decision → Format: Markdown with YAML frontmatter, one `YYYY-MM-DD-resumo.md` file per edition in `src/content/posts/`, and the fields F2-01 validates (`artigos` with `url` and `categoria`, `status`, `motivoRetirada`). MDX, JSON and `.docx` are rejected under Alternatives |
+| The PR opened by the GitHub App and merged by GitHub's auto-merge once the required checks pass | Decision → Path, steps 1 to 6, and Consequences; the same terms as F2-05: an App installed only on this repository, a per-run token, no merge workflow, no `pull_request_target`, a path check on App PRs, no auto-merge from a fork |
+| The withdrawal mechanism | Decision → Withdrawal: `status: retirado` (default), file deletion and a Cloudflare Pages rollback, with the effects F2-07 and F2-11 test |
+| Stays `proposed` until F2-09 | State `proposed`; this section and `DECISIONS.md` say so |
+
+The same check aligned the `status: retirado` row with F2-07 and F2-11, which postdate it: the withdrawn page also shows the date, and the block list is the F2-11 validation that fails a file reusing a withdrawn URL. The architecture overview has the same row. The decision did not change. F0-01 created the `main` ruleset on 2026-11-28 (PR required, no approval, no bypass actors; [`docs/accounts.md`](../accounts.md)). Its `require_extra_approval_for_unattributed_changes` flag is open for F2-05, which checks that an App PR still merges with no approval.
 
 The state stays `proposed` until F2-09 publishes a real file through the flow.
 
