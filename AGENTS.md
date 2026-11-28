@@ -30,7 +30,7 @@ For each task:
 6. Run the tests, lint and validations that apply.
 7. Read the results and fix regressions caused by the change.
 8. Run the review gates in "Agent workflow" below and fix blocking findings.
-9. Update the docs and `PROJECT_STATUS.md` (current phase only; history goes to `docs/status-log.md`).
+9. Update the docs as §12 lists (history goes to `docs/status-log.md`).
 10. Commit, push the branch, open the PR with a summary and read the CI. Report to Filipe: changed files, commands run, results, reviewer verdicts, limitations and the next step.
 11. Filipe reviews the PR and merges it. GitHub deletes the merged branch automatically. The agent never merges.
 
@@ -163,9 +163,9 @@ Filipe makes the final architecture decisions and approves significant changes.
 
 Before the issue's last commit, check each item and update only what the evidence supports:
 
-- `ROADMAP.md`: issue status, a Changelog line, the update date, and the seen half of its Risk and Size.
-- `PROJECT_STATUS.md`: phase table, next steps and update date.
-- `docs/status-log.md`: a new entry.
+- `ROADMAP.md`: the issue's status and the seen half of its Risk and Size. Issue status lives only there.
+- `PROJECT_STATUS.md`: next steps, and the active risks and blockers when they change.
+- `docs/status-log.md`: a new entry with what was checked and how.
 - An ADR or `DECISIONS.md` row becomes `approved` only with Filipe's decision or evidence from a verified issue.
 - `README.md` changes only when a phase closes.
 - No term forbidden by §4 in the diff, the commit message or the PR text.
