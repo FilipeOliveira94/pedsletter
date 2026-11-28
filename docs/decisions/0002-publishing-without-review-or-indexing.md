@@ -51,7 +51,7 @@ What passes automatic validation is published, with no human review. The site is
 
 Decision recorded in the final plan approved on 2026-11-15 (summary in [`docs/project-genesis.md`](../project-genesis.md)). No implementation yet; F1-03, F1-05, F1-06, F2-07 and F2-13 implement the mitigations.
 
-F0-04 checked this ADR on 2026-11-26: it records the decision, the rationale (context and alternatives), the mitigations and the phase 9 review conditions, and it names no professional (a search for names, "CRM", "Dr." and "Dra." finds nothing). Both notices match the `AGENTS.md` §4 wording byte for byte. The same check added the F2-13 grounding mitigation from ADR-004, which postdates this ADR; the decision did not change.
+F0-04 checked this ADR on 2026-11-26: it records the decision, the rationale (context and alternatives), the mitigations and the phase 9 review conditions, and it names no professional (a search for names, the registration acronym and the forms of address finds nothing). Both notices match the `AGENTS.md` §4 wording byte for byte. The same check added the F2-13 grounding mitigation from ADR-004, which postdates this ADR; the decision did not change.
 
 ## Review when
 

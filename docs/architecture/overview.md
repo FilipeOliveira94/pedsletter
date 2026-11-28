@@ -105,7 +105,7 @@ The generation job checks each item before any push (F2-13), and the format, lin
 | Schema | Required fields; `motivoRetirada` required when `status: retirado`; every `url` is `https://` on an ADR-001 host | F2-01 |
 | Links | The DOI is registered at doi.org, the PMID resolves, an allow-listed tier 2 page responds; one retry | F2-13 |
 | Duplicates | An already published URL raises a warning; a URL from a withdrawn edition fails validation | F2-11 |
-| Authorship | Block-list terms fail CI, in the PR text too; the generation job runs the same check before any push | F1-06 |
+| Authorship | The fixed terms in `src/config/authorship.json` and the names in the `AUTHORSHIP_BLOCKED_NAMES` secret fail the `authorship` job, in the tracked files, the built site and the PR title and body; the output gives file, line and list index only; a missing or empty secret fails. The generation job calls `scripts/authorship_check.py`'s `scan_text` before any push (F2-13), and `make hooks` turns on a pre-commit hook that reads the names from the environment | F1-06 |
 | Grounding | Every URL and title match a candidate or search result of the same run, from an ADR-001 source; every number in a tier 1 summary appears in the abstract or fetched text; tier 2 items carry no numbers except dates | F2-13 |
 | Dose | A dose screen on every field; a dose not attributed to the article drops the item; the site marks each dose with "confira no artigo" | F2-13, F1-04 |
 

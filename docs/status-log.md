@@ -6,6 +6,25 @@ Newest entries first.
 
 ---
 
+### 2026-11-28 — F1-06: absence-of-authorship check
+
+`scripts/authorship_check.py` (Python stdlib) fails when a fixed term or a blocked proper name appears. The seven fixed terms live in `src/config/authorship.json`, each written with a JSON escape, so no file holds a term in plain text. The three docs that quoted the list (the ROADMAP F1-06 row, ADR-002 and the F0-04 entry below) now name it instead, by Filipe's decision; the check has no exemption. The names come only from the `AUTHORSHIP_BLOCKED_NAMES` environment variable; a missing or empty one is a setup error (exit 2). Matching ignores case, accents and runs of whitespace, decodes HTML entities, reads each line with and without its tags and catches a phrase split across two lines. The output gives the source, the line and the list index, never the term, the name or the line; a path that matches is redacted.
+
+CI gains an `authorship` job (install, build, `make test`, then `make authorship` over the tracked files, `dist/` and the PR title and body, with the secret on that step only), and PR runs now also trigger on `edited`. `make hooks` points `core.hooksPath` at `scripts/hooks`, whose pre-commit hook runs the check on the staged files. `scan_text` is the API the generation job calls before any push (F2-13). `make test` now runs the unit tests.
+
+Checks:
+
+| Acceptance | Evidence |
+| --- | --- |
+| A CI script over the built HTML and the repository files | `make build && make authorship` locally: 50 sources scanned, passed. The `authorship` CI run on the PR is the CI evidence |
+| A block-list term fails and points to file and line | Unit tests for each of the seven terms, case, accents, nbsp, entities, tags, attributes and line breaks. A term appended to `README.md` locally failed with `README.md:92: term #3` and a file/line annotation |
+| Names come from a secret; missing or empty fails | Unit tests; locally `make authorship` exits 2 with the variable unset and with it empty |
+| Output gives file, line and index, never the term | Unit tests assert the term, the name and the line text are absent from the output, and that a matching path is redacted |
+| Runs on PR text; the generation job calls it | A term in `PR_BODY` failed locally with `PR_BODY:1: term #3`. The generation job does not exist yet; F2-13 calls `scan_text` |
+| Pre-commit hook reads names from the environment | Unit test in a temporary repository: a staged term is refused, an unset variable is refused, a clean commit passes |
+
+`make test` (29 tests), `make docs-lint` and `make lint` pass. Not exercised here: the generation job's call (the job comes in F2-13) and the CI run with the real secret, which is the PR's `authorship` run once Filipe sets it. Size seen Md: about 520 hand-written lines with the tests, over the Sm limit.
+
 ### 2026-11-28 — F1-01: Astro project, CI and preview deploy
 
 The repository now has a static Astro 7.4.13 site with strict TypeScript (the `strictest` preset; TypeScript 6.0.3, since `@astrojs/check` 0.9.12 supports only 5 and 6), installed with npm from exact pins and a lockfile, Node.js 22.23.4 (`.nvmrc`). The only page is a placeholder home with both §4 notices and the noindex meta tag. `src/config/site.ts` holds the `indexavel` switch (off) and the notice texts, and `public/_headers` sends `X-Robots-Tag: noindex, nofollow` on every path. There is no sitemap and no `robots.txt`. The Makefile `install`, `dev`, `build` and `lint` targets work; `test` stays a placeholder until F1-03.
@@ -111,7 +130,7 @@ Filipe approved the ADR-001 source list as it stands, to be reviewed again befor
 
 ### 2026-11-26 — F0-04: ADR-002 acceptance checked
 
-ADR-002 records the decision, the rationale, the mitigations and the phase 9 review conditions, and names no professional. A search for names and for "CRM", "Dr." and "Dra." in the ADR finds nothing, and the two §4 notices match the `AGENTS.md` wording byte for byte. The ADR predated ADR-004, so the F2-13 grounding check was added to its mitigations and its consequences now say what that check does not catch. The decision and the `approved` state did not change. Docs only; `make docs-lint` passes.
+ADR-002 records the decision, the rationale, the mitigations and the phase 9 review conditions, and names no professional. A search for names, the registration acronym and the forms of address in the ADR finds nothing, and the two §4 notices match the `AGENTS.md` wording byte for byte. The ADR predated ADR-004, so the F2-13 grounding check was added to its mitigations and its consequences now say what that check does not catch. The decision and the `approved` state did not change. Docs only; `make docs-lint` passes.
 
 ---
 
