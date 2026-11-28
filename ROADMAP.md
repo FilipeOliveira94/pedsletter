@@ -5,7 +5,7 @@ PedsLetter's plan by issue. This file is the source of **scope, dependencies, is
 | Roadmap | Current |
 | --- | --- |
 | Origin | Final plan approved on 2026-11-15; summary in [`docs/project-genesis.md`](docs/project-genesis.md). Revised by the plan review of 2026-11-26: [`docs/plan-review-2026-11-26.md`](docs/plan-review-2026-11-26.md) |
-| Last update | 2026-11-27 (F0-11: dose rule corrected) |
+| Last update | 2026-11-28 (F0-01: accounts and repository checked) |
 | Related | `PROJECT_STATUS.md`, `DECISIONS.md`, `AGENTS.md` |
 
 **Status values:** `not started` · `in progress` · `delivered` · `verified` · `blocked` · `withdrawn`
@@ -81,7 +81,7 @@ Dates proposed in the 2026-11-26 review and approved with the metrics (D12).
 
 **Phase acceptance (all required):**
 
-- [ ] Accounts created: public repository, a Cloudflare Pages project linked to it and a Claude API account with a monthly spend limit.
+- [x] Accounts created: public repository, a Cloudflare Pages project linked to it and a Claude API account with a monthly spend limit (F0-01, F0-08).
 - [x] API trial recorded, with cost and quality measured (F0-08).
 - [x] Gate G0 decided from the trial.
 - [ ] ADR-001 to ADR-004 written.
@@ -90,7 +90,7 @@ Dates proposed in the 2026-11-26 review and approved with the metrics (D12).
 
 | ID | Title | Expected/Seen Risk | Expected/Seen Size | Depends on | Status | Acceptance |
 | --- | --- | --- | --- | --- | --- | --- |
-| F0-01 | Accounts and repository | Med/- | Sm/- | — | Not started | Public GitHub repository and a Cloudflare Pages project linked to it.<br>README with the project description and the AI-generated content notice.<br>No paid plan purchased; the free-plan limits checked against the providers' current pages.<br>A `main` ruleset: PR required with no required approval, no force push, no deletion. F1-01 and F2-05 add the named required checks; nothing needs a bypass (ADR-003).<br>The default `GITHUB_TOKEN` is read-only, and secret scanning push protection is on. |
+| F0-01 | Accounts and repository | Med/Med | Sm/Sm | — | Delivered | Public GitHub repository and a Cloudflare Pages project linked to it.<br>README with the project description and the AI-generated content notice.<br>No paid plan purchased; the free-plan limits checked against the providers' current pages.<br>A `main` ruleset: PR required with no required approval, no force push, no deletion. F1-01 and F2-05 add the named required checks; nothing needs a bypass (ADR-003).<br>The default `GITHUB_TOKEN` is read-only, and secret scanning push protection is on. |
 | F0-02 | Test the Grok scheduled routine | -/- | -/- | — | Withdrawn | Withdrawn on 2026-11-25: generation moved to the Claude API (ADR-004). The equivalent trial is F0-08. |
 | F0-03 | ADR-001: curation sources | Lo/Lo | Sm/Sm | Filipe's review | Delivered | Closed two-tier list (journals by feed; organizations and news by domain-restricted search), with the inclusion criteria.<br>Initial list proposed in F0-07; closes when Filipe reviews it and ADR-001 becomes `approved`.<br>Does not block phase 1.<br>Approved by Filipe on 2026-11-26 as the list for now; the full review moved to F3-06, now part of F3-03. |
 | F0-04 | ADR-002: publishing without review or indexing | Lo/Lo | Sm/Sm | — | Delivered | Records the decision, the rationale, the mitigations and the conditions for review (phase 9).<br>Names no professional. |
@@ -345,6 +345,7 @@ Nothing in this phase starts without Filipe's explicit decision. The order matte
 
 | Date | Change |
 | --- | --- |
+| 2026-11-28 | F0-01: Cloudflare Pages project `pedsletter` linked, with automatic deployments paused by Filipe until F1-01 and nothing served; the `main` ruleset, read-only `GITHUB_TOKEN` and push protection checked with `gh api`; free-plan limits checked against the providers' pages ([`docs/accounts.md`](docs/accounts.md)). F0-01 delivered (Med/Med, Sm/Sm) |
 | 2026-11-27 | F0-11: the dose rule follows Filipe's decision of 2026-11-27: a summary may give a dose only as the linked article states it, attributed to it. D8, the generation rules and F2-13 now drop only an unattributed dose; F1-04 marks each dose with "confira no artigo"; F9-05 takes doses from public sources. F0-11 delivered (Hi/Hi, Sm/Sm) |
 | 2026-11-27 | F0-08: API trial recorded ([`docs/spikes/F0-08-api-trial.md`](docs/spikes/F0-08-api-trial.md)); gate G0 passed: proceed with Sonnet 5.5, US$0.35 a run, US$4.52 a month. Filipe's edition slots and the two-call flow go into the generation rules, F2-11 and F2-12; F2-13 takes the number-format and blocked-page findings; new F7-08 (selection review page). F0-08 delivered (Hi/Hi, Md/Lg) |
 | 2026-11-27 | F0-09: the 2026-11-26 plan review recorded ([`docs/plan-review-2026-11-26.md`](docs/plan-review-2026-11-26.md)): D1 decided otherwise, D2 to D13 approved; on 2026-11-27 Filipe kept the GitHub App and swapped the custom auto-merge workflow for GitHub's auto-merge, because a ruleset cannot exempt `GITHUB_TOKEN`. Merged: F1-02 into F1-01; F1-05 and F1-07 into F1-04; F2-02 into F2-12 and F2-13; F2-03 into F2-13; F2-04 into F2-11; F2-08 into F2-07; F2-10 into F2-05; F2-14 into F2-12; F3-01 into F2-09; F3-06 into F3-03. Withdrawn: F1-09; F2-15 cut. Deferred: F3-05; F3-04 moves to phase 5. New: F0-09, F0-10, F3-07 (conditional), F5-07. Phase 4 folds into phase 9 with F4-01 and F4-02, and F6-02 moves there too. Metrics restated; gates G0 to G3 added; waiver W1 for phase 2. Raised: F0-01 to Med; F1-01, F1-04, F1-08, F2-11 and F4-01 to Hi. F0-09 delivered (Hi/Hi, Md/Md) |

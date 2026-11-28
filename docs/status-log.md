@@ -6,6 +6,16 @@ Newest entries first.
 
 ---
 
+### 2026-11-28 — F0-01: accounts and repository
+
+Filipe created the Cloudflare Pages project `pedsletter` on the free plan, linked to this repository, with no build command and the output directory `dist`, then paused automatic production and preview deployments (his confirmation; the agent cannot read that setting). The build Cloudflare runs on creation, on `09061f2`, failed as intended, and as of 2026-11-28 `pedsletter.pages.dev` serves nothing (522). F1-01 sets the build and turns deployments on.
+
+The GitHub side was already in place and was only read: the `protect-main` ruleset (PR required with no approval, no force push, no deletion, no bypass actors), a read-only default `GITHUB_TOKEN` and secret scanning push protection. The free-plan limits from the Cloudflare and GitHub pages are in [`docs/accounts.md`](accounts.md); expected use fits them. Open for F2-05: the ruleset's `require_extra_approval_for_unattributed_changes` flag and App PRs. Open for F1-01: whether a fork PR gets a Cloudflare preview.
+
+Checks: `gh api` reads of the repository, ruleset, Actions permissions and check runs; `curl` on `pedsletter.pages.dev`; `make docs-lint`.
+
+---
+
 ### 2026-11-27 — F0-11: dose rule corrected
 
 During F0-08 Filipe allowed a dose in a summary when the linked article states it and the summary attributes it to the article; no dose of our own appears, the calculators included. D8, the roadmap generation rule and F2-13 still banned every dose. F0-11 aligns them with `AGENTS.md` §4, which already allowed an attributed dose.

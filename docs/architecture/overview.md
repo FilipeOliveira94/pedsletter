@@ -2,7 +2,7 @@
 
 PedsLetter's **planned** architecture, from the final plan approved on 2026-11-15 and the plan review of 2026-11-26 ([`docs/plan-review-2026-11-26.md`](../plan-review-2026-11-26.md)). Nothing here is implemented: the repository holds only docs and a skeleton. Each part takes effect once its issue is verified, and this document is updated with what actually exists.
 
-Decisions: [ADR-0001](../decisions/0001-curation-sources.md) (sources), [ADR-0002](../decisions/0002-publishing-without-review-or-indexing.md) (no review, no indexing), [ADR-0003](../decisions/0003-publishing-format-and-path.md) (publishing format and path) and [ADR-0004](../decisions/0004-generation-by-claude-api.md) (generation by the Claude API).
+Decisions: [ADR-0001](../decisions/0001-curation-sources.md) (sources), [ADR-0002](../decisions/0002-publishing-without-review-or-indexing.md) (no review, no indexing), [ADR-0003](../decisions/0003-publishing-format-and-path.md) (publishing format and path) and [ADR-0004](../decisions/0004-generation-by-claude-api.md) (generation by the Claude API). Accounts, repository settings and free-plan limits: [`docs/accounts.md`](../accounts.md).
 
 ## Components
 

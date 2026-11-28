@@ -7,7 +7,7 @@ Operational record of the **current phase**. The issue backlog and the acceptanc
 | Repository | [FilipeOliveira94/pedsletter](https://github.com/FilipeOliveira94/pedsletter) |
 | Started | 2026-11-14 |
 | Final plan approved | 2026-11-15 |
-| Last update | 2026-11-27 (F0-11: dose rule corrected) |
+| Last update | 2026-11-28 (F0-01: accounts and repository checked) |
 | Current phase | Phase 0 — Prerequisites |
 | Phase status | In progress |
 
@@ -31,9 +31,8 @@ On 2026-11-26 a plan review proposed changes, and Filipe decided on them: D1 oth
 
 ## Next steps
 
-1. **F0-01** — Accounts and repository: the Cloudflare Pages link, the free-plan limits, the `main` ruleset (PR required), a read-only default token and push protection.
-2. **F0-05** — Check the acceptance of ADR-003, which F0-09 updated for GitHub's auto-merge.
-3. **F0-10** — Trim the status docs; any time after F0-09.
+1. **F0-05** — Check the acceptance of ADR-003, which F0-09 updated for GitHub's auto-merge.
+2. **F0-10** — Trim the status docs; any time after F0-09.
 
 ---
 
@@ -41,7 +40,7 @@ On 2026-11-26 a plan review proposed changes, and Filipe decided on them: D1 oth
 
 | ID | Title | Status | Evidence |
 | --- | --- | --- | --- |
-| F0-01 | Accounts and repository | Not started | Done early in the initial commit: README with the description and the AI notice |
+| F0-01 | Accounts and repository | Delivered | F0-01 PR; [`docs/accounts.md`](docs/accounts.md) |
 | F0-02 | Test the Grok scheduled routine | Withdrawn | Replaced by F0-08 ([ADR-004](docs/decisions/0004-generation-by-claude-api.md)) |
 | F0-03 | ADR-001: curation sources | Delivered | F0-03 PR; [`0001`](docs/decisions/0001-curation-sources.md) `approved`; full review in F3-03 |
 | F0-04 | ADR-002: publishing without review or indexing | Delivered | F0-04 PR; acceptance checked in [`0002`](docs/decisions/0002-publishing-without-review-or-indexing.md) → Evidence |
@@ -57,7 +56,7 @@ Acceptance detail: `ROADMAP.md` → Phase 0.
 
 ### Phase 0 acceptance
 
-- [ ] Accounts created: public repository, a Cloudflare Pages project linked to it and a Claude API account with a monthly spend limit.
+- [x] Accounts created: public repository, a Cloudflare Pages project linked to it and a Claude API account with a monthly spend limit (F0-01, F0-08).
 - [x] API trial recorded, with cost and quality measured (F0-08).
 - [x] Gate G0 decided from the trial.
 - [ ] ADR-001 to ADR-004 written.
@@ -68,10 +67,10 @@ Acceptance detail: `ROADMAP.md` → Phase 0.
 
 | Validation | Detail |
 | --- | --- |
-| Date | 2026-11-27 |
+| Date | 2026-11-28 |
 | Environment | Local, WSL2 |
-| Checks | F0-08: 66 unit tests of the trial script, `trial.py --dry-run`, three paid runs (the third produced the edition), `make docs-lint` |
-| Result | See the F0-08 PR and [`docs/spikes/F0-08-api-trial.md`](docs/spikes/F0-08-api-trial.md) |
+| Checks | F0-01: `gh api` reads of the repository, the `main` ruleset, Actions permissions and the Cloudflare Pages check run; `curl` on `pedsletter.pages.dev`; `make docs-lint` |
+| Result | See the F0-01 PR and [`docs/accounts.md`](docs/accounts.md) |
 
 ---
 
@@ -92,7 +91,6 @@ Waiver W1 (`DECISIONS.md`): phase 2 issues follow their own dependencies, and Fi
 - Until F3-03, only Filipe's read catches an error that got past the checks; the main user is asked only once the MVP is live (Filipe's decision D1 of 2026-11-26).
 - The ADR-001 domains and feeds have not been checked. F2-11 checks them.
 - Fetched text may carry an injected instruction into a site published without review. Mitigation: structured output, no write tool for the model, and the pre-push gate (F2-12, F2-13).
-- The free-plan limits cited in the plan are from memory. Check them in F0-01.
 - Whether GitHub's auto-merge works on this repository is unverified; F2-05 checks it, and until then Filipe merges (W1).
 - A professional's name may slip into a file, issue or commit before F1-06 exists. Until then, the AGENTS.md §4 rule is the only barrier; F1-06 now comes right after F1-01.
 

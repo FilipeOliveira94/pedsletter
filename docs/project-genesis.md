@@ -128,7 +128,7 @@ The rules for calculators, privacy, accessibility and performance are in [`archi
 
 - Three points are recommendations by the plan's author, accepted on approval: drug calculators only in phase 9, summaries without dose recommendations, and publishing by PR with automatic merge.
 - What the Grok scheduled routine can do was not verified. F0-02 tests it.
-- The free-plan limits were cited from memory. F0-01 checks them.
+- The free-plan limits were cited from memory. F0-01 checked them on 2026-11-28 ([`accounts.md`](accounts.md)).
 
 ## 11. Open questions
 
