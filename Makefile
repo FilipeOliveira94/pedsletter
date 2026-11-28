@@ -1,7 +1,7 @@
 # PedsLetter — common development commands
 # Requires: GNU make, Node.js (version in .nvmrc) and npm.
 
-.PHONY: authorship docs-lint help hooks install dev build lint test
+.PHONY: authorship docs-lint help hooks install dev build lint site-check test
 
 # No Astro telemetry, locally or in CI (AGENTS.md §8).
 export ASTRO_TELEMETRY_DISABLED := 1
@@ -23,6 +23,9 @@ docs-lint: ## Check Markdown tables (no empty header)
 
 lint: ## Type-check the project (astro check; a type error fails)
 	npm run check
+
+site-check: ## Walk dist/ for noindex, notices, scripts, sitemap, robots.txt and _headers (F1-03; needs make build)
+	python3 scripts/site_check.py dist
 
 test: ## Run the unit tests
 	python3 -m unittest discover -s tests
